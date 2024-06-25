@@ -56,8 +56,9 @@ const date = computed({
 
 const formattedDate = computed(() => {
   const format = props.options?.format ?? defaultFormat;
+  const fDate = field.value ? moment(date.value).format(format) : "";
 
-  return moment(date.value).format(format);
+  return fDate;
 });
 
 const datepickerOptions = computed(() => {
