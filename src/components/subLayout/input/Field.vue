@@ -9,7 +9,7 @@ import selects from "../../types/Selects";
 // import selectsAutocomplete from "@/types/SelectsAutocomplete";
 // import checkBoxes from "@/types/CheckBoxes";
 // import fileInput from "@/types/FileInput";
-// import datepicker from "@/types/Datepicker";
+import datepicker from "../../types/Datepicker";
 // import customDatePicker from "@/types/CustomDatepicker";
 // import dateTimePicker from "@/types/DateTimePicker";
 // import password from "@/types/Password";
@@ -20,6 +20,7 @@ const types = {
   textArea,
   selects,
   epic,
+  datepicker,
 };
 
 const props = defineProps({

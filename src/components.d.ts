@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Accordion: typeof import('./components/subLayout/Accordion.vue')['default']
+    Datepicker: typeof import('./components/types/Datepicker.vue')['default']
     Epic: typeof import('./components/types/Epic.vue')['default']
     Field: typeof import('./components/subLayout/input/Field.vue')['default']
     Form: typeof import('./components/form/index.vue')['default']
