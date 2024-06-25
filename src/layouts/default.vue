@@ -14,6 +14,10 @@ const links = [
 onMounted(() => {
   menu.value = [
     {
+      title: "Datepicker",
+      to: "/examples/datepicker",
+    },
+    {
       title: "Contact Form",
       to: "/examples/contactForm",
     },
