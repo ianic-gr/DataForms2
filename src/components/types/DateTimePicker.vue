@@ -1,5 +1,7 @@
 <script setup>
+import moment from "moment";
 import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
+import { VTimePicker } from "vuetify/labs/VTimePicker";
 
 const props = defineProps({
   input: {
@@ -28,13 +30,25 @@ const props = defineProps({
   },
 });
 
-const { field, getCurrentFormData, tempDate, date, formattedDate } =
-  useDateTimeFieldType(props);
+const {
+  field,
+  getCurrentFormData,
+  date,
+  time,
+  formattedDateTime,
+  defaultDateFormat,
+  defaultTimeFormat,
+} = useDateTimeFieldType(props);
 
 const dialog = ref(false);
+const pickerTab = ref("date");
 
 const saveDate = () => {
-  field.value = tempDate.value;
+  const format =
+    props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
+  const extractedDate = moment(date.value).format(defaultDateFormat);
+
+  field.value = moment(`${extractedDate} ${time.value}`).format(format);
   dialog.value = false;
 };
 </script>
@@ -43,7 +57,7 @@ const saveDate = () => {
   <v-dialog v-model="dialog" max-width="360" persistent>
     <template v-slot:activator="{ props: activatorProps }">
       <v-text-field
-        v-model="formattedDate"
+        v-model="formattedDateTime"
         v-bind="{ ...$attrs, ...activatorProps, ...options }"
         @click="events?.onClick && events.onClick()"
         readonly
@@ -53,12 +67,24 @@ const saveDate = () => {
     <template v-slot:default>
       <v-card>
         <v-card-text class="pa-0">
-          <v-date-picker
-            v-model="date"
-            v-bind="options?.datepicker"
-            :locale="getCurrentFormData?.locale"
-            width="auto"
-          />
+          <v-tabs v-model="pickerTab" dark grow>
+            <v-tab value="date"> DATE </v-tab>
+            <v-tab value="time"> TIME </v-tab>
+          </v-tabs>
+          <v-tabs-window v-model="pickerTab">
+            <v-tabs-window-item value="date">
+              <v-date-picker
+                v-model="date"
+                v-bind="options?.datepicker"
+                :locale="getCurrentFormData?.locale"
+                :multiple="false"
+                width="auto"
+              />
+            </v-tabs-window-item>
+            <v-tabs-window-item value="time">
+              <v-time-picker v-model="time" width="auto" />
+            </v-tabs-window-item>
+          </v-tabs-window>
         </v-card-text>
         <v-spacer />
         <v-card-actions>

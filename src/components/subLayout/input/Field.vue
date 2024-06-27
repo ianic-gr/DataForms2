@@ -10,8 +10,7 @@ import selects from "../../types/Selects";
 // import checkBoxes from "@/types/CheckBoxes";
 // import fileInput from "@/types/FileInput";
 import datepicker from "../../types/Datepicker";
-// import customDatePicker from "@/types/CustomDatepicker";
-// import dateTimePicker from "@/types/DateTimePicker";
+import dateTimePicker from "../../types/DateTimePicker";
 // import password from "@/types/Password";
 import epic from "../../types/Epic";
 
@@ -21,6 +20,7 @@ const types = {
   selects,
   epic,
   datepicker,
+  dateTimePicker,
 };
 
 const props = defineProps({

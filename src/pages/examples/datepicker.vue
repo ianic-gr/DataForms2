@@ -33,8 +33,8 @@ const api = {
             options: {
               label: "When should we call you?",
               prependIcon: "mdi-calendar-clock",
-              default: "02/07/1993 00:00:00",
-              format: "DD/MM/YYYY h:mm:ss",
+              default: "07/02/1993 06:00:00",
+              format: "DD/MM/YYYY H:mm:ss",
               returnFormat: "MM-DD-YYYY h:mm:ss",
               datepicker: {
                 allowedDates: (val) => {
@@ -47,6 +47,36 @@ const api = {
                 allowedHours: (v) => v % 2,
                 allowedMinutes: (v) => v >= 10 && v <= 50,
                 allowedStep: (m) => m % 10 === 0,
+              },
+            },
+          },
+        },
+        {
+          multiple: {
+            type: "datepicker",
+            options: {
+              label: "Datepicker Multiple Values",
+              prependIcon: "mdi-calendar-multiselect",
+              default: ["07-02-1993"],
+              format: "DD/MM/YYYY",
+              returnFormat: "MM-DD-YYYY",
+              datepicker: {
+                multiple: true,
+              },
+            },
+          },
+        },
+        {
+          range: {
+            type: "datepicker",
+            options: {
+              label: "Datepicker Range",
+              prependIcon: "mdi-calendar-range",
+              default: ["07-02-1993"],
+              format: "DD/MM/YYYY",
+              returnFormat: "MM-DD-YYYY",
+              datepicker: {
+                multiple: "range",
               },
             },
           },

@@ -15,7 +15,9 @@ export function useFieldType(props) {
   onMounted(async () => {
     await nextTick();
 
-    field.value = props.options.default ? props.options.default : "";
+    field.value = props.options?.default ?? "";
+
+    console.log(props.options.default);
 
     addField({
       formId: props.formId,

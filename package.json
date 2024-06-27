@@ -10,13 +10,12 @@
   "dependencies": {
     "@mdi/font": "6.2.95",
     "@vee-validate/rules": "^4.13.1",
-    "algoliasearch": "^4.23.3",
     "core-js": "^3.34.0",
     "moment": "^2.30.1",
     "roboto-fontface": "*",
     "vee-validate": "^4.13.1",
     "vue": "^3.4.21",
-    "vuetify": "^3.5.8"
+    "vuetify": "^3.6.10"
   },
   "devDependencies": {
     "@babel/types": "^7.24.0",
