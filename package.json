@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@mdi/font": "6.2.95",
+    "@stackblitz/sdk": "^1.10.0",
     "@vee-validate/rules": "^4.13.1",
     "core-js": "^3.34.0",
     "moment": "^2.30.1",

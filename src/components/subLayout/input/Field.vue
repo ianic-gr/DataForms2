@@ -4,23 +4,26 @@ import { useConditionals } from "@/composables/useConditionals.js";
 // Components
 import textField from "../../types/TextField";
 import textArea from "../../types/TextArea";
-// import radioButtons from "@/types/RadioButtons";
+import radioButtons from "../../types/RadioButtons";
 import selects from "../../types/Selects";
 // import selectsAutocomplete from "@/types/SelectsAutocomplete";
-// import checkBoxes from "@/types/CheckBoxes";
+import checkBoxes from "../../types/CheckBoxes";
 // import fileInput from "@/types/FileInput";
 import datepicker from "../../types/Datepicker";
 import dateTimePicker from "../../types/DateTimePicker";
-// import password from "@/types/Password";
+import password from "../../types/Password";
 import epic from "../../types/Epic";
 
 const types = {
   textField,
   textArea,
+  radioButtons,
   selects,
-  epic,
+  checkBoxes,
   datepicker,
   dateTimePicker,
+  password,
+  epic,
 };
 
 const props = defineProps({

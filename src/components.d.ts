@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Accordion: typeof import('./components/subLayout/Accordion.vue')['default']
+    CheckBoxes: typeof import('./components/types/CheckBoxes.vue')['default']
     copy: typeof import('./components/types/Datepicker copy.vue')['default']
     Datepicker: typeof import('./components/types/Datepicker.vue')['default']
     DateTimepicker: typeof import('./components/types/DateTimepicker.vue')['default']
@@ -16,6 +17,8 @@ declare module 'vue' {
     Field: typeof import('./components/subLayout/input/Field.vue')['default']
     Form: typeof import('./components/form/index.vue')['default']
     Input: typeof import('./components/subLayout/input/index.vue')['default']
+    Password: typeof import('./components/types/Password.vue')['default']
+    RadioButtons: typeof import('./components/types/RadioButtons.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Row: typeof import('./components/form/Row.vue')['default']

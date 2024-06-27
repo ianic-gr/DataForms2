@@ -14,12 +14,19 @@ const links = [
 onMounted(() => {
   menu.value = [
     {
+      title: "Types",
+    },
+    {
+      title: "Checks & radios",
+      to: "/examples/checks-radios",
+    },
+    {
       title: "Datepicker",
       to: "/examples/datepicker",
     },
     {
-      title: "Contact Form",
-      to: "/examples/contactForm",
+      title: "Password",
+      to: "/examples/password",
     },
     {
       title: "Conditionals",
@@ -28,6 +35,35 @@ onMounted(() => {
     {
       title: "Epic",
       to: "/examples/epic",
+    },
+    {
+      title: "Layout",
+    },
+    {
+      title: "Accordion (Coming Soon)",
+      to: "/examples/contactForm",
+    },
+    {
+      title: "Tabs (Coming Soon)",
+      to: "/examples/contactForm",
+    },
+    {
+      title: "Theme",
+    },
+    {
+      title: "Fluid (Coming Soon)",
+      to: "/examples/contactForm",
+    },
+    {
+      title: "Breeze (Coming Soon)",
+      to: "/examples/contactForm",
+    },
+    {
+      title: "Use Cases",
+    },
+    {
+      title: "Contact Form",
+      to: "/examples/contactForm",
     },
   ];
 });
@@ -69,13 +105,18 @@ onMounted(() => {
           <v-col cols="2">
             <v-sheet rounded="lg">
               <v-list rounded="lg">
-                <v-list-item
-                  v-for="(item, i) in menu"
-                  :key="i"
-                  :title="item.title"
-                  :to="item.to"
-                  link
-                ></v-list-item>
+                <template v-for="(item, i) in menu" :key="i">
+                  <v-list-item
+                    v-if="item.to"
+                    :title="item.title"
+                    :to="item.to"
+                    link
+                  />
+
+                  <p v-else class="px-4 font-weight-bold mt-2">
+                    {{ item.title }}
+                  </p>
+                </template>
 
                 <v-divider v-if="$route.path !== '/'" class="my-2"></v-divider>
 
