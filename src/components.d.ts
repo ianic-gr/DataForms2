@@ -8,14 +8,18 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Accordion: typeof import('./components/subLayout/Accordion.vue')['default']
+    Breeze: typeof import('./components/theme/Breeze.vue')['default']
+    Card: typeof import('./components/theme/Card.vue')['default']
     CheckBoxes: typeof import('./components/types/CheckBoxes.vue')['default']
     Datepicker: typeof import('./components/types/Datepicker.vue')['default']
     DateTimePicker: typeof import('./components/types/DateTimePicker.vue')['default']
     Epic: typeof import('./components/types/Epic.vue')['default']
     Field: typeof import('./components/subLayout/input/Field.vue')['default']
+    Fluid: typeof import('./components/theme/Fluid.vue')['default']
     Form: typeof import('./components/form/index.vue')['default']
     Input: typeof import('./components/subLayout/input/index.vue')['default']
     Password: typeof import('./components/types/Password.vue')['default']
+    Plain: typeof import('./components/theme/Plain.vue')['default']
     RadioButtons: typeof import('./components/types/RadioButtons.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

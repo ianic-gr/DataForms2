@@ -51,12 +51,12 @@ onMounted(() => {
       title: "Theme",
     },
     {
-      title: "Fluid (Coming Soon)",
-      to: "/examples/contactForm",
+      title: "Fluid",
+      to: "/examples/themes/fluid",
     },
     {
-      title: "Breeze (Coming Soon)",
-      to: "/examples/contactForm",
+      title: "Breeze",
+      to: "/examples/themes/breeze",
     },
     {
       title: "Use Cases",
@@ -76,24 +76,24 @@ onMounted(() => {
         <h2 class="me-5">📃 Dataforms 2</h2>
 
         <v-btn
-          :to="link.to"
-          v-for="link in links"
-          :key="link.title"
-          :text="link.title"
-          variant="text"
+            :to="link.to"
+            v-for="link in links"
+            :key="link.title"
+            :text="link.title"
+            variant="text"
         ></v-btn>
 
         <v-spacer></v-spacer>
 
         <v-responsive max-width="160">
           <v-text-field
-            density="compact"
-            label="Search"
-            rounded="lg"
-            variant="solo-filled"
-            flat
-            hide-details
-            single-line
+              density="compact"
+              label="Search"
+              rounded="lg"
+              variant="solo-filled"
+              flat
+              hide-details
+              single-line
           ></v-text-field>
         </v-responsive>
       </v-container>
@@ -107,10 +107,10 @@ onMounted(() => {
               <v-list rounded="lg">
                 <template v-for="(item, i) in menu" :key="i">
                   <v-list-item
-                    v-if="item.to"
-                    :title="item.title"
-                    :to="item.to"
-                    link
+                      v-if="item.to"
+                      :title="item.title"
+                      :to="item.to"
+                      link
                   />
 
                   <p v-else class="px-4 font-weight-bold mt-2">
@@ -121,11 +121,11 @@ onMounted(() => {
                 <v-divider v-if="$route.path !== '/'" class="my-2"></v-divider>
 
                 <v-list-item
-                  v-if="$route.path !== '/'"
-                  to="/"
-                  color="grey-lighten-4"
-                  title="← Back"
-                  link
+                    v-if="$route.path !== '/'"
+                    to="/"
+                    color="grey-lighten-4"
+                    title="← Back"
+                    link
                 ></v-list-item>
               </v-list>
             </v-sheet>
