@@ -28,6 +28,7 @@ declare module 'vue-router/auto-routes' {
     '/examples/datepicker': RouteRecordInfo<'/examples/datepicker', '/examples/datepicker', Record<never, never>, Record<never, never>>,
     '/examples/epic': RouteRecordInfo<'/examples/epic', '/examples/epic', Record<never, never>, Record<never, never>>,
     '/examples/password': RouteRecordInfo<'/examples/password', '/examples/password', Record<never, never>, Record<never, never>>,
+    '/examples/tabs': RouteRecordInfo<'/examples/tabs', '/examples/tabs', Record<never, never>, Record<never, never>>,
     '/test': RouteRecordInfo<'/test', '/test', Record<never, never>, Record<never, never>>,
   }
 }

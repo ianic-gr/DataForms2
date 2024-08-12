@@ -77,12 +77,12 @@ const theRowTitle = computed(() => {
     </v-col>
     <v-col cols="12" v-if="row.tabs">
       <Tabs :formId="id" :items="row.tabs.items" :options="row.tabs.options">
-        <template
+        <!-- <template
           v-for="inputSlot in subLayoutSlots(row.tabs.items)"
           #[inputSlot]="{ item }"
         >
           <slot :name="inputSlot" :item="item" />
-        </template>
+        </template> -->
       </Tabs>
     </v-col>
     <v-col cols="12">
