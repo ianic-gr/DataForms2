@@ -9,9 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Accordion: typeof import('./components/subLayout/Accordion.vue')['default']
     CheckBoxes: typeof import('./components/types/CheckBoxes.vue')['default']
-    copy: typeof import('./components/types/Datepicker copy.vue')['default']
     Datepicker: typeof import('./components/types/Datepicker.vue')['default']
-    DateTimepicker: typeof import('./components/types/DateTimepicker.vue')['default']
     DateTimePicker: typeof import('./components/types/DateTimePicker.vue')['default']
     Epic: typeof import('./components/types/Epic.vue')['default']
     Field: typeof import('./components/subLayout/input/Field.vue')['default']

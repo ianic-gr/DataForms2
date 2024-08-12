@@ -40,8 +40,8 @@ onMounted(() => {
       title: "Layout",
     },
     {
-      title: "Accordion (Coming Soon)",
-      to: "/examples/contactForm",
+      title: "Accordion",
+      to: "/examples/accordion",
     },
     {
       title: "Tabs (Coming Soon)",

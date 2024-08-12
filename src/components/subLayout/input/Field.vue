@@ -2,17 +2,17 @@
 import { useConditionals } from "@/composables/useConditionals.js";
 
 // Components
-import textField from "../../types/TextField";
-import textArea from "../../types/TextArea";
-import radioButtons from "../../types/RadioButtons";
-import selects from "../../types/Selects";
-// import selectsAutocomplete from "@/types/SelectsAutocomplete";
-import checkBoxes from "../../types/CheckBoxes";
-// import fileInput from "@/types/FileInput";
-import datepicker from "../../types/Datepicker";
-import dateTimePicker from "../../types/DateTimePicker";
-import password from "../../types/Password";
-import epic from "../../types/Epic";
+import textField from "@/components/types/TextField";
+import textArea from "@/components/types/TextArea";
+import radioButtons from "@/components/types/RadioButtons";
+import selects from "@/components/types/Selects";
+// import selectsAutocomplete from "@/components/types/SelectsAutocomplete";
+import checkBoxes from "@/components/types/CheckBoxes";
+// import fileInput from "@/components/types/FileInput";
+import datepicker from "@/components/types/Datepicker";
+import dateTimePicker from "@/components/types/DateTimePicker";
+import password from "@/components/types/Password";
+import epic from "@/components/types/Epic";
 
 const types = {
   textField,
