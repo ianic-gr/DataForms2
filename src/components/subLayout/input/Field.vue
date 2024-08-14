@@ -126,7 +126,6 @@ const isRequired = computed(() => {
           {{ label }}
           <span v-if="isRequired(input)" class="red--text">*</span>
         </label>
-        <component :is="'TextField'"></component>
         <component
           :is="types[input.type] || textField"
           :input="input"

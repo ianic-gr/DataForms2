@@ -3,11 +3,19 @@ import { ref, onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useDataformsStore } from "@/stores/dataFormsStore";
 import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
+import { defineRule, useForm } from "vee-validate";
+import { all } from "@vee-validate/rules";
+import { getValidations } from "@/utils/getValidations";
+
+Object.entries(all).forEach(([name, rule]) => {
+  defineRule(name, rule);
+});
 
 const dataformsStore = useDataformsStore();
 const { getApiSlots } = useSlotsPrepare();
 
 const {
+  getCurrentForm,
   addForm,
   addField,
   updateBinder,
@@ -76,8 +84,7 @@ const leaveAlertWhenDataChanges = (data) => {
   }
 };
 
-const submit = async () => {
-  const isValidated = true; //await this.$refs.observer.validate();
+const submit = () => {
   submitOK.value = false;
 
   makeFormInvalid(props.id);
@@ -86,32 +93,16 @@ const submit = async () => {
 
   setFormErrors({
     formId: props.id,
-    errors: [], //this.$refs.observer.errors,
+    errors: [],
   });
 
   document.dispatchEvent(submitEvent);
   emit("dataFormSubmit");
 
-  if (isValidated && binder) {
-    const theForm = forms.value.filter((form) => form.id === props.id);
-
-    if (theForm.length) {
-      if (props.api.submit) {
-        props.api.submit.click(theForm[0].fields);
-      }
-
-      makeFormValid(props.id);
-      submitOK.value = true;
-
-      document.dispatchEvent(submitSuccessEvent);
-      emit("dataFormSubmitSuccess");
-    }
-  } else {
-    document.dispatchEvent(submitFailedEvent);
-    emit("dataFormSubmitFailed");
-
-    scrollToError();
-  }
+  handleSubmit(
+    () => submitSuccess(binder),
+    (validationErrors) => submitErrors(validationErrors.errors)
+  )();
 };
 
 const validateBinder = () => {
@@ -158,10 +149,13 @@ const changeLeaf = (leaf) => {
 
 const scrollToError = () => {
   const vFormEL = vFormRef.value.$el;
-  const el = vFormEL.querySelector(".v-input.error--text:first-of-type");
-  const yOffset = -200;
-  const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-  window.scrollTo({ top: y, behavior: "smooth" });
+  const el = vFormEL.querySelector(".v-input--error:first-of-type");
+
+  if (el) {
+    const yOffset = -200;
+    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
 };
 
 onMounted(() => {
@@ -188,6 +182,39 @@ onMounted(() => {
   );
 });
 
+const { handleSubmit } = useForm({
+  validationSchema: getValidations(props.api),
+});
+
+const submitSuccess = (binder) => {
+  if (binder) {
+    const theForm = getCurrentForm(props.id);
+
+    if (props.api.submit) {
+      props.api.submit.click(theForm.fields);
+    }
+
+    makeFormValid(props.id);
+    submitOK.value = true;
+
+    document.dispatchEvent(submitSuccessEvent);
+    emit("dataFormSubmitSuccess");
+  } else {
+    submitErrors([]);
+  }
+};
+
+const submitErrors = (errors) => {
+  setFormErrors({
+    formId: props.id,
+    errors: errors,
+  });
+
+  document.dispatchEvent(submitFailedEvent);
+  emit("dataFormSubmitFailed");
+  scrollToError();
+};
+
 defineExpose({
   setLoading,
   changeLeaf,
@@ -196,6 +223,10 @@ defineExpose({
 
 <template>
   <v-form @submit.prevent="submit" ref="vFormRef">
+    <pre>
+    {{ getValidations(api) }}
+
+    </pre>
     <transition-group name="form">
       <v-row key="form_row">
         <v-col
