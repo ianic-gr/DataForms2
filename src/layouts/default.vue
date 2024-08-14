@@ -29,6 +29,10 @@ onMounted(() => {
       to: "/examples/password",
     },
     {
+      title: "FileInput",
+      to: "/examples/fileInput",
+    },
+    {
       title: "Conditionals",
       to: "/examples/conditionals",
     },
