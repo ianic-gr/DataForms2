@@ -126,7 +126,7 @@ const isRequired = computed(() => {
       <div class="flex-grow-1" style="max-width: 100%">
         <label v-if="theme === 'Breeze'" class="text-uppercase">
           {{ label }}
-          <span v-if="isRequired(input)" class="red--text">*</span>
+          <span v-if="isRequired" class="red--text">*</span>
         </label>
         <component
           :is="types[input.type] || textField"

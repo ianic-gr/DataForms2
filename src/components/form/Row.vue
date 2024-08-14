@@ -2,6 +2,10 @@
 import { isObject } from "vuetify/lib/util/helpers";
 import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 import { useConditionals } from "@/composables/useConditionals.js";
+import Plain from "../../components/theme/Plain.vue";
+import Fluid from "../../components/theme/Fluid.vue";
+import Breeze from "../../components/theme/Breeze.vue";
+import Card from "../../components/theme/Card.vue";
 
 const props = defineProps({
   row: {
@@ -21,6 +25,12 @@ const props = defineProps({
 const { slots, subLayoutSlots } = useSlotsPrepare();
 const { showOnConditions } = useConditionals(props.id);
 
+const themes = ref({
+  Plain,
+  Fluid,
+  Breeze,
+  Card,
+})
 const themeTitle = computed(() => {
   return props.row.theme !== "Fluid" && props.row?.title?.length;
 });
@@ -32,6 +42,7 @@ const rowInput = computed(() => {
       input: {
         title: props.row.title,
         theme: props.row.theme,
+        themeComp: props.row.theme ? themes.value[props.row.theme] : themes.value['Plain'],
         set: props.row.input,
       },
     };
@@ -114,17 +125,17 @@ const theRowTitle = computed(() => {
               </template>
             </Input>
           </component> -->
-
-          <component :is="setRow.theme || 'Plain'" :row="setRow">
+          <component :is="setRow.themeComp" :row="setRow">
             <Input
-              ref="dataFormInput"
-              :items="setRow.set"
-              :formId="id"
-              :loading="loading"
+                ref="dataFormInput"
+                :items="setRow.set"
+                :formId="id"
+                :loading="loading"
+                :theme="setRow.theme"
             >
               <template
-                v-for="inputSlot in slots(setRow.set)"
-                #[inputSlot]="{ item }"
+                  v-for="inputSlot in slots(setRow.set)"
+                  #[inputSlot]="{ item }"
               >
                 <slot :name="inputSlot" :item="item" />
               </template>
