@@ -15,9 +15,7 @@ const api = {
                     hint: "Είσαι ο;",
                     "persistent-hint": true,
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
                 surname: {
                   options: {
@@ -25,9 +23,7 @@ const api = {
                     hint: "Είσαι ο;",
                     "persistent-hint": true,
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
               },
             ],
@@ -41,18 +37,14 @@ const api = {
                     label: "Target",
                     "persistent-hint": true,
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
                 expenses: {
                   options: {
                     label: "Expenses",
                     "persistent-hint": true,
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
               },
             ],
@@ -66,18 +58,14 @@ const api = {
                     label: "Target",
                     "persistent-hint": true,
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
                 expensesx: {
                   options: {
                     label: "Expenses",
                     "persistent-hint": true,
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
               },
             ],

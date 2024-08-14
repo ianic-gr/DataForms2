@@ -10,9 +10,7 @@ const api = {
               prependIcon: "mdi-account",
               "persistent-hint": true,
             },
-            validation: {
-              required: true,
-            },
+            validation: "required",
           },
           email: {
             options: {
@@ -20,21 +18,7 @@ const api = {
               label: "Email",
               prependIcon: "mdi-mail",
             },
-            validation: {
-              required: true,
-              min: 4,
-              max: 24,
-              type: "email",
-              _callback: () => {
-                return {
-                  validate: (value) => {
-                    console.log(value);
-                    return true;
-                  },
-                  message: "{_field_} is not valid(?)",
-                };
-              },
-            },
+            validation: "required|min:4|max:24|email",
             tooltip: {
               position: "bottom",
               text: "lorem ipsun",
@@ -57,9 +41,7 @@ const api = {
               label: "Phone",
               prependIcon: "mdi-phone",
             },
-            validation: {
-              required: true,
-            },
+            validation: "required",
           },
           _responsive: {
             sm: 12,
@@ -97,9 +79,8 @@ const api = {
               label: "Budget 💸",
               "persistent-hint": true,
             },
-            validation: {
-              required: true,
-            },
+            validation: "required",
+
             conditionals: [
               {
                 name: "Bob",

@@ -13,6 +13,7 @@ import datepicker from "@/components/types/Datepicker";
 import dateTimePicker from "@/components/types/DateTimePicker";
 import password from "@/components/types/Password";
 import epic from "@/components/types/Epic";
+import FileInput from "@/components/types/FileInput.vue";
 
 const types = {
   textField,
@@ -24,6 +25,7 @@ const types = {
   dateTimePicker,
   password,
   epic,
+  FileInput
 };
 
 const props = defineProps({
@@ -126,7 +128,6 @@ const isRequired = computed(() => {
           {{ label }}
           <span v-if="isRequired" class="red--text">*</span>
         </label>
-        <component :is="'TextField'"></component>
         <component
           :is="types[input.type] || textField"
           :input="input"

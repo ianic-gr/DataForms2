@@ -1,8 +1,7 @@
 <script setup>
 import defu from "defu";
 import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
-
-const { slots } = useSlotsPrepare();
+import { useLeafValidation } from "@/composables/useLeafValidation.js";
 
 const props = defineProps({
   items: {
@@ -19,7 +18,8 @@ const props = defineProps({
   },
 });
 
-const leaf = ref(0);
+const { slots } = useSlotsPrepare();
+const { leaf, handleLeafError } = useLeafValidation(props);
 
 const tabsOptions = computed(() => {
   return defu(
@@ -28,6 +28,10 @@ const tabsOptions = computed(() => {
     },
     props.options
   );
+});
+
+onMounted(() => {
+  document.addEventListener("dataFormSubmitFailed", () => handleLeafError());
 });
 </script>
 

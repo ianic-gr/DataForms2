@@ -19,9 +19,7 @@ const api = {
                     hint: "Είσαι ο;",
                     "persistent-hint": true,
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
                 _responsive: {
                   sm: 12,
@@ -34,9 +32,7 @@ const api = {
                     hint: "Είσαι ο;",
                     "persistent-hint": true,
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
                 _responsive: {
                   sm: 12,
@@ -52,17 +48,13 @@ const api = {
                   options: {
                     label: "Last name",
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
                 phone: {
                   options: {
                     label: "Phone",
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                   tooltip: {
                     text: "lorem ipsun",
                   },
@@ -95,9 +87,7 @@ const api = {
                       },
                     ],
                   },
-                  validation: {
-                    required: true,
-                  },
+                  validation: "required",
                 },
                 _responsive: {
                   sm: 12,
