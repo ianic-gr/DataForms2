@@ -215,18 +215,17 @@ const submitErrors = (errors) => {
   scrollToError();
 };
 
+provide("dataformsStore", dataformsStore);
+
 defineExpose({
   setLoading,
   changeLeaf,
+  dataformsStore,
 });
 </script>
 
 <template>
   <v-form @submit.prevent="submit" ref="vFormRef">
-    <pre>
-    {{ getValidations(api) }}
-
-    </pre>
     <transition-group name="form">
       <v-row key="form_row">
         <v-col

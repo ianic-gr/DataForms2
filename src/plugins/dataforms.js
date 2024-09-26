@@ -7,5 +7,10 @@ export default {
       "DataForm",
       defineAsyncComponent(() => import("../components/form"))
     );
+
+    app.component(
+      "DataFormInput",
+      defineAsyncComponent(() => import("../components/subLayout/input"))
+    );
   },
 };

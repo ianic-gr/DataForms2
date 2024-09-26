@@ -30,7 +30,7 @@ const themes = ref({
   Fluid,
   Breeze,
   Card,
-})
+});
 const themeTitle = computed(() => {
   return props.row.theme !== "Fluid" && props.row?.title?.length;
 });
@@ -42,7 +42,9 @@ const rowInput = computed(() => {
       input: {
         title: props.row.title,
         theme: props.row.theme,
-        themeComp: props.row.theme ? themes.value[props.row.theme] : themes.value['Plain'],
+        themeComp: props.row.theme
+          ? themes.value[props.row.theme]
+          : themes.value["Plain"],
         set: props.row.input,
       },
     };
@@ -127,15 +129,15 @@ const theRowTitle = computed(() => {
           </component> -->
           <component :is="setRow.themeComp" :row="setRow">
             <Input
-                ref="dataFormInput"
-                :items="setRow.set"
-                :formId="id"
-                :loading="loading"
-                :theme="setRow.theme"
+              ref="dataFormInput"
+              :items="setRow.set"
+              :formId="id"
+              :loading="loading"
+              :theme="setRow.theme"
             >
               <template
-                  v-for="inputSlot in slots(setRow.set)"
-                  #[inputSlot]="{ item }"
+                v-for="inputSlot in slots(setRow.set)"
+                #[inputSlot]="{ item }"
               >
                 <slot :name="inputSlot" :item="item" />
               </template>
@@ -143,6 +145,12 @@ const theRowTitle = computed(() => {
           </component>
         </v-col>
       </v-row>
+    </v-col>
+    <v-col v-if="row.dynamic?.component" cols="12">
+      <component
+        :is="row.dynamic.component"
+        v-bind="{ ...props, ...row.dynamic }"
+      ></component>
     </v-col>
   </v-row>
 </template>
