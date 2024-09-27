@@ -107,26 +107,6 @@ const theRowTitle = computed(() => {
           :key="i"
           v-show="!setRow.hidden"
         >
-          <!-- <component
-            :is="setRow.theme || 'Plain'"
-            :row="setRow"
-            #default="{ theme }"
-          >
-            <Input
-              ref="dataFormInput"
-              :items="setRow.set"
-              :formId="id"
-              :theme="theme"
-              :loading="loading"
-            >
-              <template
-                v-for="inputSlot in slots(setRow.set)"
-                #[inputSlot]="{ item }"
-              >
-                <slot :name="inputSlot" :item="item" />
-              </template>
-            </Input>
-          </component> -->
           <component :is="setRow.themeComp" :row="setRow">
             <Input
               ref="dataFormInput"
@@ -144,13 +124,18 @@ const theRowTitle = computed(() => {
             </Input>
           </component>
         </v-col>
+        <v-col v-if="row.dynamic?.component" cols="12">
+          <component
+            :is="row.theme ? themes[row.theme] : themes['Plain']"
+            :row="row"
+          >
+            <component
+              :is="row.dynamic.component"
+              v-bind="{ ...props, ...row.dynamic }"
+            ></component>
+          </component>
+        </v-col>
       </v-row>
-    </v-col>
-    <v-col v-if="row.dynamic?.component" cols="12">
-      <component
-        :is="row.dynamic.component"
-        v-bind="{ ...props, ...row.dynamic }"
-      ></component>
     </v-col>
   </v-row>
 </template>

@@ -2,8 +2,6 @@ export function useOptionFieldType() {
   const optionLabel = (item) => {
     let label = item;
 
-    console.log(item);
-
     if (typeof item === "object" && item !== null && !Array.isArray(item)) {
       if ("text" in item) {
         label = item.text;

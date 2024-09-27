@@ -25,7 +25,7 @@ const types = {
   dateTimePicker,
   password,
   epic,
-  FileInput
+  FileInput,
 };
 
 const props = defineProps({
@@ -103,6 +103,29 @@ const tooltipAttributes = computed(() => {
 const isRequired = computed(() => {
   return props.input?.validation?.required;
 });
+
+const themeOptions = computed(() => {
+  let variant = "filled";
+  let density = "default";
+  let singleLine = false;
+  const color = "primary";
+
+  if (props.theme === "Fluid" || props.theme === "Breeze") {
+    variant = "outlined";
+  }
+
+  if (props.theme === "Fluid") {
+    density = "compact";
+    singleLine = true;
+  }
+
+  return {
+    variant,
+    density,
+    singleLine,
+    color,
+  };
+});
 </script>
 
 <template>
@@ -134,10 +157,7 @@ const isRequired = computed(() => {
           :formId="formId"
           :inputKey="inputKey"
           :options="{
-            dense: theme === 'Fluid',
-            solo: theme === 'Fluid',
-            flat: theme === 'Fluid',
-
+            ...themeOptions,
             ...input.options,
             label: inputLabel,
           }"

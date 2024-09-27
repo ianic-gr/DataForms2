@@ -24,7 +24,6 @@ export function useConditionals(formID) {
    * @var		Boolean	showOnConditions
    */
   const showOnConditions = (conditionals) => {
-    console.log(conditionals);
     if (!conditionals || !conditionals.length) {
       return true;
     }

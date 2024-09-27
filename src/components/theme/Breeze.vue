@@ -4,17 +4,6 @@
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  row: {
-    type: Object,
-    default: () => {},
-  },
-})
-
-const title = computed(() => props.row?.title)
-</script>
-
 <style lang="scss">
 .theme-breeze {
   label {
@@ -40,12 +29,15 @@ const title = computed(() => props.row?.title)
   }
 
   .v-input {
-    &:not(.error--text):not(.v-input--is-focused) {
-      fieldset {
+    .v-field:not(.v-field--error):not(.v-field--focused) {
+      .v-field__outline *,
+      .v-field__outline__notch:before,
+      .v-field__outline__notch:after {
         border-color: transparent !important;
       }
     }
-    fieldset {
+
+    .v-field {
       border-radius: 7px !important;
       background: #f2f1f6;
     }

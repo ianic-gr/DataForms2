@@ -45,20 +45,22 @@ export default {
   .v-input {
     margin-bottom: 1rem;
 
-    &__slot {
+    .v-field {
       border-radius: 0 !important;
       margin-bottom: 0 !important;
     }
 
-    &:not(.error--text) {
-      .v-text-field__details {
+    &:not(.v-input--error) {
+      .v-input__details {
         display: none !important;
       }
     }
 
-    &:not(:hover):not(.error--text):not(.v-input--is-focused) {
-      fieldset {
-        border-color: transparent;
+    &:not(:hover) .v-field:not(.v-field--error):not(.v-field--focused) {
+      .v-field__outline *,
+      .v-field__outline__notch:before,
+      .v-field__outline__notch:after {
+        border-color: transparent !important;
       }
       input {
         font-weight: bolder;
@@ -66,7 +68,7 @@ export default {
     }
   }
 
-  .v-text-field__details {
+  .v-input__details {
     background-color: rgba(191, 9, 0, 0.075);
     padding: 0.75rem !important;
     font-weight: bold;

@@ -1,7 +1,5 @@
 <template>
   <div class="theme-plain">
-    <slot/>
+    <slot />
   </div>
 </template>
-
-<script setup></script>
