@@ -54,7 +54,7 @@ const api = {
       input: [
         {
           deadline: {
-            type: "selects",
+            type: "numberInput",
             options: {
               label: "When do you need this project?",
               default: "normal_client",

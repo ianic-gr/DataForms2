@@ -1,5 +1,6 @@
 <script setup>
 import { useConditionals } from "@/composables/useConditionals.js";
+import { normalizeString } from "@/utils/normalizeString";
 
 // Components
 import textField from "@/components/types/TextField";
@@ -8,12 +9,12 @@ import radioButtons from "@/components/types/RadioButtons";
 import selects from "@/components/types/Selects";
 // import selectsAutocomplete from "@/components/types/SelectsAutocomplete";
 import checkBoxes from "@/components/types/CheckBoxes";
-// import fileInput from "@/components/types/FileInput";
+import numberInput from "@/components/types/NumberInput";
 import datepicker from "@/components/types/Datepicker";
 import dateTimePicker from "@/components/types/DateTimePicker";
 import password from "@/components/types/Password";
 import epic from "@/components/types/Epic";
-import FileInput from "@/components/types/FileInput.vue";
+import fileInput from "@/components/types/FileInput.vue";
 
 const types = {
   textField,
@@ -21,11 +22,12 @@ const types = {
   radioButtons,
   selects,
   checkBoxes,
+  numberInput,
   datepicker,
   dateTimePicker,
   password,
   epic,
-  FileInput,
+  fileInput,
 };
 
 const props = defineProps({
@@ -126,6 +128,16 @@ const themeOptions = computed(() => {
     color,
   };
 });
+
+const inputTypeComponent = computed(() => {
+  const selectedInputType =
+    Object.entries(types).find(
+      ([key]) =>
+        normalizeString(key) === normalizeString(props.input?.type ?? "")
+    )?.[1] ?? textField;
+
+  return selectedInputType;
+});
 </script>
 
 <template>
@@ -152,7 +164,7 @@ const themeOptions = computed(() => {
           <span v-if="isRequired" class="red--text">*</span>
         </label>
         <component
-          :is="types[input.type] || textField"
+          :is="inputTypeComponent"
           :input="input"
           :formId="formId"
           :inputKey="inputKey"

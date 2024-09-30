@@ -259,8 +259,8 @@ defineExpose({
       <v-col class="text-end">
         <v-btn
           type="submit"
-          v-bind="{ ...$attrs, ...(api.submit.options || {}) }"
           :loading="loading"
+          v-bind="{ ...$attrs, ...(api.submit.options || {}) }"
           :color="api.submit.color"
         >
           <v-icon
