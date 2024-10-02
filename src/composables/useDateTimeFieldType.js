@@ -57,23 +57,32 @@ export function useDateTimeFieldType(props) {
 
   const formattedDate = computed(() => {
     const format = props.options?.format ?? defaultDateFormat;
+    const returnFormat =
+      props.options?.returnFormat?.split(" ")[0] ?? defaultDateFormat;
+
     let returnValue;
 
     if (isMultiple.value && field.value.length) {
-      returnValue = field.value.map((val) => moment(val).format(format));
+      returnValue = field.value.map((val) =>
+        moment(val, returnFormat).format(format)
+      );
 
       if (field.value.length > 1) {
         returnValue = `${field.value.length} Selected`;
 
         if (props.options.datepicker.multiple === "range") {
           returnValue = [
-            moment(field.value[0]).format(format),
-            moment(field.value[field.value.length - 1]).format(format),
+            moment(field.value[0], returnFormat).format(format),
+            moment(field.value[field.value.length - 1], returnFormat).format(
+              format
+            ),
           ].join(" ~ ");
         }
       }
     } else {
-      returnValue = field.value ? moment(field.value).format(format) : "";
+      returnValue = field.value
+        ? moment(field.value, returnFormat).format(format)
+        : "";
     }
 
     return returnValue;
