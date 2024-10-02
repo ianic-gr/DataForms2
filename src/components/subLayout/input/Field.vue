@@ -8,6 +8,7 @@ import textArea from "@/components/types/TextArea";
 import radioButtons from "@/components/types/RadioButtons";
 import selects from "@/components/types/Selects";
 // import selectsAutocomplete from "@/components/types/SelectsAutocomplete";
+import switchButton from "@/components/types/Switch";
 import checkBoxes from "@/components/types/CheckBoxes";
 import numberInput from "@/components/types/NumberInput";
 import datepicker from "@/components/types/Datepicker";
@@ -21,6 +22,7 @@ const types = {
   textArea,
   radioButtons,
   selects,
+  switchButton,
   checkBoxes,
   numberInput,
   datepicker,

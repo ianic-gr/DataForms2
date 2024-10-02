@@ -1,6 +1,24 @@
 {
-  "name": "dataforms2",
-  "version": "0.0.0",
+  "name": "@ianicdev/dataforms2",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "exports": {
+    ".": "./dist/datatables.js",
+    "./styles.css": "./dist/style.css",
+    "./locale": "./lib/locale/index.js"
+  },
+  "browser": {
+    "./styles.css": "./dist/style.css"
+  },
+  "license": "MIT",
+  "files": [
+    "dist/",
+    "lib/"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "rimraf dist && vue-tsc --noEmit && vite build",

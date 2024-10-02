@@ -4,12 +4,22 @@ const result = ref(null);
 const api = {
   rows: [
     {
+      title: "Available Payment Methods",
       input: [
+        {
+          isThisOk: {
+            type: "switchButton",
+            options: {
+              label: "Is this OK?",
+              indeterminate: true,
+              inset: true,
+            },
+          },
+        },
         {
           payment: {
             type: "radioButtons",
             options: {
-              title: "Available Payment Methods",
               label: "Pay us with: ",
               list: [
                 {

@@ -30,6 +30,7 @@ declare module 'vue' {
     Selects: typeof import('./components/types/Selects.vue')['default']
     Single: typeof import('./components/fileInput/Single.vue')['default']
     Slider: typeof import('./components/fileInput/Slider.vue')['default']
+    Switch: typeof import('./components/types/Switch.vue')['default']
     Tabs: typeof import('./components/subLayout/Tabs.vue')['default']
     TextArea: typeof import('./components/types/TextArea.vue')['default']
     TextField: typeof import('./components/types/TextField.vue')['default']

@@ -34,6 +34,5 @@ declare module 'vue-router/auto-routes' {
     '/examples/tabs': RouteRecordInfo<'/examples/tabs', '/examples/tabs', Record<never, never>, Record<never, never>>,
     '/examples/themes/Breeze': RouteRecordInfo<'/examples/themes/Breeze', '/examples/themes/Breeze', Record<never, never>, Record<never, never>>,
     '/examples/themes/Fluid': RouteRecordInfo<'/examples/themes/Fluid', '/examples/themes/Fluid', Record<never, never>, Record<never, never>>,
-    '/test': RouteRecordInfo<'/test', '/test', Record<never, never>, Record<never, never>>,
   }
 }
