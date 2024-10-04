@@ -1,7 +1,11 @@
 {
   "name": "@ianicdev/dataforms2",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianic-gr/DataForms2"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
