@@ -51,7 +51,7 @@ const props = defineProps({
   },
   theme: {
     type: String,
-    default: "",
+    required: true,
   },
   loading: {
     type: Boolean,
@@ -65,8 +65,16 @@ const hasLabelTitle = computed(() => {
   return props.theme === "Fluid" && label.value;
 });
 
+const isRequired = computed(() => {
+  const validation = props.input?.validation;
+
+  return typeof validation === "string" && validation?.includes("required");
+});
+
 const label = computed(() => {
-  return props.input?.options?.label;
+  const decorator = props.theme === "Plain" && isRequired.value ? " *" : "";
+
+  return `${props.input?.options?.label}${decorator}`;
 });
 
 const inputLabel = computed(() => {
@@ -102,10 +110,6 @@ const tooltipAttributes = computed(() => {
   tooltipAttributes[position] = position;
 
   return tooltipAttributes;
-});
-
-const isRequired = computed(() => {
-  return props.input?.validation?.required;
 });
 
 const themeOptions = computed(() => {
@@ -157,13 +161,13 @@ const inputTypeComponent = computed(() => {
     </v-col>
     <v-col class="d-flex align-start input-field">
       <div v-if="theme === 'Fluid'" style="min-width: 10px">
-        <span v-if="isRequired" class="red--text">*</span>
+        <span v-if="isRequired" class="text-error">*</span>
       </div>
 
       <div class="flex-grow-1" style="max-width: 100%">
         <label v-if="theme === 'Breeze'" class="text-uppercase">
           {{ label }}
-          <span v-if="isRequired" class="red--text">*</span>
+          <span v-if="isRequired" class="text-error">*</span>
         </label>
         <component
           :is="inputTypeComponent"

@@ -61,7 +61,6 @@ const saveDate = () => {
         v-bind="{ ...$attrs, ...activatorProps, ...options }"
         @click="events?.onClick && events.onClick()"
         readonly
-        outlined
       />
     </template>
     <template v-slot:default>

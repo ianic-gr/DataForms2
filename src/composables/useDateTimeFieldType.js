@@ -62,7 +62,7 @@ export function useDateTimeFieldType(props) {
 
     let returnValue;
 
-    if (isMultiple.value && field.value.length) {
+    if (isMultiple.value && field.value && field.value.length) {
       returnValue = field.value.map((val) =>
         moment(val, returnFormat).format(format)
       );

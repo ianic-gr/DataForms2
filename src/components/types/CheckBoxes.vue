@@ -1,6 +1,7 @@
 <script setup>
 import { useFieldType } from "@/composables/useFieldType";
 import { useOptionFieldType } from "@/composables/useOptionFieldType";
+import { useField } from "vee-validate";
 
 const props = defineProps({
   input: {
@@ -35,8 +36,14 @@ const props = defineProps({
   },
 });
 
-const { field } = useFieldType(props);
+const { field: fieldValue } = useFieldType(props);
+const field = useField(props.inputKey);
 const { optionLabel, optionValue } = useOptionFieldType();
+
+watch(fieldValue, (v) => {
+  console.log(v);
+  field.value.value = v;
+});
 </script>
 
 <template>
@@ -45,7 +52,7 @@ const { optionLabel, optionValue } = useOptionFieldType();
     <slot name="append"></slot>
   </p>
   <v-checkbox
-    v-model="field"
+    v-model="fieldValue"
     v-bind="{
       ...$attrs,
       ...options,
@@ -55,5 +62,6 @@ const { optionLabel, optionValue } = useOptionFieldType();
     :key="i"
     :label="optionLabel(checkb)"
     :value="optionValue(checkb)"
+    :error-messages="field.errorMessage.value"
   />
 </template>

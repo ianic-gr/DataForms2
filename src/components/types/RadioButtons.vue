@@ -1,6 +1,7 @@
 <script setup>
 import { useFieldType } from "@/composables/useFieldType";
 import { useOptionFieldType } from "@/composables/useOptionFieldType";
+import { useField } from "vee-validate";
 
 const props = defineProps({
   input: {
@@ -35,12 +36,21 @@ const props = defineProps({
   },
 });
 
-const { field } = useFieldType(props);
+const { field: fieldValue } = useFieldType(props);
+const field = useField(props.inputKey);
 const { optionLabel, optionValue } = useOptionFieldType();
+
+watch(fieldValue, (v) => {
+  field.value.value = v;
+});
 </script>
 
 <template>
-  <v-radio-group v-model="field" v-bind="{ ...$attrs, ...options }">
+  <v-radio-group
+    v-model="fieldValue"
+    v-bind="{ ...$attrs, ...options }"
+    :error-messages="field.errorMessage.value"
+  >
     <v-radio
       v-for="(radio, i) in options.list || options.items"
       :key="i"

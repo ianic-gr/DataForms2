@@ -1,5 +1,6 @@
 <script setup>
 import { useFieldType } from "@/composables/useFieldType";
+import { useField } from "vee-validate";
 
 const props = defineProps({
   input: {
@@ -34,8 +35,13 @@ const props = defineProps({
   },
 });
 
-const { field } = useFieldType(props);
+const { field: fieldValue } = useFieldType(props);
+const field = useField(props.inputKey);
 
+watch(fieldValue, (v) => {
+  console.log(v);
+  field.value.value = v;
+});
 const showPassword = ref(false);
 
 const fieldType = computed(() => {
@@ -49,16 +55,15 @@ const fieldIcon = computed(() => {
 
 <template>
   <v-text-field
+    v-model="fieldValue"
     :append-icon="fieldIcon"
     :type="fieldType"
     @click:append="showPassword = !showPassword"
     @click="
       () => events && events.hasOwnProperty('onClick') && events.onClick()
     "
-    v-model="field"
-    outlined
     v-bind="{ ...$attrs, ...options }"
-    :error-messages="errors"
+    :error-messages="field.errorMessage.value"
   >
     <template v-slot:append><slot name="append"></slot></template>
   </v-text-field>

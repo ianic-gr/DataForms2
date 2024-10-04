@@ -11,6 +11,7 @@ const api = {
             options: {
               label: "Password",
             },
+            validation: "min:6|required|max:18",
           },
         },
       ],

@@ -1,27 +1,7 @@
-<template>
-  <div class="type-fileinput">
-    <v-file-input
-        v-bind="{ ...$attrs, ...options }"
-        v-model="field"
-        :loading="props.loadingIndicator"
-        v-on="props.events"
-        outlined
-        @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
-    >
-      <template v-slot:append><slot name="append"></slot></template>
-    </v-file-input>
-    <Slider
-      v-if="Array.isArray(props.options.preview)"
-      :options="props.options"
-      @deleteItem="$useInputEvents.onDelete"
-    />
-    <Single v-else :options="props.options" @deleteItem="$useInputEvents.onDelete"/>
-  </div>
-</template>
-
 <script setup>
-import {useFieldType} from "@/composables/useFieldType";
-import {useInputEvents} from "@/composables/useInputEvents";
+import { useFieldType } from "@/composables/useFieldType";
+import { useInputEvents } from "@/composables/useInputEvents";
+import { useField } from "vee-validate";
 
 const props = defineProps({
   input: {
@@ -52,8 +32,41 @@ const props = defineProps({
     type: Object,
     default: () => {},
   },
-})
+});
 
-const { field } = useFieldType(props);
-const $useInputEvents = useInputEvents(props)
+const { field: fieldValue } = useFieldType(props);
+const field = useField(props.inputKey);
+const $useInputEvents = useInputEvents(props);
+
+watch(fieldValue, (v) => {
+  console.log(v);
+  field.value.value = v;
+});
 </script>
+
+<template>
+  <div class="type-fileinput">
+    <v-file-input
+      v-model="fieldValue"
+      v-bind="{ ...$attrs, ...options }"
+      :loading="props.loadingIndicator"
+      v-on="props.events"
+      @click="
+        () => events && events.hasOwnProperty('onClick') && events.onClick()
+      "
+      :error-messages="field.errorMessage.value"
+    >
+      <template v-slot:append><slot name="append"></slot></template>
+    </v-file-input>
+    <Slider
+      v-if="Array.isArray(props.options.preview)"
+      :options="props.options"
+      @deleteItem="$useInputEvents.onDelete"
+    />
+    <Single
+      v-else
+      :options="props.options"
+      @deleteItem="$useInputEvents.onDelete"
+    />
+  </div>
+</template>

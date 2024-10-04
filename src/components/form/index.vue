@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
-import { storeToRefs } from "pinia";
 import { useDataformsStore } from "@/stores/dataFormsStore";
 import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 import { defineRule, useForm } from "vee-validate";
@@ -30,7 +29,6 @@ const emit = defineEmits([
   "dataFormSubmitFailed",
 ]);
 
-const { forms } = storeToRefs(dataformsStore);
 const vFormRef = ref(null);
 const loading = ref(false);
 const submitEvent = new Event("dataFormSubmit");
@@ -158,30 +156,6 @@ const scrollToError = () => {
   }
 };
 
-onMounted(() => {
-  addForm({
-    form_id: props.id,
-    locale: props.locale,
-    locale_strings: props.localeStrings,
-  });
-
-  updateBinder({
-    formId: props.id,
-    binder: props.api.binder ?? {},
-  });
-
-  watch(
-    () => props.api,
-    (newData) => leaveAlertWhenDataChanges(newData),
-    { deep: true }
-  );
-
-  watch(
-    () => submitOK.value,
-    () => leaveAlertWhenDataChanges(props.api)
-  );
-});
-
 const { handleSubmit } = useForm({
   validationSchema: getValidations(props.api),
 });
@@ -214,6 +188,30 @@ const submitErrors = (errors) => {
   emit("dataFormSubmitFailed");
   scrollToError();
 };
+
+onMounted(() => {
+  addForm({
+    form_id: props.id,
+    locale: props.locale,
+    locale_strings: props.localeStrings,
+  });
+
+  updateBinder({
+    formId: props.id,
+    binder: props.api.binder ?? {},
+  });
+
+  watch(
+    () => props.api,
+    (newData) => leaveAlertWhenDataChanges(newData),
+    { deep: true }
+  );
+
+  watch(
+    () => submitOK.value,
+    () => leaveAlertWhenDataChanges(props.api)
+  );
+});
 
 provide("dataformsStore", dataformsStore);
 

@@ -2,38 +2,22 @@
 const api = {
   rows: [
     {
-      theme: 'Breeze',
-      title: 'Contact Form',
+      theme: "Breeze",
+      title: "Contact Form",
       input: [
         {
           name: {
             options: {
               label: "First name",
             },
-            validation: {
-              required: true,
-            },
+            validation: "required",
           },
           email: {
             options: {
               default: "support@ianic.gr",
               label: "Email",
             },
-            validation: {
-              required: true,
-              min: 4,
-              max: 24,
-              type: "email",
-              _callback: () => {
-                return {
-                  validate: (value) => {
-                    console.log(value);
-                    return true;
-                  },
-                  message: "{_field_} is not valid(?)",
-                };
-              },
-            },
+            validation: "required|min:4|max:24|email",
             tooltip: {
               position: "bottom",
               text: "lorem ipsun",
@@ -54,9 +38,7 @@ const api = {
             options: {
               label: "Phone",
             },
-            validation: {
-              required: true,
-            },
+            validation: "required",
           },
           _responsive: {
             sm: 12,

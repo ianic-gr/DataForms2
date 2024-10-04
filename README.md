@@ -1,81 +1,182 @@
-# Vuetify (Default)
+# DataForms2
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+DataForms2 is a Vue 3 plugin designed to simplify the creation of forms using Vuetify 3 components. This plugin provides a flexible way to define form fields, validation rules, and submission actions, making it easy to build responsive and dynamic forms in your Vue applications.
 
-## ❗️ Important Links
+## Features
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+- **Responsive Layout**: Create forms that adapt to different screen sizes effortlessly.
+- **Dynamic Input Fields**: Easily define input fields with various types, including text, email, select, and text area.
+- **Validation Support**: Built-in validation rules for common scenarios (e.g., required fields, email format).
+- **Icon Support**: Customize inputs with icons for improved user experience.
+- **Submit Handling**: Define submission logic with callback functions to handle form data.
 
-## 💿 Install
+## Installation
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
-
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
-
-After completing the installation, your environment is ready for Vuetify development.
-
-## ✨ Features
-
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- 💻 **Enhanced Development Experience**: Benefit from TypeScript's static type checking and the ESLint plugin suite for Vue, ensuring code quality and consistency. [TypeScript](https://www.typescriptlang.org/) | [ESLint Plugin Vue](https://eslint.vuejs.org/)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
-- 🛠️ **Strongly-Typed Vue**: Use vue-tsc for type-checking your Vue components, and enjoy a robust development experience. [vue-tsc](https://github.com/johnsoncodehk/volar/tree/master/packages/vue-tsc)
-
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
-
-## 💡 Usage
-
-This section covers how to start the development server and build your project for production.
-
-### Starting the Development Server
-
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
+To install the DataForms2 plugin, run the following command:
 
 ```bash
-yarn dev
+npm install @ianicdev/dataforms2
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+## Nuxt.js Integration
 
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
+For Nuxt.js applications, you need to create a plugin file to register DataForms2. Follow these steps:
 
-### Building for Production
+1. Create a file named `dataforms.js` in your `plugins` directory.
+2. Add the following code to the file:
 
-To build your project for production, use:
+```js
+import DataForms from "@ianicdev/dataforms2";
+import "@ianicdev/dataforms2/styles.css";
 
-```bash
-yarn build
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.vueApp.use(DataForms);
+});
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+3. Ensure your Nuxt app recognizes the plugin by adding it to your `nuxt.config.js`:
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
+```js
+export default {
+  plugins: ["~/plugins/dataforms.js"],
+};
+```
 
-## 💪 Support Vuetify Development
+## Usage
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
+### Basic Example
 
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
+Here’s a simple example of how to use the `DataForm` component with a contact form:
 
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
+```js
+<script setup>
+const api = {
+  rows: [
+    {
+      input: [
+        {
+          name: {
+            options: {
+              label: "First name",
+              prependIcon: "mdi-account",
+              "persistent-hint": true,
+              clearable: true,
+            },
+            validation: "required",
+          },
+          email: {
+            options: {
+              default: "support@ianic.gr",
+              label: "Email",
+              prependIcon: "mdi-mail",
+            },
+            validation: "required|min:4|max:24|email",
+            tooltip: {
+              position: "bottom",
+              text: "lorem ipsun",
+            },
+          },
+          _responsive: {
+            sm: 12,
+            md: 6,
+          },
+        },
+        {
+          surname: {
+            options: {
+              label: "Last name",
+              prependIcon: "mdi-account",
+            },
+          },
+          phone: {
+            options: {
+              label: "Phone",
+              prependIcon: "mdi-phone",
+            },
+            validation: "required",
+          },
+          _responsive: {
+            sm: 12,
+            md: 6,
+          },
+        },
+      ],
+    },
+    {
+      input: [
+        {
+          deadline: {
+            type: "selects",
+            options: {
+              label: "When do you need this project?",
+              items: [
+                {
+                  text: "In 1 - 2 Months",
+                  value: "normal_client",
+                },
+                {
+                  text: "Now!",
+                  value: "now",
+                },
+                {
+                  text: "Yesterday!!!",
+                  value: "yesterday",
+                },
+              ],
+            },
+            validation: "required",
+          },
+        },
+      ],
+    },
+    {
+      input: [
+        {
+          comments: {
+            type: "textArea",
+            options: {
+              label: "Tell us your thoughts",
+            },
+            validation: "required",
+          },
+        },
+      ],
+    },
+  ],
+  submit: {
+    title: "Message",
+    color: "primary",
+    options: {
+      rounded: true,
+    },
+    icon: {
+      symbol: "mdi-heart",
+      options: {
+        small: true,
+        color: "red",
+        class: "mr-2",
+      },
+    },
+    click(data) {
+      console.log("data: ", data);
+    },
+  },
+};
+</script>
 
-Copyright (c) 2016-present Vuetify, LLC
+<template>
+  <DataForm id="contact-form" :api="api" />
+</template>
+```
+
+## API Structure
+
+The `api` object defines the structure of your form, including:
+
+- **rows**: An array of form rows, each containing an array of input fields.
+- **input**: An object representing each form field with options and validation rules.
+- **submit**: An object defining the submission button's properties, such as title, color, options, icon, and a click handler.
+
+## License
+
+This project is licensed under the MIT License.

@@ -7,7 +7,7 @@ export function useFieldType(props) {
     useDataformsStore();
   const { onChange } = useInputEvents(props);
 
-  const field = ref("");
+  const field = ref(null);
 
   const getCurrentFormData = computed(() => {
     return getCurrentForm(props.formId);
@@ -16,7 +16,7 @@ export function useFieldType(props) {
   onMounted(async () => {
     await nextTick();
 
-    field.value = props.options?.default ?? "";
+    field.value = props.options?.default ?? null;
 
     addField({
       formId: props.formId,

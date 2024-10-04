@@ -12,7 +12,7 @@ const props = defineProps({
   },
   theme: {
     type: String,
-    default: "",
+    default: "Plain",
   },
   loading: {
     type: Boolean,
