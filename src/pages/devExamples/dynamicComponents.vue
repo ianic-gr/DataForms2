@@ -60,5 +60,5 @@ const api = {
 </script>
 
 <template>
-  <DataForm id="contact-form" :api="api" />
+  <DataForm id="dynamic-components-form" :api="api" />
 </template>

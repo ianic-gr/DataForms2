@@ -1,6 +1,6 @@
 <script setup>
 const result = ref(null);
-const api = {
+const api = ref({
   rows: [
     { slots: ["Binding"] },
     {
@@ -21,7 +21,7 @@ const api = {
     name: {
       value: "",
       error: "super fail!",
-      invalid: true,
+      invalid: false,
     },
     surname: null,
     phone: null,
@@ -29,16 +29,23 @@ const api = {
   submit: {
     title: "Submit",
     color: "primary",
+    beforeSubmit: (formData) => {
+      api.value.binder.name.invalid = false;
+
+      if (!formData.name.value.length) {
+        api.value.binder.name.invalid = true;
+      }
+    },
     click: (formData) => {
       console.log("FormData: ", formData);
       result.value = JSON.parse(JSON.stringify(formData));
     },
   },
-};
+});
 </script>
 
 <template>
-  <DataForm id="contact-form" :api="api">
+  <DataForm id="slots-form" :api="api">
     <template v-slot:Binding>
       <h2>Binded form</h2>
       <v-row>
@@ -53,14 +60,17 @@ const api = {
             label="Name"
             outlined
             required
+            :error-messages="
+              api.binder.name.invalid ? api.binder.name.error : ''
+            "
           />
         </v-col>
         <v-col
           ><v-text-field v-model="api.binder.surname" label="Surname" outlined
         /></v-col>
         <v-col>
-          <v-text-field v-model="api.binder.phone" label="Phone" outlined
-        /></v-col>
+          <v-text-field v-model="api.binder.phone" label="Phone" outlined />
+        </v-col>
       </v-row>
     </template>
   </DataForm>

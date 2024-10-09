@@ -25,12 +25,13 @@ const props = defineProps({
 const { slots, subLayoutSlots } = useSlotsPrepare();
 const { showOnConditions } = useConditionals(props.id);
 
-const themes = ref({
+const themes = {
   Plain,
   Fluid,
   Breeze,
   Card,
-});
+};
+
 const themeTitle = computed(() => {
   return props.row.theme !== "Fluid" && props.row?.title?.length;
 });
@@ -42,9 +43,7 @@ const rowInput = computed(() => {
       input: {
         title: props.row.title,
         theme: props.row.theme,
-        themeComp: props.row.theme
-          ? themes.value[props.row.theme]
-          : themes.value["Plain"],
+        themeComp: props.row.theme ? themes[props.row.theme] : themes["Plain"],
         set: props.row.input,
       },
     };

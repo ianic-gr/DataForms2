@@ -87,6 +87,12 @@ const submit = () => {
 
   makeFormInvalid(props.id);
 
+  const theForm = getCurrentForm(props.id);
+
+  if ("beforeSubmit" in props.api.submit) {
+    props.api.submit.beforeSubmit(theForm.fields);
+  }
+
   const binder = validateBinder();
 
   setFormErrors({
@@ -103,6 +109,20 @@ const submit = () => {
   )();
 };
 
+const addBinderDataToFields = () => {
+  if (!props.api.binder) return true;
+
+  Object.keys(props.api.binder).forEach((item) => {
+    let data = props.api.binder[item];
+
+    addField({
+      formId: props.id,
+      fieldName: item,
+      fieldValue: data,
+    });
+  });
+};
+
 const validateBinder = () => {
   const binderData = {};
   let validated = true;
@@ -117,9 +137,6 @@ const validateBinder = () => {
         console.error("Binder value is not valid: ", item);
         validated = false;
 
-        // this.$refs.observer.setErrors({
-        //   name: data.error,
-        // });
         return;
       }
 
@@ -127,11 +144,6 @@ const validateBinder = () => {
     }
 
     binderData[item] = data;
-    addField({
-      formId: props.id,
-      fieldName: item,
-      fieldValue: data,
-    });
   });
 
   return validated ? binderData : false;
@@ -201,17 +213,19 @@ onMounted(() => {
     binder: props.api.binder ?? {},
   });
 
-  watch(
-    () => props.api,
-    (newData) => leaveAlertWhenDataChanges(newData),
-    { deep: true }
-  );
-
-  watch(
-    () => submitOK.value,
-    () => leaveAlertWhenDataChanges(props.api)
-  );
+  addBinderDataToFields();
 });
+
+watch(
+  () => props.api,
+  (newData) => leaveAlertWhenDataChanges(newData),
+  { deep: true }
+);
+
+watch(
+  () => submitOK.value,
+  () => leaveAlertWhenDataChanges(props.api)
+);
 
 provide("dataformsStore", dataformsStore);
 

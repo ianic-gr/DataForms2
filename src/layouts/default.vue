@@ -4,6 +4,7 @@ import { useSideMenuStore } from "@/stores/sideMenuStore";
 
 const sideMenuStore = useSideMenuStore();
 const { menu } = storeToRefs(sideMenuStore);
+const inProduction = ref(false);
 
 const links = [
   { title: "Docs", to: "/" },
@@ -12,70 +13,73 @@ const links = [
 ];
 
 onMounted(() => {
+  inProduction.value = import.meta.env.PROD;
+  const exampleFolder = inProduction.value ? "examples" : "devExamples";
+
   menu.value = [
     {
       title: "Types",
     },
     {
       title: "Checks & radios",
-      to: "/examples/checks-radios",
+      to: `/${exampleFolder}/checks-radios`,
     },
     {
       title: "Datepicker",
-      to: "/examples/datepicker",
+      to: `/${exampleFolder}/datepicker`,
     },
     {
       title: "Password",
-      to: "/examples/password",
+      to: `/${exampleFolder}/password`,
     },
     {
       title: "FileInput",
-      to: "/examples/fileInput",
+      to: `/${exampleFolder}/fileInput`,
     },
     {
       title: "Conditionals",
-      to: "/examples/conditionals",
+      to: `/${exampleFolder}/conditionals`,
     },
     {
       title: "Epic",
-      to: "/examples/epic",
+      to: `/${exampleFolder}/epic`,
     },
     {
       title: "Layout",
     },
     {
       title: "Accordion",
-      to: "/examples/accordion",
+      to: `/${exampleFolder}/accordion`,
     },
     {
       title: "Tabs ",
-      to: "/examples/tabs",
+      to: `/${exampleFolder}/tabs`,
     },
     {
       title: "Theme",
     },
     {
       title: "Fluid",
-      to: "/examples/themes/fluid",
+      to: `/${exampleFolder}/themes/fluid`,
     },
     {
       title: "Breeze",
-      to: "/examples/themes/breeze",
+      to: `/${exampleFolder}/themes/breeze`,
     },
     {
       title: "Use Cases",
     },
     {
       title: "Contact Form",
-      to: "/examples/contactForm",
+      to: `/${exampleFolder}/contactForm`,
     },
     {
       title: "Slots",
-      to: "/examples/slots",
+      to: `/${exampleFolder}/slots`,
     },
     {
       title: "Dynamic Components",
-      to: "/examples/dynamicComponents",
+      to: `/${exampleFolder}/dynamicComponents`,
     },
   ];
 });
