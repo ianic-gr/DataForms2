@@ -14,6 +14,10 @@ import { fileURLToPath, URL } from "node:url";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+  // Determine the base URL for GitHub Pages or local development
+  const isProduction = mode === "production";
+  const base = isProduction ? "/DataForms2/" : "/"; // Replace with your repository name
+
   // Check for build type
   const isPageBuild = process.env.BUILD_TYPE === "pages";
 
@@ -50,6 +54,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
+    base, // Set base path for deployment
     plugins: [
       VueRouter({
         dts: "src/typed-router.d.ts",
