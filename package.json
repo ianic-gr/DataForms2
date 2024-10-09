@@ -1,7 +1,8 @@
 {
   "name": "@ianicdev/dataforms2",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "commonjs",
+  "homepage": "https://ianic-gr.github.io/DataForms2/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ianic-gr/DataForms2"
@@ -26,7 +27,7 @@
   "scripts": {
     "dev": "vite",
     "build": "rimraf dist && vue-tsc --noEmit && vite build",
-    "build:pages": "cross-env BUILD_TYPE=pages vite build",
+    "build:pages": "cross-env BUILD_TYPE=pages vite build && touch ./dist/.nojekyll",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore",
     "deploy": "gh-pages -d dist"
