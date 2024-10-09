@@ -1,90 +1,9 @@
-<script setup>
-const api = {
-  rows: [
-    {
-      accordion: {
-        options: {},
-        items: [
-          {
-            title: "Personal Info",
-            input: [
-              {
-                name: {
-                  options: {
-                    label: "First name",
-                    hint: "Είσαι ο;",
-                    "persistent-hint": true,
-                  },
-                  validation: "required",
-                },
-                surname: {
-                  options: {
-                    label: "Last name",
-                    hint: "Είσαι ο;",
-                    "persistent-hint": true,
-                  },
-                  validation: "required",
-                },
-              },
-            ],
-          },
-          {
-            title: "Budget",
-            input: [
-              {
-                target: {
-                  options: {
-                    label: "Target",
-                    "persistent-hint": true,
-                  },
-                  validation: "required",
-                },
-                expenses: {
-                  options: {
-                    label: "Expenses",
-                    "persistent-hint": true,
-                  },
-                  validation: "required",
-                },
-              },
-            ],
-          },
-          {
-            title: "Budgetx",
-            input: [
-              {
-                targetx: {
-                  options: {
-                    label: "Target",
-                    "persistent-hint": true,
-                  },
-                  validation: "required",
-                },
-                expensesx: {
-                  options: {
-                    label: "Expenses",
-                    "persistent-hint": true,
-                  },
-                  validation: "required",
-                },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-  submit: {
-    title: "Send Message",
-    color: "primary",
-    click: (formData) => {
-      console.log("FormData: ", formData);
-      alert("Accordion ok!");
-    },
-  },
-};
-</script>
-
 <template>
-  <DataForm id="accordion_example" :api="api" />
+  <h1 class="mb-3">Accordion</h1>
+  <iframe
+    class="w-100 rounded-lg"
+    style="height: 70vh"
+    src="https://stackblitz.com/edit/dataforms2-accordion?embed=1&file=app.vue&hideExplorer=1&hideNavigation=1"
+    frameborder="0"
+  ></iframe>
 </template>
