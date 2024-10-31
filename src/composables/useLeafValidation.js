@@ -7,36 +7,38 @@ export function useLeafValidation(props) {
   const leaf = ref(0);
 
   const handleLeafError = async () => {
-    let errorLeaf = null;
+    let errorLeaves = [];
 
     if (!isFormValid(props.id)) {
       // Bigger leaf number to force retoggle.
       leaf.value = 9999;
 
-      // Checks if set of items exists in observer error to assign the correct leaf.
-      props.items.filter((item, key) => {
+      props.items.forEach((item, key) => {
         const fields = getCurrentForm(props.id).errors;
 
-        const fieldsErrors = Object.keys(item.input?.[0] ?? {}).filter(
-          (itemKeys) => {
-            return (
-              typeof fields[itemKeys] !== "undefined" &&
-              fields[itemKeys].length > 0
-            );
+        // Input fields and dynamic component input fields
+        [...(item?.input ?? []), ...(item.dynamic?.fields ?? [])]?.forEach(
+          (element) => {
+            const fieldErrors = Object.keys(element).filter((inputKey) => {
+              return fields[inputKey] && fields[inputKey].length > 0;
+            });
+
+            // If there are errors for the current item, add the key to errorLeaves
+            if (fieldErrors.length > 0) {
+              errorLeaves.push(key);
+            }
           }
         );
-
-        if (errorLeaf === null) {
-          errorLeaf = fieldsErrors.length ? key : null;
-        }
       });
 
       await nextTick();
 
-      if (errorLeaf !== null) {
-        leaf.value = errorLeaf;
+      // If we found any errors, set the leaf to the first error's index
+      if (errorLeaves.length > 0) {
+        leaf.value = errorLeaves[0];
       }
-      errorLeaf = null;
+
+      errorLeaves = [];
     }
   };
 

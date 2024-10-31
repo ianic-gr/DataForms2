@@ -11,7 +11,7 @@ const props = defineProps({
     type: Object,
     default: () => {},
   },
-  formId: {
+  id: {
     type: String,
     required: true,
   },
@@ -30,7 +30,7 @@ onMounted(() => {
     <v-expansion-panel v-for="(item, i) in items" :key="i">
       <v-expansion-panel-title> {{ item.title }} </v-expansion-panel-title>
       <v-expansion-panel-text eager>
-        <Input :items="item.input" :formId="formId">
+        <Input :items="item.input" :formId="id">
           <template
             v-for="inputSlot in slots(item.input)"
             #[inputSlot]="{ item }"

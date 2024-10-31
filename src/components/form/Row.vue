@@ -82,7 +82,7 @@ const theRowTitle = computed(() => {
     <slot name="rowSlot" />
     <v-col cols="12" v-if="row.accordion">
       <Accordion
-        :formId="id"
+        :id="id"
         :items="row.accordion.items"
         :options="row.accordion.options"
       />
