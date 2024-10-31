@@ -39,7 +39,6 @@ const field = useField(props.inputKey);
 const $useInputEvents = useInputEvents(props);
 
 watch(fieldValue, (v) => {
-  console.log(v);
   field.value.value = v;
 });
 </script>

@@ -9,20 +9,22 @@ export function useLeafValidation(props) {
   const handleLeafError = async () => {
     let errorLeaf = null;
 
-    if (!isFormValid(props.formId)) {
+    if (!isFormValid(props.id)) {
       // Bigger leaf number to force retoggle.
       leaf.value = 9999;
 
-      // Checks if set of items exists in objerver error to assign the correct leaf.
+      // Checks if set of items exists in observer error to assign the correct leaf.
       props.items.filter((item, key) => {
-        const fields = getCurrentForm(props.formId).errors;
+        const fields = getCurrentForm(props.id).errors;
 
-        const fieldsErrors = Object.keys(item.input[0]).filter((itemKeys) => {
-          return (
-            typeof fields[itemKeys] !== "undefined" &&
-            fields[itemKeys].length > 0
-          );
-        });
+        const fieldsErrors = Object.keys(item.input?.[0] ?? {}).filter(
+          (itemKeys) => {
+            return (
+              typeof fields[itemKeys] !== "undefined" &&
+              fields[itemKeys].length > 0
+            );
+          }
+        );
 
         if (errorLeaf === null) {
           errorLeaf = fieldsErrors.length ? key : null;

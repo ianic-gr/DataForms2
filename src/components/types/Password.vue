@@ -39,7 +39,6 @@ const { field: fieldValue } = useFieldType(props);
 const field = useField(props.inputKey);
 
 watch(fieldValue, (v) => {
-  console.log(v);
   field.value.value = v;
 });
 const showPassword = ref(false);

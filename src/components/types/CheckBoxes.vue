@@ -41,7 +41,6 @@ const field = useField(props.inputKey);
 const { optionLabel, optionValue } = useOptionFieldType();
 
 watch(fieldValue, (v) => {
-  console.log(v);
   field.value.value = v;
 });
 </script>

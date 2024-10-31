@@ -83,20 +83,6 @@ onMounted(() => {
     },
   ];
 });
-
-onBeforeMount(() => {
-  let stag = document.createElement("script");
-  stag.setAttribute("src", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
-  document.head.appendChild(stag);
-
-  let stag2 = document.createElement("link");
-  stag2.setAttribute("rel", "stylesheet");
-  stag2.setAttribute(
-    "href",
-    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  );
-  document.head.appendChild(stag2);
-});
 </script>
 
 <template>

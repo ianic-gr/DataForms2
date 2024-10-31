@@ -1,4 +1,6 @@
 <script setup>
+import Map from "@/components/dynamic/Map.vue";
+
 const api = {
   rows: [
     {
@@ -95,6 +97,42 @@ const api = {
               },
             ],
           },
+          {
+            title: "Map",
+            dynamic: {
+              component: Map,
+              fields: [
+                {
+                  latitude: {
+                    options: {
+                      label: "Latitude",
+                      default: "40.634929113599355",
+                      "persistent-hint": true,
+                    },
+                    validation: "required",
+                  },
+                  _responsive: {
+                    sm: 12,
+                    md: 6,
+                  },
+                },
+                {
+                  longitude: {
+                    options: {
+                      label: "Longitude",
+                      default: "22.909068872420296",
+                      "persistent-hint": true,
+                    },
+                    validation: "required",
+                  },
+                  _responsive: {
+                    sm: 12,
+                    md: 6,
+                  },
+                },
+              ],
+            },
+          },
         ],
       },
     },
@@ -104,7 +142,6 @@ const api = {
     color: "primary",
     click: (formData) => {
       console.log("FormData: ", formData);
-      this.result = JSON.parse(JSON.stringify(formData));
     },
   },
 };

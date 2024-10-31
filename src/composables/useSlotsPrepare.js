@@ -4,7 +4,7 @@ export function useSlotsPrepare() {
 
     if (api && api.tabs && api.tabs.items) {
       api.tabs.items.forEach((item) => {
-        items.push(...(item && item.input));
+        items.push(...(item?.input ?? []));
       });
     }
 

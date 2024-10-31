@@ -12,7 +12,7 @@ const props = defineProps({
     type: Object,
     default: () => {},
   },
-  formId: {
+  id: {
     type: String,
     required: true,
   },
@@ -30,8 +30,12 @@ const tabsOptions = computed(() => {
   );
 });
 
+const isTabActive = () => {};
+
 onMounted(() => {
-  document.addEventListener("dataFormSubmitFailed", () => handleLeafError());
+  document.addEventListener("dataFormSubmitFailed", () => {
+    handleLeafError();
+  });
 });
 </script>
 
@@ -63,14 +67,21 @@ onMounted(() => {
         >
           <v-card flat>
             <v-card-text>
-              <Input :items="item.input" :formId="formId">
+              <Input :items="item.input" :formId="id">
                 <template
                   v-for="inputSlot in slots(item.input)"
                   #[inputSlot]="{ item }"
                 >
-                  <slot :name="inputSlot" :item="item" />
+                  <slot :name="inputSlot" :item="item" :active="leaf === i" />
                 </template>
               </Input>
+
+              <component
+                v-if="item.dynamic?.component"
+                :is="item.dynamic.component"
+                v-bind="{ ...props, ...item.dynamic }"
+                :active="leaf === i"
+              />
             </v-card-text>
           </v-card>
         </v-tabs-window-item>

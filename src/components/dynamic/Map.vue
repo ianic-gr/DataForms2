@@ -10,6 +10,10 @@ const props = defineProps({
       return [];
     },
   },
+  active: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const store = inject("dataformsStore");
@@ -18,6 +22,8 @@ const map = ref(null);
 const marker = ref(null);
 
 const initMap = () => {
+  currentForm.value = store.getCurrentForm(props.id);
+
   // Create a map centered at a specific location
   map.value = L.map("map").setView([40.6212503, 22.9048278], 13);
 
@@ -42,27 +48,67 @@ const initMap = () => {
   });
 };
 
+const installMap = () => {
+  // Create and append the Leaflet stylesheet
+  let linkTag = document.createElement("link");
+  linkTag.setAttribute("rel", "stylesheet");
+  linkTag.setAttribute(
+    "href",
+    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  );
+  document.head.appendChild(linkTag);
+
+  // Create and append the Leaflet script
+  const scriptTag = document.createElement("script");
+  scriptTag.setAttribute(
+    "src",
+    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  );
+  document.head.appendChild(scriptTag);
+
+  scriptTag.onload = () => initMap();
+};
+
+const setPoint = (latitude, longitude) => {
+  if (!latitude || !longitude) return;
+
+  const newLatLng = new L.LatLng(latitude, longitude);
+  marker.value.setLatLng(newLatLng);
+  map.value.setView(newLatLng, 13);
+};
+
+watch(
+  () => props.active,
+  async () => {
+    await nextTick();
+
+    if (!map.value) return;
+
+    map.value.invalidateSize();
+  },
+  { immediate: true }
+);
+
 watch(
   () => currentForm.value.binder,
-  ({ latitude, longitude }) => {
-    if (!latitude || !longitude) return;
+  async ({ latitude, longitude }) => {
+    await nextTick();
 
-    var newLatLng = new L.LatLng(latitude, longitude);
-    marker.value.setLatLng(newLatLng);
-    map.value.setView(newLatLng, 13);
+    setPoint(latitude, longitude);
   },
   { deep: true }
 );
 
 onMounted(async () => {
   await nextTick();
-  currentForm.value = store.getCurrentForm(props.id);
 
-  initMap();
+  installMap();
 });
 </script>
 
 <template>
-  <div id="map" class="mb-8" style="height: 400px"></div>
-  <DataFormInput :formId="id" :items="fields"></DataFormInput>
+  <div class="dynamic-map-component">
+    <div id="map" class="mb-8" style="height: 400px"></div>
+    <DataFormInput :formId="id" :items="fields"></DataFormInput>
+  </div>
 </template>
