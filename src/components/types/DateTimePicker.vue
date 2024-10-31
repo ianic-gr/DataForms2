@@ -2,6 +2,7 @@
 import moment from "moment";
 import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
 import { VTimePicker } from "vuetify/labs/VTimePicker";
+import { useField } from "vee-validate";
 
 const props = defineProps({
   input: {
@@ -30,6 +31,7 @@ const props = defineProps({
   },
 });
 
+const inputField = useField(props.inputKey);
 const {
   field,
   getCurrentFormData,
@@ -48,19 +50,27 @@ const saveDate = () => {
     props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
   const extractedDate = moment(date.value).format(defaultDateFormat);
 
+  console.log(format, extractedDate, time.value);
+
   field.value = moment(`${extractedDate} ${time.value}`).format(format);
   dialog.value = false;
 };
+
+watch(formattedDateTime, (v) => {
+  inputField.value.value = v;
+});
 </script>
 
 <template>
   <v-dialog v-model="dialog" max-width="360" persistent>
     <template v-slot:activator="{ props: activatorProps }">
+      {{ time }}
       <v-text-field
         v-model="formattedDateTime"
         v-bind="{ ...$attrs, ...activatorProps, ...options }"
         @click="events?.onClick && events.onClick()"
         readonly
+        :error-messages="inputField.errorMessage.value"
       />
     </template>
     <template v-slot:default>

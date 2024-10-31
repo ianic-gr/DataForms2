@@ -6,8 +6,8 @@ export function useDateTimeFieldType(props) {
   const _useFieldType = useFieldType(props);
   const { field } = _useFieldType;
 
-  const tempDate = ref(null);
-  const tempTime = ref(null);
+  const tempDate = ref("");
+  const tempTime = ref("");
   const defaultDateFormat = "MM-DD-YYYY";
   const defaultTimeFormat = "HH:mm";
 
@@ -44,6 +44,8 @@ export function useDateTimeFieldType(props) {
       const preFormat =
         props.options?.returnFormat ??
         `${defaultDateFormat} ${defaultTimeFormat}`;
+
+      console.log(tempTime.value);
 
       return (
         tempTime.value ??
@@ -92,7 +94,7 @@ export function useDateTimeFieldType(props) {
     const format =
       props.options?.format ?? `${defaultDateFormat} ${defaultTimeFormat}`;
 
-    return moment(field.value).format(format);
+    return field.value ? moment(field.value).format(format) : "";
   });
 
   const isMultiple = computed(() => {

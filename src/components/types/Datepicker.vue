@@ -1,5 +1,6 @@
 <script setup>
 import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
+import { useField } from "vee-validate";
 
 const props = defineProps({
   input: {
@@ -28,6 +29,7 @@ const props = defineProps({
   },
 });
 
+const inputField = useField(props.inputKey);
 const { field, getCurrentFormData, tempDate, date, formattedDate } =
   useDateTimeFieldType(props);
 
@@ -37,6 +39,10 @@ const saveDate = () => {
   field.value = tempDate.value;
   dialog.value = false;
 };
+
+watch(formattedDate, (v) => {
+  inputField.value.value = v;
+});
 </script>
 
 <template>
@@ -48,6 +54,7 @@ const saveDate = () => {
         @click="events?.onClick && events.onClick()"
         readonly
         outlined
+        :error-messages="inputField.errorMessage.value"
       />
     </template>
     <template v-slot:default>
