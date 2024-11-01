@@ -26,7 +26,7 @@ const props = defineProps({
 });
 
 const inputField = useField(props.inputKey);
-const { field, getCurrentFormData, tempDate, date, formattedDate } =
+const { field, currentFormData, tempDate, date, formattedDate } =
   useDateTimeFieldType(props);
 
 const dialog = ref(false);
@@ -63,7 +63,7 @@ watch(formattedDate, (v) => {
           <v-date-picker
             v-model="date"
             v-bind="options?.datepicker"
-            :locale="getCurrentFormData?.locale"
+            :locale="currentFormData?.locale"
             width="auto"
           />
         </v-card-text>

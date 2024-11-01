@@ -68,7 +68,11 @@ const hasLabelTitle = computed(() => {
 const isRequired = computed(() => {
   const validation = props.input?.validation;
 
-  return typeof validation === "string" && validation?.includes("required");
+  return (
+    typeof validation === "string" &&
+    validation?.includes("required") &&
+    !props.input?.readOnly
+  );
 });
 
 const label = computed(() => {

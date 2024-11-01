@@ -7,50 +7,58 @@ export function useFieldType(props) {
     useDataformsStore();
   const { onChange } = useInputEvents(props);
 
-  const field = ref(null);
+  const field = ref(props.options?.default ?? null);
 
-  const getCurrentFormData = computed(() => {
-    return getCurrentForm(props.formId);
-  });
+  const currentFormData = computed(() => getCurrentForm(props.formId));
 
-  onMounted(async () => {
-    await nextTick();
-
-    field.value = props.options?.default ?? null;
-
+  const initializeField = () => {
     addField({
       formId: props.formId,
       fieldName: props.inputKey,
       fieldValue: field.value,
     });
-
     addInput(props.formId, props.inputKey, props.input);
+  };
 
+  // Syncs field value with form data when form data changes
+  const syncFieldWithFormData = () => {
     watch(
-      getCurrentFormData,
+      currentFormData,
       (data) => {
-        if ("binder" in data) {
+        if (data?.binder) {
           field.value = data.binder[props.inputKey];
         }
       },
       { deep: true }
     );
+  };
 
-    watch(field, (val) => {
-      if (typeof val === "undefined") return;
-
-      updateField({
-        formId: props.formId,
-        fieldName: props.inputKey,
-        fieldValue: val,
-      });
-
-      onChange(val);
+  // Watches field value changes and updates the store and triggers onChange event
+  const handleFieldChange = () => {
+    watch(field, (newValue) => {
+      if (newValue !== undefined) {
+        updateField({
+          formId: props.formId,
+          fieldName: props.inputKey,
+          fieldValue: newValue,
+        });
+        onChange(newValue);
+      }
     });
+  };
+
+  onMounted(async () => {
+    await nextTick();
+
+    if (props.input?.readOnly) return;
+
+    initializeField();
+    syncFieldWithFormData();
+    handleFieldChange();
   });
 
   return {
     field,
-    getCurrentFormData,
+    currentFormData,
   };
 }

@@ -8,7 +8,7 @@ export function getValidations(obj, validations = {}) {
       const value = obj[key];
 
       // If the key is 'validation', add it to the validations object using the parent key
-      if (key === "validation") {
+      if (key === "validation" && !obj.readOnly) {
         validations[obj._parentKey] = value;
       }
 

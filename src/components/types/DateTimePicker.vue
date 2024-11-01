@@ -30,7 +30,7 @@ const props = defineProps({
 const inputField = useField(props.inputKey);
 const {
   field,
-  getCurrentFormData,
+  currentFormData,
   date,
   time,
   formattedDateTime,
@@ -84,7 +84,7 @@ watch(formattedDateTime, (v) => {
               <v-date-picker
                 v-model="date"
                 v-bind="options?.datepicker"
-                :locale="getCurrentFormData?.locale"
+                :locale="currentFormData?.locale"
                 :multiple="false"
                 width="auto"
               />

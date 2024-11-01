@@ -1,15 +1,3 @@
-DataForms2 DataForms2 is a powerful Vue 3 plugin designed to simplify the
-creation of dynamic forms using Vuetify 3 components. It provides a flexible API
-for defining form structures, validation rules, and submission handling, making
-it easy to implement complex forms in your Vue applications. Installation You
-can install DataForms2 via npm: bash Copy code npm install @ianicdev/dataforms2
-Nuxt.js Integration To integrate DataForms2 into your Nuxt.js project, create a
-plugin file named dataforms.js in the plugins directory: javascript Copy code
-import DataForms from "@ianicdev/dataforms2"; import
-"@ianicdev/dataforms2/styles.css"; export default defineNuxtPlugin((nuxtApp) =>
-{ nuxtApp.vueApp.use(DataForms); }); Usage Once installed, you can use the
-DataForm component in your Vue components. Below is an example of how to create
-a contact form using the DataForms2 plugin. Contact Form Example vue Copy code
 <script setup>
 const api = {
   rows: [
@@ -20,7 +8,6 @@ const api = {
             options: {
               label: "First name",
               prependIcon: "mdi-account",
-              "persistent-hint": true,
               clearable: true,
             },
             validation: "required",
@@ -30,8 +17,11 @@ const api = {
               default: "support@ianic.gr",
               label: "Email",
               prependIcon: "mdi-mail",
+              "persistent-hint": true,
+              hint: "This is a readOnly Field",
             },
             validation: "required|min:4|max:24|email",
+            readOnly: true,
             tooltip: {
               position: "bottom",
               text: "lorem ipsun",
