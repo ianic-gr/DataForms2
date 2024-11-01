@@ -23,10 +23,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  name: {
-    required: true,
-    type: String,
-  },
   events: {
     type: Object,
     default: () => {
@@ -53,17 +49,21 @@ const fieldIcon = computed(() => {
 </script>
 
 <template>
-  <v-text-field
-    v-model="fieldValue"
-    :append-icon="fieldIcon"
-    :type="fieldType"
-    @click:append="showPassword = !showPassword"
-    @click="
-      () => events && events.hasOwnProperty('onClick') && events.onClick()
-    "
-    v-bind="{ ...$attrs, ...options }"
-    :error-messages="field.errorMessage.value"
+  <div
+    :class="`dataforms-field dataforms-password--${formId}_${inputKey} dataforms-password--${formId} dataforms-password--${inputKey}`"
   >
-    <template v-slot:append><slot name="append"></slot></template>
-  </v-text-field>
+    <v-text-field
+      v-model="fieldValue"
+      :append-icon="fieldIcon"
+      :type="fieldType"
+      @click:append="showPassword = !showPassword"
+      @click="
+        () => events && events.hasOwnProperty('onClick') && events.onClick()
+      "
+      v-bind="{ ...$attrs, ...options }"
+      :error-messages="field.errorMessage.value"
+    >
+      <template v-slot:append><slot name="append"></slot></template>
+    </v-text-field>
+  </div>
 </template>

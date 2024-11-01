@@ -23,10 +23,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  name: {
-    required: true,
-    type: String,
-  },
   events: {
     type: Object,
     default: () => {
@@ -44,15 +40,19 @@ watch(fieldValue, (v) => {
 </script>
 
 <template>
-  <v-text-field
-    v-model="fieldValue"
-    v-bind="{ ...$attrs, ...options }"
-    v-on="events"
-    @click="
-      () => events && events.hasOwnProperty('onClick') && events.onClick()
-    "
-    :error-messages="field.errorMessage.value"
+  <div
+    :class="`dataforms-field dataforms-textField--${formId}_${inputKey} dataforms-textField--${formId} dataforms-textField--${inputKey}`"
   >
-    <template v-slot:append><slot name="append"></slot></template>
-  </v-text-field>
+    <v-text-field
+      v-model="fieldValue"
+      v-bind="{ ...$attrs, ...options }"
+      v-on="events"
+      @click="
+        () => events && events.hasOwnProperty('onClick') && events.onClick()
+      "
+      :error-messages="field.errorMessage.value"
+    >
+      <template v-slot:append><slot name="append"></slot></template>
+    </v-text-field>
+  </div>
 </template>

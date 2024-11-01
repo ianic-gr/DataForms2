@@ -21,10 +21,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  name: {
-    required: true,
-    type: String,
-  },
   events: {
     type: Object,
     default: () => ({}),
@@ -64,14 +60,17 @@ watch(formattedDateTime, (v) => {
 <template>
   <v-dialog v-model="dialog" max-width="360" persistent>
     <template v-slot:activator="{ props: activatorProps }">
-      {{ time }}
-      <v-text-field
-        v-model="formattedDateTime"
-        v-bind="{ ...$attrs, ...activatorProps, ...options }"
-        @click="events?.onClick && events.onClick()"
-        readonly
-        :error-messages="inputField.errorMessage.value"
-      />
+      <div
+        :class="`dataforms-field dataforms-dateTimePicker--${formId}_${inputKey} dataforms-dateTimePicker--${formId} dataforms-dateTimePicker--${inputKey}`"
+      >
+        <v-text-field
+          v-model="formattedDateTime"
+          v-bind="{ ...$attrs, ...activatorProps, ...options }"
+          @click="events?.onClick && events.onClick()"
+          readonly
+          :error-messages="inputField.errorMessage.value"
+        />
+      </div>
     </template>
     <template v-slot:default>
       <v-card>

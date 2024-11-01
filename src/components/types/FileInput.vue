@@ -20,10 +20,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  name: {
-    required: true,
-    type: String,
-  },
   loadingIndicator: {
     type: Boolean,
     default: false,
@@ -44,7 +40,9 @@ watch(fieldValue, (v) => {
 </script>
 
 <template>
-  <div class="type-fileinput">
+  <div
+    :class="`dataforms-field dataforms-fileInput--${formId}_${inputKey} dataforms-fileInput--${formId} dataforms-fileInput--${inputKey}`"
+  >
     <v-file-input
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"

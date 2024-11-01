@@ -24,10 +24,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  name: {
-    required: true,
-    type: String,
-  },
   events: {
     type: Object,
     default: () => {
@@ -46,16 +42,20 @@ watch(fieldValue, (v) => {
 </script>
 
 <template>
-  <v-radio-group
-    v-model="fieldValue"
-    v-bind="{ ...$attrs, ...options }"
-    :error-messages="field.errorMessage.value"
+  <div
+    :class="`dataforms-field dataforms-radioButtons--${formId}_${inputKey} dataforms-radioButtons--${formId} dataforms-radioButtons--${inputKey}`"
   >
-    <v-radio
-      v-for="(radio, i) in options.list || options.items"
-      :key="i"
-      :label="optionLabel(radio)"
-      :value="optionValue(radio)"
-    ></v-radio>
-  </v-radio-group>
+    <v-radio-group
+      v-model="fieldValue"
+      v-bind="{ ...$attrs, ...options }"
+      :error-messages="field.errorMessage.value"
+    >
+      <v-radio
+        v-for="(radio, i) in options.list || options.items"
+        :key="i"
+        :label="optionLabel(radio)"
+        :value="optionValue(radio)"
+      ></v-radio>
+    </v-radio-group>
+  </div>
 </template>

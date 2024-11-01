@@ -180,7 +180,6 @@ const inputTypeComponent = computed(() => {
             label: inputLabel,
           }"
           :events="input.events"
-          :name="inputKey"
           :disabled="loading"
           :loadingIndicator="loading"
           :theme="theme"

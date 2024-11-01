@@ -20,7 +20,7 @@ export function useFieldType(props) {
 
     addField({
       formId: props.formId,
-      fieldName: props.name,
+      fieldName: props.inputKey,
       fieldValue: field.value,
     });
 
@@ -30,7 +30,7 @@ export function useFieldType(props) {
       getCurrentFormData,
       (data) => {
         if ("binder" in data) {
-          field.value = data.binder[props.name];
+          field.value = data.binder[props.inputKey];
         }
       },
       { deep: true }
@@ -41,7 +41,7 @@ export function useFieldType(props) {
 
       updateField({
         formId: props.formId,
-        fieldName: props.name,
+        fieldName: props.inputKey,
         fieldValue: val,
       });
 

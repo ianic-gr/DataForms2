@@ -24,10 +24,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  name: {
-    required: true,
-    type: String,
-  },
   events: {
     type: Object,
     default: () => {
@@ -46,21 +42,25 @@ watch(fieldValue, (v) => {
 </script>
 
 <template>
-  <p v-if="theme !== 'Fluid'">
-    {{ options.label || "" }}
-    <slot name="append"></slot>
-  </p>
-  <v-checkbox
-    v-model="fieldValue"
-    v-bind="{
-      ...$attrs,
-      ...options,
-    }"
-    v-on="events"
-    v-for="(checkb, i) in options.items"
-    :key="i"
-    :label="optionLabel(checkb)"
-    :value="optionValue(checkb)"
-    :error-messages="field.errorMessage.value"
-  />
+  <div
+    :class="`dataforms-field dataforms-checkBoxes--${formId}_${inputKey} dataforms-checkBoxes--${formId} dataforms-checkBoxes--${inputKey}`"
+  >
+    <p v-if="theme !== 'Fluid'">
+      {{ options.label || "" }}
+      <slot name="append"></slot>
+    </p>
+    <v-checkbox
+      v-model="fieldValue"
+      v-bind="{
+        ...$attrs,
+        ...options,
+      }"
+      v-on="events"
+      v-for="(checkb, i) in options.items"
+      :key="i"
+      :label="optionLabel(checkb)"
+      :value="optionValue(checkb)"
+      :error-messages="field.errorMessage.value"
+    />
+  </div>
 </template>

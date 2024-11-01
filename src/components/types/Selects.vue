@@ -24,10 +24,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  name: {
-    required: true,
-    type: String,
-  },
   events: {
     type: Object,
     default: () => {
@@ -46,18 +42,22 @@ watch(fieldValue, (v) => {
 </script>
 
 <template>
-  <v-select
-    v-model="fieldValue"
-    v-bind="{ ...$attrs, ...options }"
-    v-on="events"
-    item-title="text"
-    item-value="value"
-    @click="
-      () => events && events.hasOwnProperty('onClick') && events.onClick()
-    "
-    @change="onSelect"
-    :error-messages="field.errorMessage.value"
+  <div
+    :class="`dataforms-field dataforms-selects--${formId}_${inputKey} dataforms-selects--${formId} dataforms-selects--${inputKey}`"
   >
-    <template v-slot:append><slot name="append"></slot></template
-  ></v-select>
+    <v-select
+      v-model="fieldValue"
+      v-bind="{ ...$attrs, ...options }"
+      v-on="events"
+      item-title="text"
+      item-value="value"
+      @click="
+        () => events && events.hasOwnProperty('onClick') && events.onClick()
+      "
+      @change="onSelect"
+      :error-messages="field.errorMessage.value"
+    >
+      <template v-slot:append><slot name="append"></slot></template
+    ></v-select>
+  </div>
 </template>

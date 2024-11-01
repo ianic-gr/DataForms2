@@ -23,10 +23,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  name: {
-    required: true,
-    type: String,
-  },
   events: {
     type: Object,
     default: () => {
@@ -44,13 +40,17 @@ watch(fieldValue, (v) => {
 </script>
 
 <template>
-  <v-switch
-    v-model="fieldValue"
-    v-bind="{
-      ...$attrs,
-      ...options,
-    }"
-    v-on="events"
-    :error-messages="field.errorMessage.value"
-  ></v-switch>
+  <div
+    :class="`dataforms-field dataforms-switch--${formId}_${inputKey} dataforms-switch--${formId} dataforms-switch--${inputKey}`"
+  >
+    <v-switch
+      v-model="fieldValue"
+      v-bind="{
+        ...$attrs,
+        ...options,
+      }"
+      v-on="events"
+      :error-messages="field.errorMessage.value"
+    />
+  </div>
 </template>
