@@ -1,6 +1,5 @@
 <script setup>
 import defu from "defu";
-import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 import { useLeafValidation } from "@/composables/useLeafValidation.js";
 
 const props = defineProps({
@@ -18,7 +17,6 @@ const props = defineProps({
   },
 });
 
-const { slots } = useSlotsPrepare();
 const { leaf, handleLeafError } = useLeafValidation(props);
 
 const tabsOptions = computed(() => {
@@ -29,8 +27,6 @@ const tabsOptions = computed(() => {
     props.options
   );
 });
-
-const isTabActive = () => {};
 
 onMounted(() => {
   document.addEventListener("dataFormSubmitFailed", () => {
@@ -67,20 +63,11 @@ onMounted(() => {
         >
           <v-card flat>
             <v-card-text>
-              <Input :items="item.input" :formId="id">
-                <template
-                  v-for="inputSlot in slots(item.input)"
-                  #[inputSlot]="{ item }"
-                >
-                  <slot :name="inputSlot" :item="item" :active="leaf === i" />
-                </template>
-              </Input>
-
-              <component
-                v-if="item.dynamic?.component"
-                :is="item.dynamic.component"
-                v-bind="{ ...props, ...item.dynamic }"
-                :active="leaf === i"
+              <InputGroups
+                v-bind="{ ...props }"
+                :item="item"
+                :leaf="leaf"
+                :tabKey="i"
               />
             </v-card-text>
           </v-card>

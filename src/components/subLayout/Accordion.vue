@@ -1,5 +1,4 @@
 <script setup>
-import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 import { useLeafValidation } from "@/composables/useLeafValidation.js";
 
 const props = defineProps({
@@ -17,7 +16,6 @@ const props = defineProps({
   },
 });
 
-const { slots } = useSlotsPrepare();
 const { leaf, handleLeafError } = useLeafValidation(props);
 
 onMounted(() => {
@@ -30,14 +28,12 @@ onMounted(() => {
     <v-expansion-panel v-for="(item, i) in items" :key="i">
       <v-expansion-panel-title> {{ item.title }} </v-expansion-panel-title>
       <v-expansion-panel-text eager>
-        <Input :items="item.input" :formId="id">
-          <template
-            v-for="inputSlot in slots(item.input)"
-            #[inputSlot]="{ item }"
-          >
-            <slot :name="inputSlot" :item="item" />
-          </template>
-        </Input>
+        <InputGroups
+          v-bind="{ ...props }"
+          :item="item"
+          :leaf="leaf"
+          :tabKey="i"
+        />
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>

@@ -7,6 +7,39 @@ const api = {
         items: [
           {
             title: "Personal Info",
+            inputGroups: [
+              {
+                title: "Customer Input Group",
+                options: {
+                  color: "primary",
+                  variant: "tonal",
+                },
+                input: [
+                  {
+                    cname: {
+                      options: {
+                        label: "First name",
+                      },
+                      validation: "required",
+                    },
+                    _responsive: {
+                      sm: 12,
+                    },
+                  },
+                  {
+                    csurname: {
+                      options: {
+                        label: "Last name",
+                      },
+                      validation: "required",
+                    },
+                    _responsive: {
+                      sm: 12,
+                    },
+                  },
+                ],
+              },
+            ],
             input: [
               {
                 name: {

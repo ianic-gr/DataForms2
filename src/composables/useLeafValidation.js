@@ -17,18 +17,28 @@ export function useLeafValidation(props) {
         const fields = getCurrentForm(props.id).errors;
 
         // Input fields and dynamic component input fields
-        [...(item?.input ?? []), ...(item.dynamic?.fields ?? [])]?.forEach(
-          (element) => {
-            const fieldErrors = Object.keys(element).filter((inputKey) => {
-              return fields[inputKey] && fields[inputKey].length > 0;
-            });
+        const inputGroupsFields = item.inputGroups?.flatMap((inputGroup) => {
+          return inputGroup.input;
+        });
 
-            // If there are errors for the current item, add the key to errorLeaves
-            if (fieldErrors.length > 0) {
-              errorLeaves.push(key);
-            }
+        const allFields = [
+          ...(item?.input ?? []),
+          ...(item.dynamic?.fields ?? []),
+          ...(inputGroupsFields ?? []),
+        ];
+
+        console.log(allFields);
+
+        allFields?.forEach((element) => {
+          const fieldErrors = Object.keys(element).filter((inputKey) => {
+            return fields[inputKey] && fields[inputKey].length > 0;
+          });
+
+          // If there are errors for the current item, add the key to errorLeaves
+          if (fieldErrors.length > 0) {
+            errorLeaves.push(key);
           }
-        );
+        });
       });
 
       await nextTick();
