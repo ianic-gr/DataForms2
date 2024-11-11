@@ -28,7 +28,7 @@ const props = defineProps({
 
 <template>
   <div class="dataforms-renderItem">
-    <Input :items="item.input" :formId="id">
+    <Input v-if="item.input?.length" :items="item.input" :formId="id">
       <template v-for="inputSlot in slots(item.input)" #[inputSlot]="{ item }">
         <slot :name="inputSlot" :item="item" :active="leaf === tabKey" />
       </template>
