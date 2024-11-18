@@ -23,7 +23,7 @@ const api = {
               label: "Pay us with: ",
               list: [
                 {
-                  text: "Visa",
+                  label: "Visa",
                   value: "visa",
                 },
                 {
@@ -76,10 +76,4 @@ const api = {
     <h3>Result:</h3>
     {{ result }}
   </div>
-  <iframe
-    class="w-100 rounded-lg"
-    style="height: 70vh"
-    src="https://stackblitz.com/edit/nuxt-starter-uhxlbz?embed=1&file=app.vue&hideExplorer=1&hideNavigation=1"
-    frameborder="0"
-  ></iframe>
 </template>

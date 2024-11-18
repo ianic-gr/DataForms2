@@ -34,15 +34,21 @@ const props = defineProps({
 const { field: fieldValue } = useFieldType(props);
 const field = useField(props.inputKey);
 
-watch(fieldValue, (v) => {
-  field.value.value = v;
-});
+const fieldReturn = defineModel("return");
+
+watch(
+  fieldValue,
+  (v) => {
+    if (v === null) return;
+    field.value.value = v;
+    fieldReturn.value = v;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <div
-    :class="`dataforms-field dataforms-textField--${formId}_${inputKey} dataforms-textField--${formId} dataforms-textField--${inputKey}`"
-  >
+  <div>
     <v-text-field
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"

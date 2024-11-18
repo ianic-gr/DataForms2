@@ -79,7 +79,7 @@ const api = {
               label: "Budget 💸",
               "persistent-hint": true,
             },
-            validation: "required",
+            // validation: "required",
 
             conditionals: [
               {

@@ -39,12 +39,27 @@ const { optionLabel, optionValue } = useOptionFieldType();
 watch(fieldValue, (v) => {
   field.value.value = v;
 });
+
+const fieldReturn = defineModel("return");
+
+watch(
+  fieldValue,
+  (v) => {
+    if (v === null) return;
+    field.value.value = v;
+
+    const selected = props.options?.items.find((item) => {
+      return item.value === v;
+    });
+
+    fieldReturn.value = selected?.label ?? v;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <div
-    :class="`dataforms-field dataforms-checkBoxes--${formId}_${inputKey} dataforms-checkBoxes--${formId} dataforms-checkBoxes--${inputKey}`"
-  >
+  <div>
     <p v-if="theme !== 'Fluid'">
       {{ options.label || "" }}
       <slot name="append"></slot>

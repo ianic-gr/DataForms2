@@ -61,6 +61,8 @@ const props = defineProps({
 
 const { showOnConditions } = useConditionals(props.formId);
 
+const fieldReturn = ref();
+
 const hasLabelTitle = computed(() => {
   return props.theme === "Fluid" && label.value;
 });
@@ -103,17 +105,6 @@ const inputLabel = computed(() => {
   }
 
   return _label;
-});
-
-const tooltipAttributes = computed(() => {
-  const tooltipObject = props.input.tooltip;
-  const tooltipAttributes = {};
-
-  const position = tooltipObject.position || "top";
-
-  tooltipAttributes[position] = position;
-
-  return tooltipAttributes;
 });
 
 const themeOptions = computed(() => {
@@ -173,8 +164,26 @@ const inputTypeComponent = computed(() => {
           {{ label }}
           <span v-if="isRequired" class="text-error">*</span>
         </label>
+
+        <div v-if="input.readOnly" class="d-flex align-center">
+          <v-icon v-if="input.options?.prependIcon" class="me-4">{{
+            input.options?.prependIcon
+          }}</v-icon>
+          <v-card class="w-100" variant="tonal" min-height="59">
+            <v-card-text class="py-2">
+              <div>
+                <small>{{ input?.options?.label }}</small>
+                <p>{{ fieldReturn ?? "-" }}</p>
+              </div>
+            </v-card-text>
+          </v-card>
+        </div>
+
         <component
           :is="inputTypeComponent"
+          v-show="!input.readOnly"
+          v-model:return="fieldReturn"
+          :class="`dataforms-field dataforms-${inputTypeComponent.__name}--${formId}_${inputKey} dataforms-${inputTypeComponent.__name}--${formId} dataforms-${inputTypeComponent.__name}--${inputKey}`"
           :input="input"
           :formId="formId"
           :inputKey="inputKey"
@@ -186,7 +195,6 @@ const inputTypeComponent = computed(() => {
           :events="input.events"
           :disabled="loading"
           :loadingIndicator="loading"
-          :theme="theme"
         >
           <template
             v-for="inputSlot in input.itemSlots"
@@ -199,13 +207,12 @@ const inputTypeComponent = computed(() => {
               class="text-center d-flex align-center justify-space-around"
               style="cursor: pointer"
             >
-              <v-tooltip v-bind="tooltipAttributes">
-                <template v-slot:activator="{ on, attrs }">
-                  <div v-bind="attrs" v-on="on ?? {}">
+              <v-tooltip v-bind="input.tooltip">
+                <template v-slot:activator="{ props }">
+                  <div v-bind="props">
                     <v-icon color="primary">mdi-information</v-icon>
                   </div>
                 </template>
-                <span>{{ input.tooltip.text }}</span>
               </v-tooltip>
             </div>
           </template>

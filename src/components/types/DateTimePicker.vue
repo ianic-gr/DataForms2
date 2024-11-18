@@ -46,8 +46,6 @@ const saveDate = () => {
     props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
   const extractedDate = moment(date.value).format(defaultDateFormat);
 
-  console.log(format, extractedDate, time.value);
-
   field.value = moment(`${extractedDate} ${time.value}`).format(format);
   dialog.value = false;
 };
@@ -55,14 +53,25 @@ const saveDate = () => {
 watch(formattedDateTime, (v) => {
   inputField.value.value = v;
 });
+
+const fieldReturn = defineModel("return");
+
+watch(
+  formattedDateTime,
+  (v) => {
+    if (v === null) return;
+
+    inputField.value.value = v;
+    fieldReturn.value = v;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <v-dialog v-model="dialog" max-width="360" persistent>
     <template v-slot:activator="{ props: activatorProps }">
-      <div
-        :class="`dataforms-field dataforms-dateTimePicker--${formId}_${inputKey} dataforms-dateTimePicker--${formId} dataforms-dateTimePicker--${inputKey}`"
-      >
+      <div>
         <v-text-field
           v-model="formattedDateTime"
           v-bind="{ ...$attrs, ...activatorProps, ...options }"

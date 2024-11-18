@@ -36,17 +36,24 @@ const saveDate = () => {
   dialog.value = false;
 };
 
-watch(formattedDate, (v) => {
-  inputField.value.value = v;
-});
+const fieldReturn = defineModel("return");
+
+watch(
+  formattedDate,
+  (v) => {
+    if (v === null) return;
+
+    inputField.value.value = v;
+    fieldReturn.value = v;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <v-dialog v-model="dialog" max-width="360" persistent>
     <template v-slot:activator="{ props: activatorProps }">
-      <div
-        :class="`dataforms-field dataforms-datePicker--${formId}_${inputKey} dataforms-datePicker--${formId} dataforms-datePicker--${inputKey}`"
-      >
+      <div>
         <v-text-field
           v-model="formattedDate"
           v-bind="{ ...$attrs, ...activatorProps, ...options }"

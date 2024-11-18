@@ -70,6 +70,10 @@ onMounted(() => {
       title: "Use Cases",
     },
     {
+      title: "Readonly Fields",
+      to: `/${exampleFolder}/readonly`,
+    },
+    {
       title: "Contact Form",
       to: `/${exampleFolder}/contactForm`,
     },

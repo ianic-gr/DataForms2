@@ -29,6 +29,7 @@ declare module 'vue-router/auto-routes' {
     '/devExamples/epic': RouteRecordInfo<'/devExamples/epic', '/devExamples/epic', Record<never, never>, Record<never, never>>,
     '/devExamples/fileInput': RouteRecordInfo<'/devExamples/fileInput', '/devExamples/fileInput', Record<never, never>, Record<never, never>>,
     '/devExamples/password': RouteRecordInfo<'/devExamples/password', '/devExamples/password', Record<never, never>, Record<never, never>>,
+    '/devExamples/readonly': RouteRecordInfo<'/devExamples/readonly', '/devExamples/readonly', Record<never, never>, Record<never, never>>,
     '/devExamples/slots': RouteRecordInfo<'/devExamples/slots', '/devExamples/slots', Record<never, never>, Record<never, never>>,
     '/devExamples/tabs': RouteRecordInfo<'/devExamples/tabs', '/devExamples/tabs', Record<never, never>, Record<never, never>>,
     '/devExamples/themes/Breeze': RouteRecordInfo<'/devExamples/themes/Breeze', '/devExamples/themes/Breeze', Record<never, never>, Record<never, never>>,

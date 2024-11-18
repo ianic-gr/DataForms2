@@ -34,9 +34,6 @@ const props = defineProps({
 const { field: fieldValue } = useFieldType(props);
 const field = useField(props.inputKey);
 
-watch(fieldValue, (v) => {
-  field.value.value = v;
-});
 const showPassword = ref(false);
 
 const fieldType = computed(() => {
@@ -46,12 +43,23 @@ const fieldType = computed(() => {
 const fieldIcon = computed(() => {
   return showPassword.value ? "mdi-eye" : "mdi-eye-off";
 });
+
+const fieldReturn = defineModel("return");
+
+watch(
+  fieldValue,
+  (v) => {
+    if (v === null) return;
+    field.value.value = v;
+
+    fieldReturn.value = [...v].map(() => "*").join("");
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <div
-    :class="`dataforms-field dataforms-password--${formId}_${inputKey} dataforms-password--${formId} dataforms-password--${inputKey}`"
-  >
+  <div>
     <v-text-field
       v-model="fieldValue"
       :append-icon="fieldIcon"

@@ -36,15 +36,26 @@ const { field: fieldValue, fieldProps } = useFieldType(props);
 const field = useField(props.inputKey);
 const { onSelect } = useInputEvents(fieldProps);
 
-watch(fieldValue, (v) => {
-  field.value.value = v;
-});
+const fieldReturn = defineModel("return");
+
+watch(
+  fieldValue,
+  (v) => {
+    if (v === null) return;
+    field.value.value = v;
+
+    const selected = props.options?.items.find((item) => {
+      return item.value === v;
+    });
+
+    fieldReturn.value = selected?.text ?? v;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <div
-    :class="`dataforms-field dataforms-selects--${formId}_${inputKey} dataforms-selects--${formId} dataforms-selects--${inputKey}`"
-  >
+  <div>
     <v-select
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"

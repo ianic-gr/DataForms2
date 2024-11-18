@@ -34,15 +34,24 @@ const { field: fieldValue } = useFieldType(props);
 const field = useField(props.inputKey);
 const $useInputEvents = useInputEvents(props);
 
-watch(fieldValue, (v) => {
-  field.value.value = v;
-});
+const fieldReturn = defineModel("return");
+
+watch(
+  fieldValue,
+  (v) => {
+    if (v === null) return;
+
+    field.value.value = v;
+    fieldReturn.value = (Array.isArray(v) ? v : [v])
+      .map((item) => item.name)
+      .join(", ");
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <div
-    :class="`dataforms-field dataforms-fileInput--${formId}_${inputKey} dataforms-fileInput--${formId} dataforms-fileInput--${inputKey}`"
-  >
+  <div>
     <v-file-input
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"

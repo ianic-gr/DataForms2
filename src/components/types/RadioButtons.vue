@@ -36,15 +36,26 @@ const { field: fieldValue } = useFieldType(props);
 const field = useField(props.inputKey);
 const { optionLabel, optionValue } = useOptionFieldType();
 
-watch(fieldValue, (v) => {
-  field.value.value = v;
-});
+const fieldReturn = defineModel("return");
+
+watch(
+  fieldValue,
+  (v) => {
+    if (v === null) return;
+    field.value.value = v;
+
+    const selected = props.options?.list.find((item) => {
+      return item.value === v;
+    });
+
+    fieldReturn.value = selected?.label ?? v;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <div
-    :class="`dataforms-field dataforms-radioButtons--${formId}_${inputKey} dataforms-radioButtons--${formId} dataforms-radioButtons--${inputKey}`"
-  >
+  <div>
     <v-radio-group
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
