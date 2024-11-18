@@ -16,6 +16,7 @@ const { getApiSlots } = useSlotsPrepare();
 const {
   getCurrentForm,
   addForm,
+  removeForm,
   addField,
   updateBinder,
   makeFormValid,
@@ -226,6 +227,10 @@ watch(
   () => submitOK.value,
   () => leaveAlertWhenDataChanges(props.api)
 );
+
+onUnmounted(() => {
+  removeForm(props.id);
+});
 
 provide("dataformsStore", dataformsStore);
 

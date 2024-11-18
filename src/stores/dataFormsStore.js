@@ -40,6 +40,13 @@ export const useDataformsStore = defineStore("dataforms", () => {
     });
   };
 
+  const removeForm = (form_id) => {
+    const formIndex = forms.value.findIndex((form) => form.id === form_id);
+    if (formIndex !== -1) {
+      forms.value.splice(formIndex, 1);
+    }
+  };
+
   const makeFormValid = (formId) => {
     forms.value.find((form) => {
       return form.id === formId;
@@ -105,6 +112,7 @@ export const useDataformsStore = defineStore("dataforms", () => {
     getCurrentForm,
     isFormValid,
     addForm,
+    removeForm,
     makeFormValid,
     makeFormInvalid,
     setFormErrors,
