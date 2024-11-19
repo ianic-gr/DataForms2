@@ -57,58 +57,56 @@ watch(formattedDateTime, (v) => {
 const fieldReturn = defineModel("return");
 
 watch(
-  formattedDateTime,
+  field,
   (v) => {
     if (v === null) return;
 
-    inputField.value.value = v;
-    fieldReturn.value = v;
+    inputField.value.value = formattedDateTime.value;
+    fieldReturn.value = formattedDateTime.value;
   },
   { immediate: true }
 );
 </script>
 
 <template>
-  <v-dialog v-model="dialog" max-width="360" persistent>
-    <template v-slot:activator="{ props: activatorProps }">
-      <div>
-        <v-text-field
-          v-model="formattedDateTime"
-          v-bind="{ ...$attrs, ...activatorProps, ...options }"
-          @click="events?.onClick && events.onClick()"
-          readonly
-          :error-messages="inputField.errorMessage.value"
-        />
-      </div>
-    </template>
-    <template v-slot:default>
-      <v-card>
-        <v-card-text class="pa-0">
-          <v-tabs v-model="pickerTab" dark grow>
-            <v-tab value="date"> DATE </v-tab>
-            <v-tab value="time"> TIME </v-tab>
-          </v-tabs>
-          <v-tabs-window v-model="pickerTab">
-            <v-tabs-window-item value="date">
-              <v-date-picker
-                v-model="date"
-                v-bind="options?.datepicker"
-                :locale="currentFormData?.locale"
-                :multiple="false"
-                width="auto"
-              />
-            </v-tabs-window-item>
-            <v-tabs-window-item value="time">
-              <v-time-picker v-model="time" width="auto" />
-            </v-tabs-window-item>
-          </v-tabs-window>
-        </v-card-text>
-        <v-spacer />
-        <v-card-actions>
-          <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="saveDate">OK</v-btn>
-        </v-card-actions>
-      </v-card>
-    </template>
-  </v-dialog>
+  <div>
+    <v-text-field
+      v-model="formattedDateTime"
+      v-bind="{ ...$attrs, ...options }"
+      @click="events?.onClick && events.onClick()"
+      readonly
+      :error-messages="inputField.errorMessage.value"
+    />
+    <v-dialog v-model="dialog" max-width="360" persistent activator="parent">
+      <template v-slot:default>
+        <v-card>
+          <v-card-text class="pa-0">
+            <v-tabs v-model="pickerTab" dark grow>
+              <v-tab value="date"> DATE </v-tab>
+              <v-tab value="time"> TIME </v-tab>
+            </v-tabs>
+            <v-tabs-window v-model="pickerTab">
+              <v-tabs-window-item value="date">
+                <v-date-picker
+                  v-model="date"
+                  v-bind="options?.datepicker"
+                  :locale="currentFormData?.locale"
+                  :multiple="false"
+                  width="auto"
+                />
+              </v-tabs-window-item>
+              <v-tabs-window-item value="time">
+                <v-time-picker v-model="time" width="auto" />
+              </v-tabs-window-item>
+            </v-tabs-window>
+          </v-card-text>
+          <v-spacer />
+          <v-card-actions>
+            <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="saveDate">OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
+  </div>
 </template>

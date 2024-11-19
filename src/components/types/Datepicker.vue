@@ -39,47 +39,45 @@ const saveDate = () => {
 const fieldReturn = defineModel("return");
 
 watch(
-  formattedDate,
+  field,
   (v) => {
     if (v === null) return;
 
-    inputField.value.value = v;
-    fieldReturn.value = v;
+    inputField.value.value = formattedDate.value;
+    fieldReturn.value = formattedDate.value;
   },
   { immediate: true }
 );
 </script>
 
 <template>
-  <v-dialog v-model="dialog" max-width="360" persistent>
-    <template v-slot:activator="{ props: activatorProps }">
-      <div>
-        <v-text-field
-          v-model="formattedDate"
-          v-bind="{ ...$attrs, ...activatorProps, ...options }"
-          @click="events?.onClick && events.onClick()"
-          readonly
-          outlined
-          :error-messages="inputField.errorMessage.value"
-        />
-      </div>
-    </template>
-    <template v-slot:default>
-      <v-card>
-        <v-card-text class="pa-0">
-          <v-date-picker
-            v-model="date"
-            v-bind="options?.datepicker"
-            :locale="currentFormData?.locale"
-            width="auto"
-          />
-        </v-card-text>
-        <v-spacer />
-        <v-card-actions>
-          <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="saveDate">OK</v-btn>
-        </v-card-actions>
-      </v-card>
-    </template>
-  </v-dialog>
+  <div>
+    <v-text-field
+      v-model="formattedDate"
+      v-bind="{ ...$attrs, ...options }"
+      @click="events?.onClick && events.onClick()"
+      readonly
+      outlined
+      :error-messages="inputField.errorMessage.value"
+    />
+    <v-dialog v-model="dialog" max-width="360" persistent activator="parent">
+      <template v-slot:default>
+        <v-card>
+          <v-card-text class="pa-0">
+            <v-date-picker
+              v-model="date"
+              v-bind="options?.datepicker"
+              :locale="currentFormData?.locale"
+              width="auto"
+            />
+          </v-card-text>
+          <v-spacer />
+          <v-card-actions>
+            <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
+            <v-btn text color="primary" @click="saveDate">OK</v-btn>
+          </v-card-actions>
+        </v-card>
+      </template>
+    </v-dialog>
+  </div>
 </template>

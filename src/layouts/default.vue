@@ -25,8 +25,8 @@ onMounted(() => {
       to: `/${exampleFolder}/checks-radios`,
     },
     {
-      title: "Datepicker",
-      to: `/${exampleFolder}/datepicker`,
+      title: "Datepickers",
+      to: `/${exampleFolder}/datepickers`,
     },
     {
       title: "Password",
