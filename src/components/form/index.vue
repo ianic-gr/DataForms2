@@ -272,23 +272,17 @@ defineExpose({
         </v-col>
       </v-row>
     </transition-group>
-    <v-row v-if="typeof api.submit === 'object'">
-      <v-col class="text-end">
+    <v-row>
+      <v-col class="d-flex align-center justify-end">
+        <slot name="buttons" />
         <v-btn
+          v-if="typeof api.submit === 'object'"
           type="submit"
+          class="ms-2"
           :loading="loading"
-          v-bind="{ ...$attrs, ...(api.submit.options || {}) }"
-          :color="api.submit.color"
-        >
-          <v-icon
-            v-bind="{ ...$attrs, ...(api.submit.icon.options || {}) }"
-            v-if="api.submit.icon"
-          >
-            {{ api.submit.icon.symbol }}
-          </v-icon>
-
-          {{ api.submit.title }}
-        </v-btn>
+          :text="api.submit.title"
+          v-bind="api.submit.options || {}"
+        />
       </v-col>
     </v-row>
   </v-form>

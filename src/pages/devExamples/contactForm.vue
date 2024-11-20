@@ -99,32 +99,24 @@ const api = {
     color: "primary",
     options: {
       rounded: true,
-    },
-    icon: {
-      symbol: "mdi-heart",
-      options: {
-        small: true,
-        color: "red",
-        class: "mr-2",
-      },
+      color: "primary",
+      prependIcon: "mdi-heart",
     },
     click(data) {
       console.log("data: ", data);
     },
   },
 };
+
+const deleteForm = () => {
+  alert("Deleted!");
+};
 </script>
 
 <template>
-  <DataForm id="contact-form" :api="api" />
+  <DataForm id="contact-form" :api="api">
+    <template v-slot:buttons>
+      <v-btn @click="deleteForm" variant="text" color="error">Delete</v-btn>
+    </template>
+  </DataForm>
 </template>
-API Structure rows: An array of form sections, each containing an array of input
-fields. input: Defines the individual input fields, their options, and
-validation rules. submit: Configuration for the submit button, including title,
-color, options, icon, and click handler. Options label: The label for the input
-field. prependIcon: An icon displayed before the input field. validation:
-Validation rules for the field, supporting required, min, max, and email checks.
-tooltip: Optional tooltip with text and position. Contributing Contributions are
-welcome! Please feel free to submit a pull request or open an issue for any bugs
-or feature requests. License This project is licensed under the MIT License. See
-the LICENSE file for details.

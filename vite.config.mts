@@ -21,6 +21,14 @@ export default defineConfig(({ mode }) => {
   // Check for build type
   const isPageBuild = process.env.BUILD_TYPE === "pages";
 
+  const css = {
+    preprocessorOptions: {
+      sass: {
+        api: "modern-compiler",
+      },
+    },
+  };
+
   let buildOptions = {
     cssCodeSplit: false,
     lib: {
@@ -106,15 +114,10 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
     },
-    css: {
-      preprocessorOptions: {
-        sass: {
-          api: "modern-compiler",
-        },
-      },
-    },
+    css,
     build: {
       ...buildOptions,
+      css,
     },
   };
 });
