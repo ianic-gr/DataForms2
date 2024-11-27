@@ -32,7 +32,10 @@ const props = defineProps({
 });
 
 const { field: fieldValue } = useFieldType(props);
-const field = useField(props.inputKey);
+const field = useField(
+  props.inputKey,
+  !props.input.readOnly ? props.input.validation : ""
+);
 
 const fieldReturn = defineModel("return");
 

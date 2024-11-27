@@ -25,9 +25,7 @@ export function useLeafValidation(props) {
           ...(item?.input ?? []),
           ...(item.dynamic?.fields ?? []),
           ...(inputGroupsFields ?? []),
-        ];
-
-        console.log(allFields);
+        ].filter(Boolean);
 
         allFields?.forEach((element) => {
           const fieldErrors = Object.keys(element).filter((inputKey) => {
@@ -50,6 +48,8 @@ export function useLeafValidation(props) {
 
       errorLeaves = [];
     }
+
+    console.log("errorLeaves", errorLeaves);
   };
 
   onMounted(() => {

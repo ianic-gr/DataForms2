@@ -132,9 +132,30 @@ const api = {
           },
           {
             title: "Map",
+            input: [
+              {
+                pop: {
+                  options: {
+                    label: "Pop",
+                  },
+                  validation: "required|max:2",
+                },
+                _responsive: {
+                  sm: 12,
+                },
+              },
+            ],
             dynamic: {
               component: Map,
               fields: [
+                {
+                  pop: {
+                    options: {
+                      label: "Pop",
+                    },
+                    validation: "required",
+                  },
+                },
                 {
                   latitude: {
                     options: {

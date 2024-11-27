@@ -25,7 +25,10 @@ const props = defineProps({
   },
 });
 
-const inputField = useField(props.inputKey);
+const inputField = useField(
+  props.inputKey,
+  !props.input.readOnly ? props.input.validation : ""
+);
 const { field, currentFormData, tempDate, date, formattedDate } =
   useDateTimeFieldType(props);
 

@@ -170,7 +170,7 @@ const scrollToError = () => {
 };
 
 const { handleSubmit } = useForm({
-  validationSchema: getValidations(props.api),
+  // validationSchema: getValidations(props.api),
 });
 
 const submitSuccess = (binder) => {
