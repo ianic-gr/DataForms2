@@ -28,6 +28,7 @@ const emit = defineEmits([
   "dataFormSubmit",
   "dataFormSubmitSuccess",
   "dataFormSubmitFailed",
+  "dataFormSubmitWithErrors",
 ]);
 
 const vFormRef = ref(null);
@@ -173,19 +174,25 @@ const { handleSubmit } = useForm({
   // validationSchema: getValidations(props.api),
 });
 
-const submitSuccess = (binder) => {
+const submitSuccess = async (binder) => {
   if (binder) {
     const theForm = getCurrentForm(props.id);
-
-    if (props.api.submit) {
-      props.api.submit.click(theForm.fields);
-    }
 
     makeFormValid(props.id);
     submitOK.value = true;
 
-    document.dispatchEvent(submitSuccessEvent);
-    emit("dataFormSubmitSuccess");
+    if (props.api.submit) {
+      try {
+        await props.api.submit.click(theForm.fields);
+
+        document.dispatchEvent(submitSuccessEvent);
+        emit("dataFormSubmitSuccess");
+
+        theForm.unsaved = false;
+      } catch (error) {
+        emit("dataFormSubmitWithErrors", error);
+      }
+    }
   } else {
     submitErrors([]);
   }

@@ -37,6 +37,7 @@ export const useDataformsStore = defineStore("dataforms", () => {
       errors: {},
       locale,
       locale_strings,
+      unsaved: false,
     });
   };
 
@@ -78,14 +79,24 @@ export const useDataformsStore = defineStore("dataforms", () => {
     forms.value = computedForm;
   };
 
-  const addField = (appendFieldData) => updateField(appendFieldData);
+  const addField = (appendFieldData) => {
+    updateData(appendFieldData);
+  };
 
   const updateField = (appendFieldData) => {
+    updateData(appendFieldData, true);
+  };
+
+  const updateData = (appendFieldData, unsaved = false) => {
     // Keep reactivity
     const computedForm = forms.value.map((form) => {
       if (form.id === appendFieldData.formId) {
         form.fields[appendFieldData.fieldName] = appendFieldData.fieldValue;
         form.binder[appendFieldData.fieldName] = appendFieldData.fieldValue;
+
+        if (unsaved) {
+          form.unsaved = true;
+        }
       }
 
       return form;
