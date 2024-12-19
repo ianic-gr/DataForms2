@@ -245,6 +245,7 @@ defineExpose({
   setLoading,
   changeLeaf,
   dataformsStore,
+  submit,
 });
 </script>
 
