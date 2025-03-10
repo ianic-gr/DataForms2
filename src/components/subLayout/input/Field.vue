@@ -16,6 +16,7 @@ import dateTimePicker from "@/components/types/DateTimePicker";
 import password from "@/components/types/Password";
 import epic from "@/components/types/Epic";
 import fileInput from "@/components/types/FileInput.vue";
+import dynamic from "@/components/types/dynamic.vue";
 
 const types = {
   textField,
@@ -30,6 +31,7 @@ const types = {
   password,
   epic,
   fileInput,
+  dynamic,
 };
 
 const props = defineProps({

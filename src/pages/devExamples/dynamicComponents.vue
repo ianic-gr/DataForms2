@@ -1,10 +1,25 @@
 <script setup>
-import Map from "@/components/dynamic/Map.vue";
+import Alias from "@/components/examples/dynamic/alias/index.vue";
+import Map from "@/components/examples/dynamic/Map.vue";
+
 const api = {
   rows: [
     {
       input: [
         {
+          pop: {
+            type: "dynamic",
+            options: {
+              label: "hello",
+              default: {
+                el: "",
+                en: "",
+              },
+            },
+            validation: "required",
+            component: Alias,
+          },
+
           whereAMI: {
             options: {
               label: "Where am i?",
