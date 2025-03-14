@@ -1,5 +1,5 @@
 <script setup>
-import Map from "@/components/dynamic/Map.vue";
+import Map from "@/components/examples/dynamic/Map.vue";
 
 const api = {
   rows: [

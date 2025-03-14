@@ -68,28 +68,6 @@ export default defineConfig(({ mode }) => {
         dts: "src/typed-router.d.ts",
       }),
       Layouts(),
-      Vue({
-        template: { transformAssetUrls },
-      }),
-      Vuetify({
-        autoImport: true,
-        styles: {
-          configFile: "src/styles/settings.scss",
-        },
-      }),
-      Components({
-        dts: "src/components.d.ts",
-      }),
-      Fonts({
-        google: {
-          families: [
-            {
-              name: "Roboto",
-              styles: "wght@100;300;400;500;700;900",
-            },
-          ],
-        },
-      }),
       AutoImport({
         imports: [
           "vue",
@@ -102,6 +80,28 @@ export default defineConfig(({ mode }) => {
           enabled: true,
         },
         vueTemplate: true,
+      }),
+      Components({
+        dts: "src/components.d.ts",
+      }),
+      Vue({
+        template: { transformAssetUrls },
+      }),
+      Vuetify({
+        autoImport: true,
+        styles: {
+          configFile: "src/styles/settings.scss",
+        },
+      }),
+      Fonts({
+        google: {
+          families: [
+            {
+              name: "Roboto",
+              styles: "wght@100;300;400;500;700;900",
+            },
+          ],
+        },
       }),
     ],
     define: { "process.env": {} },
