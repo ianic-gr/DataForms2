@@ -40,24 +40,21 @@ onMounted(() => {
 <template>
   <v-row>
     <v-col
-      cols="12"
       v-for="(col, x) in items"
       v-bind="{ ...(col._responsive || {}) }"
       :key="x"
+      cols="12"
     >
       <div v-for="(input, inputKey) in parsedCol(col)" :key="inputKey">
         <!-- Component changes when currentTab changes -->
         <Field
           :input="input"
-          :inputKey="inputKey"
-          :formId="formId"
+          :input-key="inputKey"
+          :form-id="formId"
           :loading="loading"
           :theme="theme"
         >
-          <template
-            v-for="inputSlot in input.itemSlots"
-            #[inputSlot]="{ item }"
-          >
+          <template v-for="inputSlot in input.itemSlots" #[inputSlot]="{ item }">
             <slot :name="inputSlot" :item="item" />
           </template>
         </Field>

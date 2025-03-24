@@ -33,7 +33,9 @@ defineProps({
   <div
     :class="`dataforms-field dataforms-epic--${formId}_${inputKey} dataforms-epic--${formId} dataforms-epic--${inputKey}`"
   >
-    <div v-if="options.html" v-html="options.html"></div>
-    <p v-else>{{ options.text }}</p>
+    <div v-if="options.html" v-html="options.html" />
+    <p v-else>
+      {{ options.text }}
+    </p>
   </div>
 </template>

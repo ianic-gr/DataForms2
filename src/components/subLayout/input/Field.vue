@@ -135,8 +135,7 @@ const themeOptions = computed(() => {
 const inputTypeComponent = computed(() => {
   const selectedInputType =
     Object.entries(types).find(
-      ([key]) =>
-        normalizeString(key) === normalizeString(props.input?.type ?? "")
+      ([key]) => normalizeString(key) === normalizeString(props.input?.type ?? "")
     )?.[1] ?? textField;
 
   return selectedInputType;
@@ -168,9 +167,9 @@ const inputTypeComponent = computed(() => {
         </label>
 
         <div v-if="input.readOnly" class="d-flex align-center">
-          <v-icon v-if="input.options?.prependIcon" class="me-4">{{
-            input.options?.prependIcon
-          }}</v-icon>
+          <v-icon v-if="input.options?.prependIcon" class="me-4">
+            {{ input.options?.prependIcon }}
+          </v-icon>
           <v-card class="w-100" variant="tonal" min-height="59">
             <v-card-text class="py-2">
               <div>
@@ -187,8 +186,8 @@ const inputTypeComponent = computed(() => {
           v-model:return="fieldReturn"
           :class="`dataforms-field dataforms-${inputTypeComponent.__name}--${formId}_${inputKey} dataforms-${inputTypeComponent.__name}--${formId} dataforms-${inputTypeComponent.__name}--${inputKey}`"
           :input="input"
-          :formId="formId"
-          :inputKey="inputKey"
+          :form-id="formId"
+          :input-key="inputKey"
           :options="{
             ...themeOptions,
             ...input.options,
@@ -196,47 +195,44 @@ const inputTypeComponent = computed(() => {
           }"
           :events="input.events"
           :disabled="loading"
-          :loadingIndicator="loading"
+          :loading-indicator="loading"
         >
-          <template
-            v-for="inputSlot in input.itemSlots"
-            #[inputSlot]="{ item }"
-          >
+          <template v-for="inputSlot in input.itemSlots" #[inputSlot]="{ item }">
             <slot :name="inputSlot" :item="item" />
           </template>
-          <template v-slot:append v-if="input.tooltip">
+          <template v-if="input.tooltip" #append>
             <div
               class="text-center d-flex align-center justify-space-around"
               style="cursor: pointer"
             >
               <v-tooltip v-bind="input.tooltip">
-                <template v-slot:activator="{ props }">
+                <template #activator="{ props }">
                   <div v-bind="props">
-                    <v-icon color="primary">mdi-information</v-icon>
+                    <v-icon color="primary"> mdi-information </v-icon>
                   </div>
                 </template>
               </v-tooltip>
             </div>
           </template>
-          <template v-slot:append v-else-if="input.appendInner">
+          <template v-else-if="input.appendInner" #append>
             <div
               class="text-center d-flex align-center justify-space-around"
               style="cursor: pointer"
             >
               <component
-                @click="input.appendInner.onClick"
                 :is="input.appendInner.component"
                 v-bind="input.appendInner.options"
+                @click="input.appendInner.onClick"
               >
                 {{ input.appendInner.text }}
               </component>
             </div>
           </template>
-          <template v-slot:append-outer v-if="input.appendOuter">
+          <template v-if="input.appendOuter" #append-outer>
             <div
               class="text-center d-flex align-center justify-space-around"
               style="cursor: pointer"
-            ></div>
+            />
             <component
               :is="input.appendOuter.component"
               v-bind="input.appendOuter.options"

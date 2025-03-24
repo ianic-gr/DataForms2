@@ -46,13 +46,11 @@ const api = ref({
 
 <template>
   <DataForm id="slots-form" :api="api">
-    <template v-slot:Binding>
+    <template #Binding>
       <h2>Binded form</h2>
       <v-row>
         <v-col cols="12">
-          <v-btn @click="api.binder.name.invalid = false"
-            >Make name valid</v-btn
-          >
+          <v-btn @click="api.binder.name.invalid = false"> Make name valid </v-btn>
         </v-col>
         <v-col>
           <v-text-field
@@ -60,14 +58,12 @@ const api = ref({
             label="Name"
             outlined
             required
-            :error-messages="
-              api.binder.name.invalid ? api.binder.name.error : ''
-            "
+            :error-messages="api.binder.name.invalid ? api.binder.name.error : ''"
           />
         </v-col>
-        <v-col
-          ><v-text-field v-model="api.binder.surname" label="Surname" outlined
-        /></v-col>
+        <v-col>
+          <v-text-field v-model="api.binder.surname" label="Surname" outlined />
+        </v-col>
         <v-col>
           <v-text-field v-model="api.binder.phone" label="Phone" outlined />
         </v-col>

@@ -35,9 +35,7 @@ const initMap = () => {
   }).addTo(map.value);
 
   // Create a draggable marker at a specific location
-  marker.value = L.marker([40.6212503, 22.9048278], { draggable: true }).addTo(
-    map.value
-  );
+  marker.value = L.marker([40.6212503, 22.9048278], { draggable: true }).addTo(map.value);
 
   // Listen for the dragend event to get the new position
   marker.value.on("dragend", function (event) {
@@ -50,20 +48,14 @@ const initMap = () => {
 
 const installMap = () => {
   // Create and append the Leaflet stylesheet
-  let linkTag = document.createElement("link");
+  const linkTag = document.createElement("link");
   linkTag.setAttribute("rel", "stylesheet");
-  linkTag.setAttribute(
-    "href",
-    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  );
+  linkTag.setAttribute("href", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
   document.head.appendChild(linkTag);
 
   // Create and append the Leaflet script
   const scriptTag = document.createElement("script");
-  scriptTag.setAttribute(
-    "src",
-    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  );
+  scriptTag.setAttribute("src", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
   document.head.appendChild(scriptTag);
 
   scriptTag.onload = () => initMap();
@@ -108,7 +100,7 @@ onMounted(async () => {
 
 <template>
   <div class="dynamic-map-component">
-    <div id="map" class="mb-8" style="height: 400px"></div>
-    <DataFormInput :formId="id" :items="fields"></DataFormInput>
+    <div id="map" class="mb-8" style="height: 400px" />
+    <DataFormInput :form-id="id" :items="fields" />
   </div>
 </template>

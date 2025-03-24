@@ -4,7 +4,7 @@
       <v-card-title class="py-2">
         <span class="title_fluid" style="font-size: 1rem">{{ title }}</span>
       </v-card-title>
-      <v-divider></v-divider>
+      <v-divider />
       <v-card-text>
         <slot theme="Fluid" />
       </v-card-text>

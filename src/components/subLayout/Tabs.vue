@@ -51,24 +51,17 @@ onMounted(() => {
       :slider-color="tabsOptions.color || 'primary'"
       :vertical="!tabsOptions.horizontal"
     >
-      <v-tab v-for="(item, i) in items" :key="i">{{ item.title }}</v-tab>
+      <v-tab v-for="(item, i) in items" :key="i">
+        {{ item.title }}
+      </v-tab>
     </v-tabs>
 
     <v-card-text class="pa-0">
       <v-tabs-window v-model="leaf">
-        <v-tabs-window-item
-          v-for="(item, i) in items"
-          :key="`tabitem_${i}`"
-          eager
-        >
+        <v-tabs-window-item v-for="(item, i) in items" :key="`tabitem_${i}`" eager>
           <v-card flat>
             <v-card-text>
-              <InputGroups
-                v-bind="{ ...props }"
-                :item="item"
-                :leaf="leaf"
-                :tabKey="i"
-              />
+              <InputGroups v-bind="{ ...props }" :item="item" :leaf="leaf" :tab-key="i" />
             </v-card-text>
           </v-card>
         </v-tabs-window-item>

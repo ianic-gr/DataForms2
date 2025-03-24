@@ -58,13 +58,13 @@ watch(
     <v-text-field
       v-model="formattedDate"
       v-bind="{ ...$attrs, ...options }"
-      @click="events?.onClick && events.onClick()"
       readonly
       outlined
       :error-messages="inputField.errorMessage.value"
+      @click="events?.onClick && events.onClick()"
     />
     <v-dialog v-model="dialog" max-width="360" persistent activator="parent">
-      <template v-slot:default>
+      <template #default>
         <v-card>
           <v-card-text class="pa-0">
             <v-date-picker
@@ -76,8 +76,8 @@ watch(
           </v-card-text>
           <v-spacer />
           <v-card-actions>
-            <v-btn text color="primary" @click="dialog = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="saveDate">OK</v-btn>
+            <v-btn text color="primary" @click="dialog = false"> Cancel </v-btn>
+            <v-btn text color="primary" @click="saveDate"> OK </v-btn>
           </v-card-actions>
         </v-card>
       </template>

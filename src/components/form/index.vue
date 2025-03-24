@@ -4,7 +4,6 @@ import { useDataformsStore } from "@/stores/dataFormsStore";
 import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 import { defineRule, useForm } from "vee-validate";
 import { all } from "@vee-validate/rules";
-import { getValidations } from "@/utils/getValidations";
 
 Object.entries(all).forEach(([name, rule]) => {
   defineRule(name, rule);
@@ -115,7 +114,7 @@ const addBinderDataToFields = () => {
   if (!props.api.binder) return true;
 
   Object.keys(props.api.binder).forEach((item) => {
-    let data = props.api.binder[item];
+    const data = props.api.binder[item];
 
     addField({
       formId: props.id,
@@ -132,7 +131,7 @@ const validateBinder = () => {
   if (!props.api.binder) return true;
 
   Object.keys(props.api.binder).forEach((item) => {
-    let data = props.api.binder[item];
+    const data = props.api.binder[item];
 
     if (typeof data === "object" && data !== null) {
       if (data.invalid) {
@@ -170,9 +169,7 @@ const scrollToError = () => {
   }
 };
 
-const { handleSubmit } = useForm({
-  // validationSchema: getValidations(props.api),
-});
+const { handleSubmit } = useForm();
 
 const submitSuccess = async (binder) => {
   if (binder) {
@@ -250,29 +247,22 @@ defineExpose({
 </script>
 
 <template>
-  <v-form @submit.prevent="submit" ref="vFormRef">
+  <v-form ref="vFormRef" @submit.prevent="submit">
     <transition-group name="form">
       <v-row key="form_row">
         <v-col
-          cols="12"
+          v-for="(row, i) in api.rows"
           v-show="!row.hidden"
           v-bind="{ ...$attrs, ...(row.responsive || {}) }"
-          v-for="(row, i) in api.rows"
           :key="i"
+          cols="12"
         >
-          <Row :row="row" :id="id" :loading="loading">
-            <template
-              v-for="inputSlot in getApiSlots(row)"
-              #[inputSlot]="{ item }"
-            >
+          <Row :id="id" :row="row" :loading="loading">
+            <template v-for="inputSlot in getApiSlots(row)" #[inputSlot]="{ item }">
               <slot :name="inputSlot" :item="item" />
             </template>
-            <template v-slot:rowSlot>
-              <v-col
-                cols="12"
-                v-for="(slot, slotKey) in row.slots"
-                :key="slotKey"
-              >
+            <template #rowSlot>
+              <v-col v-for="(slot, slotKey) in row.slots" :key="slotKey" cols="12">
                 <slot :name="slot" />
               </v-col>
             </template>

@@ -193,13 +193,13 @@ This project is licensed under the MIT License.
 `;
 
 export default defineComponent({
+  components: {
+    MarkdownPreview,
+  },
   data() {
     return {
       markdown,
     };
-  },
-  components: {
-    MarkdownPreview,
   },
 });
 </script>

@@ -69,7 +69,7 @@ watch(
         :key="i"
         :label="optionLabel(radio)"
         :value="optionValue(radio)"
-      ></v-radio>
+      />
     </v-radio-group>
   </div>
 </template>

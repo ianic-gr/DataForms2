@@ -115,8 +115,8 @@ const deleteForm = () => {
 
 <template>
   <DataForm id="contact-form" :api="api">
-    <template v-slot:buttons>
-      <v-btn @click="deleteForm" variant="text" color="error">Delete</v-btn>
+    <template #buttons>
+      <v-btn variant="text" color="error" @click="deleteForm"> Delete </v-btn>
     </template>
   </DataForm>
 </template>

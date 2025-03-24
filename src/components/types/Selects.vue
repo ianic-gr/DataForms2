@@ -62,16 +62,16 @@ watch(
     <v-select
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
+      :error-messages="field.errorMessage.value"
       v-on="events"
-      item-title="text"
-      item-value="value"
       @click="
         () => events && events.hasOwnProperty('onClick') && events.onClick()
       "
       @change="onSelect"
-      :error-messages="field.errorMessage.value"
     >
-      <template v-slot:append><slot name="append"></slot></template
-    ></v-select>
+      <template #append>
+        <slot name="append" />
+      </template>
+    </v-select>
   </div>
 </template>

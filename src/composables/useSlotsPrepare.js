@@ -31,7 +31,6 @@ export function useSlotsPrepare() {
             }
           })
           .flatMap((obj) => {
-            /*eslint-disable-next-line no-prototype-builtins */
             if (obj.hasOwnProperty("itemSlots")) {
               return obj.itemSlots;
             } else {

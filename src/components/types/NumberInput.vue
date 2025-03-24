@@ -61,13 +61,15 @@ watch(
     <v-number-input
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
+      :error-messages="field.errorMessage.value"
       v-on="events"
       @click="
         () => events && events.hasOwnProperty('onClick') && events.onClick()
       "
-      :error-messages="field.errorMessage.value"
     >
-      <template v-slot:append><slot name="append"></slot></template>
+      <template #append>
+        <slot name="append" />
+      </template>
     </v-number-input>
   </div>
 </template>

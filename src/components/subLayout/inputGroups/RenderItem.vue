@@ -28,15 +28,15 @@ const props = defineProps({
 
 <template>
   <div class="dataforms-renderItem">
-    <Input v-if="item.input?.length" :items="item.input" :formId="id">
+    <Input v-if="item.input?.length" :items="item.input" :form-id="id">
       <template v-for="inputSlot in slots(item.input)" #[inputSlot]="{ item }">
         <slot :name="inputSlot" :item="item" :active="leaf === tabKey" />
       </template>
     </Input>
 
     <component
-      v-if="item.dynamic?.component"
       :is="item.dynamic.component"
+      v-if="item.dynamic?.component"
       v-bind="{ ...props, ...item.dynamic }"
       :active="leaf === tabKey"
     />

@@ -3,8 +3,7 @@ import { useDataformsStore } from "@/stores/dataFormsStore";
 import { useInputEvents } from "@/composables/useInputEvents";
 
 export function useFieldType(props) {
-  const { addField, updateField, getCurrentForm, addInput } =
-    useDataformsStore();
+  const { addField, updateField, getCurrentForm, addInput } = useDataformsStore();
   const { onChange } = useInputEvents(props);
 
   const field = ref(props.options?.default ?? null);
@@ -12,10 +11,12 @@ export function useFieldType(props) {
   const currentFormData = computed(() => getCurrentForm(props.formId));
 
   const initializeField = () => {
+    const binder = currentFormData.value.binder;
+
     addField({
       formId: props.formId,
       fieldName: props.inputKey,
-      fieldValue: field.value,
+      fieldValue: binder?.[props?.inputKey] ?? field.value,
     });
     addInput(props.formId, props.inputKey, props.input);
   };

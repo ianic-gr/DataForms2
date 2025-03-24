@@ -64,8 +64,7 @@ const api = {
 <template>
   <p>
     To show the Budget 💸 field, we should provide the name with <b>Bob</b>, or
-    <b>John</b>, if the name is bob we need to provide the deadline with
-    <b>Now!</b> value
+    <b>John</b>, if the name is bob we need to provide the deadline with <b>Now!</b> value
   </p>
-  <dataForm id="readonly" :api="api"> </dataForm>
+  <dataForm id="readonly" :api="api" />
 </template>

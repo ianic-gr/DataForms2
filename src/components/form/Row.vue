@@ -72,22 +72,15 @@ const theRowTitle = computed(() => {
 
 <template>
   <v-row v-if="showOnConditions(row.conditionals)">
-    <v-col cols="12" v-if="themeTitle" v-html="theRowTitle"></v-col>
-    <v-col cols="12" v-if="isObject(row.title) && 'component' in row.title">
-      <component
-        :is="row.title.component"
-        v-bind="{ ...(row.title.bind || {}) }"
-      ></component>
+    <v-col v-if="themeTitle" cols="12" v-html="theRowTitle" />
+    <v-col v-if="isObject(row.title) && 'component' in row.title" cols="12">
+      <component :is="row.title.component" v-bind="{ ...(row.title.bind || {}) }" />
     </v-col>
     <slot name="rowSlot" />
-    <v-col cols="12" v-if="row.accordion">
-      <Accordion
-        :id="id"
-        :items="row.accordion.items"
-        :options="row.accordion.options"
-      />
+    <v-col v-if="row.accordion" cols="12">
+      <Accordion :id="id" :items="row.accordion.items" :options="row.accordion.options" />
     </v-col>
-    <v-col cols="12" v-if="row.tabs">
+    <v-col v-if="row.tabs" cols="12">
       <Tabs :id="id" :items="row.tabs.items" :options="row.tabs.options">
         <!-- <template
           v-for="inputSlot in subLayoutSlots(row.tabs.items)"
@@ -100,38 +93,32 @@ const theRowTitle = computed(() => {
     <v-col cols="12">
       <v-row>
         <v-col
-          cols="12"
-          v-bind="{ ...$attrs, ...(setRow.responsive || {}) }"
           v-for="(setRow, i) in rowInput"
-          :key="i"
           v-show="!setRow.hidden"
+          v-bind="{ ...$attrs, ...(setRow.responsive || {}) }"
+          :key="i"
+          cols="12"
         >
           <component :is="setRow.themeComp" :row="setRow">
             <Input
               ref="dataFormInput"
               :items="setRow.set"
-              :formId="id"
+              :form-id="id"
               :loading="loading"
               :theme="setRow.theme"
             >
-              <template
-                v-for="inputSlot in slots(setRow.set)"
-                #[inputSlot]="{ item }"
-              >
+              <template v-for="inputSlot in slots(setRow.set)" #[inputSlot]="{ item }">
                 <slot :name="inputSlot" :item="item" />
               </template>
             </Input>
           </component>
         </v-col>
         <v-col v-if="row.dynamic?.component" cols="12">
-          <component
-            :is="row.theme ? themes[row.theme] : themes['Plain']"
-            :row="row"
-          >
+          <component :is="row.theme ? themes[row.theme] : themes['Plain']" :row="row">
             <component
               :is="row.dynamic.component"
               v-bind="{ ...props, ...row.dynamic }"
-            ></component>
+            />
           </component>
         </v-col>
       </v-row>

@@ -19,9 +19,7 @@ const api = {
               returnFormat: "MM-DD-YYYY",
               datepicker: {
                 allowedDates: (val) => {
-                  return (
-                    parseInt(adapter.toISO(val).split("-")[2], 10) % 2 === 0
-                  );
+                  return parseInt(adapter.toISO(val).split("-")[2], 10) % 2 === 0;
                 },
               },
             },
@@ -38,9 +36,7 @@ const api = {
               returnFormat: "MM-DD-YYYY h:mm:ss",
               datepicker: {
                 allowedDates: (val) => {
-                  return (
-                    parseInt(adapter.toISO(val).split("-")[2], 10) % 2 === 0
-                  );
+                  return parseInt(adapter.toISO(val).split("-")[2], 10) % 2 === 0;
                 },
               },
               timepicker: {

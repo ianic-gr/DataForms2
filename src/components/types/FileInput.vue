@@ -45,9 +45,7 @@ watch(
     if (v === null) return;
 
     field.value.value = v;
-    fieldReturn.value = (Array.isArray(v) ? v : [v])
-      .map((item) => item.name)
-      .join(", ");
+    fieldReturn.value = (Array.isArray(v) ? v : [v]).map((item) => item.name).join(", ");
   },
   { immediate: true }
 );
@@ -59,23 +57,19 @@ watch(
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
       :loading="props.loadingIndicator"
-      v-on="props.events"
-      @click="
-        () => events && events.hasOwnProperty('onClick') && events.onClick()
-      "
       :error-messages="field.errorMessage.value"
+      v-on="props.events"
+      @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
-      <template v-slot:append><slot name="append"></slot></template>
+      <template #append>
+        <slot name="append" />
+      </template>
     </v-file-input>
     <Slider
       v-if="Array.isArray(props.options.preview)"
       :options="props.options"
-      @deleteItem="$useInputEvents.onDelete"
+      @delete-item="$useInputEvents.onDelete"
     />
-    <Single
-      v-else
-      :options="props.options"
-      @deleteItem="$useInputEvents.onDelete"
-    />
+    <Single v-else :options="props.options" @delete-item="$useInputEvents.onDelete" />
   </div>
 </template>

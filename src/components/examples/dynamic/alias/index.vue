@@ -21,10 +21,7 @@ const clearAlias = () => {
 };
 
 const onBlur = () => {
-  alias.value = fillEmptyAttributes(
-    alias.value,
-    alias.value[currentLanguageKey.value]
-  );
+  alias.value = fillEmptyAttributes(alias.value, alias.value[currentLanguageKey.value]);
 };
 </script>
 

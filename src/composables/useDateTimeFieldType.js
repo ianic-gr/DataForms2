@@ -13,15 +13,12 @@ export function useDateTimeFieldType(props) {
 
   const date = computed({
     get: () => {
-      const format =
-        props.options?.returnFormat?.split(" ")[0] ?? defaultDateFormat;
+      const format = props.options?.returnFormat?.split(" ")[0] ?? defaultDateFormat;
       const fieldValue = tempDate.value ?? field.value;
       let returnValue;
 
       if (isMultiple.value && fieldValue.length) {
-        returnValue = fieldValue.map(
-          (val) => new Date(moment(val, format).format())
-        );
+        returnValue = fieldValue.map((val) => new Date(moment(val, format).format()));
       } else {
         returnValue = new Date(moment(fieldValue, format).format());
       }
@@ -42,15 +39,11 @@ export function useDateTimeFieldType(props) {
   const time = computed({
     get: () => {
       const preFormat =
-        props.options?.returnFormat ??
-        `${defaultDateFormat} ${defaultTimeFormat}`;
+        props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
 
       console.log(tempTime.value);
 
-      return (
-        tempTime.value ??
-        moment(field.value, preFormat).format(defaultTimeFormat)
-      );
+      return tempTime.value ?? moment(field.value, preFormat).format(defaultTimeFormat);
     },
     set: (value) => {
       tempTime.value = value;
@@ -59,15 +52,12 @@ export function useDateTimeFieldType(props) {
 
   const formattedDate = computed(() => {
     const format = props.options?.format ?? defaultDateFormat;
-    const returnFormat =
-      props.options?.returnFormat?.split(" ")[0] ?? defaultDateFormat;
+    const returnFormat = props.options?.returnFormat?.split(" ")[0] ?? defaultDateFormat;
 
     let returnValue;
 
     if (isMultiple.value && field.value && field.value.length) {
-      returnValue = field.value.map((val) =>
-        moment(val, returnFormat).format(format)
-      );
+      returnValue = field.value.map((val) => moment(val, returnFormat).format(format));
 
       if (field.value.length > 1) {
         returnValue = `${field.value.length} Selected`;
@@ -75,24 +65,19 @@ export function useDateTimeFieldType(props) {
         if (props.options.datepicker.multiple === "range") {
           returnValue = [
             moment(field.value[0], returnFormat).format(format),
-            moment(field.value[field.value.length - 1], returnFormat).format(
-              format
-            ),
+            moment(field.value[field.value.length - 1], returnFormat).format(format),
           ].join(" ~ ");
         }
       }
     } else {
-      returnValue = field.value
-        ? moment(field.value, returnFormat).format(format)
-        : "";
+      returnValue = field.value ? moment(field.value, returnFormat).format(format) : "";
     }
 
     return returnValue;
   });
 
   const formattedDateTime = computed(() => {
-    const format =
-      props.options?.format ?? `${defaultDateFormat} ${defaultTimeFormat}`;
+    const format = props.options?.format ?? `${defaultDateFormat} ${defaultTimeFormat}`;
 
     return field.value ? moment(field.value).format(format) : "";
   });

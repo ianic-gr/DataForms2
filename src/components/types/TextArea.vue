@@ -57,13 +57,13 @@ watch(
     <v-textarea
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
-      v-on="events"
-      @click="
-        () => events && events.hasOwnProperty('onClick') && events.onClick()
-      "
       :error-messages="field.errorMessage.value"
+      v-on="events"
+      @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
-      <template v-slot:append><slot name="append"></slot></template>
+      <template #append>
+        <slot name="append" />
+      </template>
     </v-textarea>
   </div>
 </template>

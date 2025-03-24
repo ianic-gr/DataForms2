@@ -58,8 +58,8 @@ watch(
         ...$attrs,
         ...options,
       }"
-      v-on="events"
       :error-messages="field.errorMessage.value"
+      v-on="events"
     />
   </div>
 </template>

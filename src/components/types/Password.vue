@@ -66,14 +66,14 @@ watch(
       v-model="fieldValue"
       :append-icon="fieldIcon"
       :type="fieldType"
-      @click:append="showPassword = !showPassword"
-      @click="
-        () => events && events.hasOwnProperty('onClick') && events.onClick()
-      "
       v-bind="{ ...$attrs, ...options }"
       :error-messages="field.errorMessage.value"
+      @click:append="showPassword = !showPassword"
+      @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
-      <template v-slot:append><slot name="append"></slot></template>
+      <template #append>
+        <slot name="append" />
+      </template>
     </v-text-field>
   </div>
 </template>

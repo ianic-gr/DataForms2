@@ -65,20 +65,20 @@ watch(
   <div>
     <p v-if="theme !== 'Fluid'">
       {{ options.label || "" }}
-      <slot name="append"></slot>
+      <slot name="append" />
     </p>
     <v-checkbox
-      v-model="fieldValue"
+      v-for="(checkb, i) in options.items"
       v-bind="{
         ...$attrs,
         ...options,
       }"
-      v-on="events"
-      v-for="(checkb, i) in options.items"
       :key="i"
+      v-model="fieldValue"
       :label="optionLabel(checkb)"
       :value="optionValue(checkb)"
       :error-messages="field.errorMessage.value"
+      v-on="events"
     />
   </div>
 </template>
