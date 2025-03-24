@@ -68,7 +68,7 @@ const api = {
             options: {
               label: "Datepicker Range",
               prependIcon: "mdi-calendar-range",
-              default: ["07-02-1993"],
+              default: ["07-02-1993", "08-02-1993"],
               format: "DD/MM/YYYY",
               returnFormat: "MM-DD-YYYY",
               datepicker: {

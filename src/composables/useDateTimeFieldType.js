@@ -26,15 +26,33 @@ export function useDateTimeFieldType(props) {
       }
     } else if (isMultiple.value) {
       if (Array.isArray(defaultVal)) {
-        const validDates = defaultVal
-          .map((val) => {
-            const parsedDate = moment(val, format);
-            return parsedDate.isValid() ? parsedDate.format(format) : null;
-          })
-          .filter(Boolean);
-        
-        field.value = validDates;
-        tempDate.value = validDates.map(date => moment(date, format).toDate());
+        if (props.options.datepicker.multiple === "range" && defaultVal.length === 2) {
+          const startDate = moment(defaultVal[0], format);
+          const endDate = moment(defaultVal[1], format);
+          
+          if (startDate.isValid() && endDate.isValid()) {
+            const dates = [];
+            let currentDate = startDate.clone();
+            
+            while (currentDate.isSameOrBefore(endDate)) {
+              dates.push(currentDate.format(format));
+              currentDate.add(1, 'days');
+            }
+            
+            field.value = dates;
+            tempDate.value = dates.map(date => moment(date, format).toDate());
+          }
+        } else {
+          const validDates = defaultVal
+            .map((val) => {
+              const parsedDate = moment(val, format);
+              return parsedDate.isValid() ? parsedDate.format(format) : null;
+            })
+            .filter(Boolean);
+          
+          field.value = validDates;
+          tempDate.value = validDates.map(date => moment(date, format).toDate());
+        }
       }
     } else {
       const parsedDate = moment(defaultVal, format);
