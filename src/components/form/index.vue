@@ -56,31 +56,35 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  options: {
+    type: Object,
+    default: () => ({ leaveAlertWhenDataChanges: true }),
+  },
 });
 
 const leaveAlertWhenDataChanges = (data) => {
-  if ("binder" in data) {
-    if (!initBinder.value) {
-      initBinderValues.value = { ...data.binder } ?? {};
-      initBinder.value = true;
-    }
+  if (!("binder" in data) || !props.options.leaveAlertWhenDataChanges) return;
 
-    if (
-      JSON.stringify(initBinderValues.value) !== JSON.stringify(data.binder) &&
-      !submitOK.value
-    ) {
-      window.onbeforeunload = function () {
-        return true;
-      };
-    } else {
-      window.onbeforeunload = null;
-    }
-
-    updateBinder({
-      formId: props.id,
-      binder: data.binder,
-    });
+  if (!initBinder.value) {
+    initBinderValues.value = { ...data.binder } ?? {};
+    initBinder.value = true;
   }
+
+  window.onbeforeunload = null;
+
+  if (
+    JSON.stringify(initBinderValues.value) !== JSON.stringify(data.binder) &&
+    !submitOK.value
+  ) {
+    window.onbeforeunload = function () {
+      return true;
+    };
+  }
+
+  updateBinder({
+    formId: props.id,
+    binder: data.binder,
+  });
 };
 
 const submit = () => {
@@ -227,12 +231,10 @@ watch(
   { deep: true }
 );
 
-watch(
-  () => submitOK.value,
-  () => leaveAlertWhenDataChanges(props.api)
-);
+watch(submitOK, () => leaveAlertWhenDataChanges(props.api));
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
+  leaveAlertWhenDataChanges(props.api);
   removeForm(props.id);
 });
 

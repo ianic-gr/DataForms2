@@ -35,7 +35,7 @@ const { field, currentFormData, tempDate, date, formattedDate } =
 const dialog = ref(false);
 
 const saveDate = () => {
-  field.value = tempDate.value;
+  date.value = tempDate.value;
   dialog.value = false;
 };
 

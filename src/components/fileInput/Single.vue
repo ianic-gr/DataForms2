@@ -54,12 +54,12 @@ const deleteItem = (item) => {
         @click="dialog = true"
       />
       <v-card-title>
-        <small
-          >Preview:
-          <a :href="props.options.preview.image" target="_blank">{{
-            previewImageTitle
-          }}</a></small
-        >
+        <small>
+          Preview:
+          <a :href="props.options.preview.image" target="_blank">
+            {{ previewImageTitle }}
+          </a>
+        </small>
       </v-card-title>
     </v-card>
     <v-dialog v-if="props.options.preview" v-model="dialog" max-width="1200">

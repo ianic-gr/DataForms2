@@ -30,6 +30,10 @@ const props = defineProps({
       return {};
     },
   },
+  theme: {
+    type: String,
+    default: "Plain",
+  },
 });
 
 const { field: fieldValue } = useFieldType(props);

@@ -129,6 +129,7 @@ const themeOptions = computed(() => {
     density,
     singleLine,
     color,
+    theme: props.theme,
   };
 });
 

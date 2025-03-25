@@ -53,8 +53,8 @@ export function useFieldType(props) {
 
     if (props.input?.readOnly) return;
 
-    initializeField();
     syncFieldWithFormData();
+    initializeField();
     handleFieldChange();
   });
 
