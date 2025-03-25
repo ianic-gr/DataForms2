@@ -78,6 +78,7 @@ watch(
       v-bind="{ ...$attrs, ...options }"
       readonly
       :error-messages="inputField.errorMessage.value"
+      @click:clear="date = null"
       @click="events?.onClick && events.onClick()"
     />
     <v-dialog v-model="dialog" max-width="360" persistent activator="parent">
