@@ -6,23 +6,19 @@ export function useDateTimeFieldType(props) {
   const _useFieldType = useFieldType(props);
   const { field } = _useFieldType;
 
-  // Constants
   const defaultDateFormat = "MM-DD-YYYY";
   const defaultTimeFormat = "HH:mm";
 
-  // State
   const tempDate = ref("");
   const tempTime = ref("");
   const initialized = ref(false);
 
-  // Computed format strings
   const format = computed(
     () => props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`
   );
   const dateFormat = computed(() => format.value.split(" ")[0] ?? defaultDateFormat);
   const displayFormat = computed(() => props.options?.format ?? defaultDateFormat);
 
-  // Computed properties
   const isMultiple = computed(
     () =>
       props.input.type === "datepicker" &&
@@ -30,18 +26,16 @@ export function useDateTimeFieldType(props) {
       "multiple" in props.options.datepicker
   );
 
-  // Date handling methods
   const parseDateTime = (value, format) => {
     const parsed = moment(value, format);
     return parsed.isValid() ? parsed : null;
   };
 
   const formatDateTime = (value, format) => {
-    const parsed = parseDateTime(value, format);
+    const parsed = parseDateTime(value, format.value);
     return parsed ? parsed.format(format) : "";
   };
 
-  // Default value parsing
   const parseDefaultValue = () => {
     if (initialized.value) return;
     if (!field.value && !props.input.options.default) return;
@@ -99,7 +93,6 @@ export function useDateTimeFieldType(props) {
     }
   };
 
-  // Computed properties for date and time handling
   const date = computed({
     get: () => {
       const fieldValue = tempDate.value ?? field.value;
