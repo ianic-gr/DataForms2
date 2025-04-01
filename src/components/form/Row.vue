@@ -45,34 +45,20 @@ const rowInput = computed(() => {
         theme: props.row.theme,
         themeComp: props.row.theme ? themes[props.row.theme] : themes["Plain"],
         set: props.row.input,
+        options: props.row.options,
       },
     };
   }
 
   return props.row.input;
 });
-
-const theRowTitle = computed(() => {
-  const title = props.row.title;
-  let rowTitle;
-
-  if (isObject(title)) {
-    if ("html" in title) {
-      rowTitle = title.html;
-    } else if ("text" in title) {
-      rowTitle = `<h2 class="${title.class || ""}">${title.text}</h2>`;
-    }
-  } else {
-    rowTitle = title ? `<h2>${title}</h2>` : "";
-  }
-
-  return rowTitle;
-});
 </script>
 
 <template>
   <v-row v-if="showOnConditions(row.conditionals)">
-    <v-col v-if="themeTitle" cols="12" v-html="theRowTitle" />
+    <v-col v-if="themeTitle" cols="12">
+      <h2>{{ row.title }}</h2>
+    </v-col>
     <v-col v-if="isObject(row.title) && 'component' in row.title" cols="12">
       <component :is="row.title.component" v-bind="{ ...(row.title.bind || {}) }" />
     </v-col>

@@ -1,8 +1,20 @@
 <template>
-  <div class="theme-breeze">
+  <div class="theme-breeze" v-bind="row?.options">
     <slot theme="Breeze" />
   </div>
 </template>
+
+<script>
+export default {
+  name: "ThemeBreeze",
+  props: {
+    row: {
+      type: Object,
+      default: () => {},
+    },
+  },
+};
+</script>
 
 <style lang="scss">
 .theme-breeze {

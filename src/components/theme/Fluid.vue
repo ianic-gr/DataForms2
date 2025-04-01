@@ -1,15 +1,13 @@
 <template>
-  <div class="theme-fluid">
-    <v-card>
-      <v-card-title class="py-2">
-        <span class="title_fluid" style="font-size: 1rem">{{ title }}</span>
-      </v-card-title>
-      <v-divider />
-      <v-card-text>
-        <slot theme="Fluid" />
-      </v-card-text>
-    </v-card>
-  </div>
+  <v-card class="theme-fluid" v-bind="row?.options">
+    <v-card-title class="py-2">
+      <span class="title_fluid" style="font-size: 1rem">{{ row?.title }}</span>
+    </v-card-title>
+    <v-divider />
+    <v-card-text>
+      <slot theme="Fluid" />
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -19,11 +17,6 @@ export default {
     row: {
       type: Object,
       default: () => {},
-    },
-  },
-  computed: {
-    title() {
-      return this.row?.title;
     },
   },
 };

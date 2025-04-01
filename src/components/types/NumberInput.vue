@@ -1,7 +1,6 @@
 <script setup>
 import { useFieldType } from "@/composables/useFieldType";
 import { useField } from "vee-validate";
-import { VNumberInput } from "vuetify/labs/VNumberInput";
 
 const props = defineProps({
   input: {
@@ -63,9 +62,7 @@ watch(
       v-bind="{ ...$attrs, ...options }"
       :error-messages="field.errorMessage.value"
       v-on="events"
-      @click="
-        () => events && events.hasOwnProperty('onClick') && events.onClick()
-      "
+      @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
       <template #append>
         <slot name="append" />
