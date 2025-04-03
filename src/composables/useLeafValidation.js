@@ -18,7 +18,7 @@ export function useLeafValidation(props) {
 
         // Input fields and dynamic component input fields
         const inputGroupsFields = item.inputGroups?.flatMap((inputGroup) => {
-          return inputGroup.input;
+          return [...inputGroup.input, ...(inputGroup?.dynamic?.fields ?? [])];
         });
 
         const allFields = [
