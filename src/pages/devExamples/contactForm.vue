@@ -57,23 +57,35 @@ const api = {
       input: [
         {
           deadline: {
-            type: "selects",
+            type: "autocomplete",
             options: {
               label: "When do you need this project?",
-              items: [
+              default: [
                 {
-                  text: "In 1 - 2 Months",
+                  title: "In 1 - 2 Months",
                   value: "normal_client",
                 },
                 {
-                  text: "Now!",
+                  title: "Now!",
+                  value: "now",
+                },
+              ],
+              items: [
+                {
+                  title: "In 1 - 2 Months",
+                  value: "normal_client",
+                },
+                {
+                  title: "Now!",
                   value: "now",
                 },
                 {
-                  text: "Yesterday!!!",
+                  title: "Yesterday!!!",
                   value: "yesterday",
                 },
               ],
+              multiple: true,
+              clearable: true,
             },
             validation: "required",
           },

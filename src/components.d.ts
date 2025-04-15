@@ -10,9 +10,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     Accordion: typeof import('./components/subLayout/Accordion.vue')['default']
     Alias: typeof import('./components/examples/dynamic/alias/index.vue')['default']
+    Autocomplete: typeof import('./components/types/Autocomplete.vue')['default']
     Breeze: typeof import('./components/theme/Breeze.vue')['default']
     Card: typeof import('./components/theme/Card.vue')['default']
     CheckBoxes: typeof import('./components/types/CheckBoxes.vue')['default']
+    Combobox: typeof import('./components/types/Combobox.vue')['default']
     Datepicker: typeof import('./components/types/Datepicker.vue')['default']
     DateTimePicker: typeof import('./components/types/DateTimePicker.vue')['default']
     Dynamic: typeof import('./components/types/dynamic.vue')['default']

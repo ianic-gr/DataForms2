@@ -7,7 +7,8 @@ import textField from "@/components/types/TextField";
 import textArea from "@/components/types/TextArea";
 import radioButtons from "@/components/types/RadioButtons";
 import selects from "@/components/types/Selects";
-// import selectsAutocomplete from "@/components/types/SelectsAutocomplete";
+import autocomplete from "@/components/types/Autocomplete";
+import combobox from "@/components/types/Combobox.vue";
 import switchButton from "@/components/types/Switch";
 import checkBoxes from "@/components/types/CheckBoxes";
 import numberInput from "@/components/types/NumberInput";
@@ -23,6 +24,8 @@ const types = {
   textArea,
   radioButtons,
   selects,
+  autocomplete,
+  combobox,
   switchButton,
   checkBoxes,
   numberInput,
