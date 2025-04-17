@@ -100,6 +100,7 @@ onMounted(async () => {
 
 <template>
   <div class="dynamic-map-component">
+    <DataFormInputErrors :form-id="id" :items="fields" />
     <div id="map" class="mb-8" style="height: 400px" />
     <DataFormInput :form-id="id" :items="fields" />
   </div>

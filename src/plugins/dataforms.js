@@ -5,12 +5,17 @@ export default {
     // Register a global component
     app.component(
       "DataForm",
-      defineAsyncComponent(() => import("../components/form"))
+      defineAsyncComponent(() => import("../components/form/index.vue"))
     );
 
     app.component(
       "DataFormInput",
-      defineAsyncComponent(() => import("../components/subLayout/input"))
+      defineAsyncComponent(() => import("../components/subLayout/input/index.vue"))
+    );
+
+    app.component(
+      "DataFormInputErrors",
+      defineAsyncComponent(() => import("../components/subLayout/input/Errors.vue"))
     );
   },
 };

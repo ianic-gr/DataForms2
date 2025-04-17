@@ -19,6 +19,7 @@ declare module 'vue' {
     DateTimePicker: typeof import('./components/types/DateTimePicker.vue')['default']
     Dynamic: typeof import('./components/types/dynamic.vue')['default']
     Epic: typeof import('./components/types/Epic.vue')['default']
+    Errors: typeof import('./components/subLayout/input/Errors.vue')['default']
     Field: typeof import('./components/subLayout/input/Field.vue')['default']
     FileInput: typeof import('./components/types/FileInput.vue')['default']
     Fluid: typeof import('./components/theme/Fluid.vue')['default']
