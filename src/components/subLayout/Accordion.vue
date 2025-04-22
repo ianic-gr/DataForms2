@@ -19,7 +19,9 @@ const props = defineProps({
 const { leaf, handleLeafError } = useLeafValidation(props);
 
 onMounted(() => {
-  document.addEventListener("dataFormSubmitFailed", () => handleLeafError());
+  document.addEventListener("dataFormSubmitFailed", (e) =>
+    handleLeafError(e.detail.formID)
+  );
 });
 </script>
 

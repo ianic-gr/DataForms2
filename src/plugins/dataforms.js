@@ -15,7 +15,7 @@ export default {
 
     app.component(
       "DataFormInputErrors",
-      defineAsyncComponent(() => import("../components/subLayout/input/Errors.vue"))
+      defineAsyncComponent(() => import("../components/subLayout/input/errors/index.vue"))
     );
   },
 };

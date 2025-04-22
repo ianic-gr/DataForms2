@@ -164,7 +164,7 @@ const inputTypeComponent = computed(() => {
         <span v-if="isRequired" class="text-error">*</span>
       </div>
 
-      <div class="flex-grow-1" style="max-width: 100%">
+      <div class="flex-grow-1" style="max-width: 100%; width: 100%">
         <label v-if="theme === 'Breeze'" class="text-uppercase">
           {{ label }}
           <span v-if="isRequired" class="text-error">*</span>

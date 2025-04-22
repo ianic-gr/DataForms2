@@ -29,9 +29,9 @@ const tabsOptions = computed(() => {
 });
 
 onMounted(() => {
-  document.addEventListener("dataFormSubmitFailed", () => {
-    handleLeafError();
-  });
+  document.addEventListener("dataFormSubmitFailed", (e) =>
+    handleLeafError(e.detail.formID)
+  );
 });
 </script>
 

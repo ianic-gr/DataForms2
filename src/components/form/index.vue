@@ -12,6 +12,29 @@ Object.entries(all).forEach(([name, rule]) => {
 const dataformsStore = useDataformsStore();
 const { getApiSlots } = useSlotsPrepare();
 
+const props = defineProps({
+  id: {
+    required: true,
+    type: String,
+  },
+  api: {
+    type: Object,
+    default: () => ({}),
+  },
+  locale: {
+    type: String,
+    default: "en",
+  },
+  localeStrings: {
+    type: Object,
+    default: () => ({}),
+  },
+  options: {
+    type: Object,
+    default: () => ({ leaveAlertWhenDataChanges: true }),
+  },
+});
+
 const {
   getCurrentForm,
   addForm,
@@ -33,32 +56,19 @@ const emit = defineEmits([
 const vFormRef = ref(null);
 const loading = ref(false);
 const submitEvent = new Event("dataFormSubmit");
-const submitSuccessEvent = new Event("dataFormSubmitSuccess");
-const submitFailedEvent = new Event("dataFormSubmitFailed");
 const initBinder = ref(false);
 const initBinderValues = ref({});
 const submitOK = ref(false);
 
-const props = defineProps({
-  id: {
-    required: true,
-    type: String,
+const submitSuccessEvent = new CustomEvent("dataFormSubmitSuccess", {
+  detail: {
+    formID: props.id,
   },
-  api: {
-    type: Object,
-    default: () => ({}),
-  },
-  locale: {
-    type: String,
-    default: "en",
-  },
-  localeStrings: {
-    type: Object,
-    default: () => ({}),
-  },
-  options: {
-    type: Object,
-    default: () => ({ leaveAlertWhenDataChanges: true }),
+});
+
+const submitFailedEvent = new CustomEvent("dataFormSubmitFailed", {
+  detail: {
+    formID: props.id,
   },
 });
 
@@ -87,7 +97,7 @@ const leaveAlertWhenDataChanges = (data) => {
   });
 };
 
-const submit = () => {
+const submit = (softSubmit = false) => {
   submitOK.value = false;
 
   makeFormInvalid(props.id);
@@ -109,7 +119,11 @@ const submit = () => {
   emit("dataFormSubmit");
 
   handleSubmit(
-    () => submitSuccess(binder),
+    () => {
+      console.log(softSubmit);
+      if (softSubmit) return;
+      submitSuccess(binder);
+    },
     (validationErrors) => submitErrors(validationErrors.errors)
   )();
 };
@@ -210,6 +224,8 @@ const submitErrors = (errors) => {
   scrollToError();
 };
 
+const validateOnly = () => submit(true);
+
 onMounted(() => {
   addForm({
     form_id: props.id,
@@ -245,11 +261,12 @@ defineExpose({
   changeLeaf,
   dataformsStore,
   submit,
+  validateOnly,
 });
 </script>
 
 <template>
-  <v-form ref="vFormRef" @submit.prevent="submit">
+  <v-form ref="vFormRef" @submit.prevent="submit()">
     <transition-group name="form">
       <v-row key="form_row">
         <v-col
