@@ -1,6 +1,8 @@
 <script setup>
 import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
 import { useField } from "vee-validate";
+import { VDateInput } from "vuetify/labs/VDateInput";
+import moment from "moment";
 
 const props = defineProps({
   input: {
@@ -29,15 +31,7 @@ const inputField = useField(
   props.inputKey,
   !props.input.readOnly ? props.input.validation : ""
 );
-const { field, currentFormData, tempDate, date, formattedDate } =
-  useDateTimeFieldType(props);
-
-const dialog = ref(false);
-
-const saveDate = () => {
-  date.value = tempDate.value;
-  dialog.value = false;
-};
+const { field, date, formattedDate } = useDateTimeFieldType(props);
 
 const fieldReturn = defineModel("return");
 
@@ -51,37 +45,20 @@ watch(
   },
   { immediate: true }
 );
+
+function format(date) {
+  return moment(date, props.options.returnFormat).format(props.options.format);
+}
 </script>
 
 <template>
   <div>
-    <v-text-field
-      v-model="formattedDate"
-      v-bind="{ ...$attrs, ...options }"
-      readonly
-      outlined
+    <v-date-input
+      v-model="date"
+      v-bind="{ ...options?.datepicker, ...options }"
+      :display-format="format"
       :error-messages="inputField.errorMessage.value"
-      @click:clear="date = null"
-      @click="events?.onClick && events.onClick()"
+      v-on="events"
     />
-    <v-dialog v-model="dialog" max-width="360" persistent activator="parent">
-      <template #default>
-        <v-card>
-          <v-card-text class="pa-0">
-            <v-date-picker
-              v-model="date"
-              v-bind="options?.datepicker"
-              :locale="currentFormData?.locale"
-              width="auto"
-            />
-          </v-card-text>
-          <v-spacer />
-          <v-card-actions>
-            <v-btn text color="primary" @click="dialog = false"> Cancel </v-btn>
-            <v-btn text color="primary" @click="saveDate"> OK </v-btn>
-          </v-card-actions>
-        </v-card>
-      </template>
-    </v-dialog>
   </div>
 </template>

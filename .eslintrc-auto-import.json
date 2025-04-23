@@ -71,6 +71,10 @@
     "useTemplateRef": true,
     "DirectiveBinding": true,
     "MaybeRef": true,
-    "MaybeRefOrGetter": true
+    "MaybeRefOrGetter": true,
+    "defineStore": true,
+    "onBeforeRouteLeave": true,
+    "onBeforeRouteUpdate": true,
+    "storeToRefs": true
   }
 }

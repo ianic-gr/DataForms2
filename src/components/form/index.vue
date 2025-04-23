@@ -112,7 +112,7 @@ const submit = (softSubmit = false) => {
 
   setFormErrors({
     formId: props.id,
-    errors: [],
+    errors: {},
   });
 
   document.dispatchEvent(submitEvent);
@@ -120,7 +120,6 @@ const submit = (softSubmit = false) => {
 
   handleSubmit(
     () => {
-      console.log(softSubmit);
       if (softSubmit) return;
       submitSuccess(binder);
     },

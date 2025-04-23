@@ -2,34 +2,39 @@
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import Fonts from "unplugin-fonts/vite";
-import Layouts from "vite-plugin-vue-layouts";
+import Layouts from "vite-plugin-vue-layouts-next";
 import Vue from "@vitejs/plugin-vue";
 import VueRouter from "unplugin-vue-router/vite";
+import { VueRouterAutoImports } from "unplugin-vue-router";
 import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import * as path from "path";
 
 // Utilities
-import { defineConfig } from "vite";
+import { BuildEnvironmentOptions, defineConfig, CSSOptions } from "vite";
 import { fileURLToPath, URL } from "node:url";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   // Determine the base URL for GitHub Pages or local development
+
   const isProduction = mode === "production";
   const base = isProduction ? "/DataForms2/" : "/"; // Replace with your repository name
 
   // Check for build type
   const isPageBuild = process.env.BUILD_TYPE === "pages";
 
-  const css = {
+  const css: CSSOptions = {
     preprocessorOptions: {
       sass: {
+        api: "modern-compiler",
+      },
+      scss: {
         api: "modern-compiler",
       },
     },
   };
 
-  let buildOptions = {
+  let buildOptions: BuildEnvironmentOptions = {
     cssCodeSplit: false,
     lib: {
       entry: path.resolve(__dirname, "src/plugins/dataforms.js"),
@@ -71,8 +76,9 @@ export default defineConfig(({ mode }) => {
       AutoImport({
         imports: [
           "vue",
+          VueRouterAutoImports,
           {
-            "vue-router/auto": ["useRoute", "useRouter"],
+            pinia: ["defineStore", "storeToRefs"],
           },
         ],
         dts: "src/auto-imports.d.ts",
@@ -104,6 +110,15 @@ export default defineConfig(({ mode }) => {
         },
       }),
     ],
+    optimizeDeps: {
+      exclude: [
+        "vuetify",
+        "vue-router",
+        "unplugin-vue-router/runtime",
+        "unplugin-vue-router/data-loaders",
+        "unplugin-vue-router/data-loaders/basic",
+      ],
+    },
     define: { "process.env": {} },
     resolve: {
       alias: {
