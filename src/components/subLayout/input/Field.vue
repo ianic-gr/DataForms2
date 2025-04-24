@@ -148,7 +148,11 @@ const inputTypeComponent = computed(() => {
 
 <template>
   <v-row v-if="showOnConditions(input.conditionals)">
-    <v-col v-if="hasLabelTitle" class="mt-2" style="max-width: 165px">
+    <v-col
+      v-if="hasLabelTitle"
+      :class="`${input.options?.visible === false ? 'd-none' : 'd-flex'} mt-2`"
+      style="max-width: 165px"
+    >
       <v-label
         :style="
           theme === 'Fluid'
@@ -159,7 +163,11 @@ const inputTypeComponent = computed(() => {
         {{ label }}
       </v-label>
     </v-col>
-    <v-col class="d-flex align-start input-field">
+    <v-col
+      :class="`${
+        input.options?.visible === false ? 'd-none' : 'd-flex'
+      } align-start input-field`"
+    >
       <div v-if="theme === 'Fluid'" style="min-width: 10px">
         <span v-if="isRequired" class="text-error">*</span>
       </div>
