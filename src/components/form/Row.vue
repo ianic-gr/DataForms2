@@ -57,7 +57,7 @@ const rowInput = computed(() => {
 <template>
   <v-row v-if="showOnConditions(row.conditionals)">
     <v-col v-if="themeTitle" cols="12">
-      <h2>{{ row.title }}</h2>
+      <h2>{{ row.title }} sas</h2>
     </v-col>
     <v-col v-if="isObject(row.title) && 'component' in row.title" cols="12">
       <component :is="row.title.component" v-bind="{ ...(row.title.bind || {}) }" />

@@ -267,26 +267,16 @@ defineExpose({
 <template>
   <v-form ref="vFormRef" @submit.prevent="submit()">
     <transition-group name="form">
-      <v-row key="form_row">
-        <v-col
-          v-for="(row, i) in api.rows"
-          v-show="!row.hidden"
-          v-bind="{ ...$attrs, ...(row.responsive || {}) }"
-          :key="i"
-          cols="12"
-        >
-          <Row :id="id" :row="row" :loading="loading">
-            <template v-for="inputSlot in getApiSlots(row)" #[inputSlot]="{ item }">
-              <slot :name="inputSlot" :item="item" />
-            </template>
-            <template #rowSlot>
-              <v-col v-for="(slot, slotKey) in row.slots" :key="slotKey" cols="12">
-                <slot :name="slot" />
-              </v-col>
-            </template>
-          </Row>
-        </v-col>
-      </v-row>
+      <Row v-for="(row, i) in api.rows" :id="id" :key="i" :row="row" :loading="loading">
+        <template v-for="inputSlot in getApiSlots(row)" #[inputSlot]="{ item }">
+          <slot :name="inputSlot" :item="item" />
+        </template>
+        <template #rowSlot>
+          <v-col v-for="(slot, slotKey) in row.slots" :key="slotKey" cols="12">
+            <slot :name="slot" />
+          </v-col>
+        </template>
+      </Row>
     </transition-group>
     <v-row>
       <v-col class="d-flex align-center justify-end">

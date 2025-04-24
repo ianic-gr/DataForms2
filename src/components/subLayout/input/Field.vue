@@ -150,7 +150,7 @@ const inputTypeComponent = computed(() => {
   <v-row v-if="showOnConditions(input.conditionals)">
     <v-col
       v-if="hasLabelTitle"
-      :class="`${input.options?.visible === false ? 'd-none' : 'd-flex'} mt-2`"
+      :class="`${input.options?.visible === false ? 'd-none' : 'd-flex'} `"
       style="max-width: 165px"
     >
       <v-label
