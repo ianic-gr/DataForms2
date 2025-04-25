@@ -176,7 +176,7 @@ const inputTypeComponent = computed(() => {
           <span v-if="isRequired" class="text-error">*</span>
         </label>
 
-        <div v-if="input.readOnly" class="d-flex align-center">
+        <div v-if="input.readOnly" class="d-flex align-center mb-4">
           <v-icon v-if="input.options?.prependIcon" class="me-4">
             {{ input.options?.prependIcon }}
           </v-icon>
