@@ -38,12 +38,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-row>
+  <v-row class="dataforms-input">
     <v-col
       v-for="(col, x) in items"
       v-bind="{ ...(col._responsive || {}) }"
       :key="x"
       cols="12"
+      class="dataforms-input__col"
     >
       <div v-for="(input, inputKey) in parsedCol(col)" :key="inputKey">
         <!-- Component changes when currentTab changes -->

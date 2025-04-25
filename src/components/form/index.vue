@@ -278,7 +278,7 @@ defineExpose({
         </template>
       </Row>
     </transition-group>
-    <v-row>
+    <v-row class="dataforms-actions-row">
       <v-col class="d-flex align-center justify-end">
         <slot name="buttons" />
         <v-btn

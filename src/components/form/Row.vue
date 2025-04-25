@@ -55,7 +55,7 @@ const rowInput = computed(() => {
 </script>
 
 <template>
-  <v-row v-if="showOnConditions(row.conditionals)">
+  <v-row v-if="showOnConditions(row.conditionals)" class="dataforms-row">
     <v-col v-if="themeTitle" cols="12">
       <h2>{{ row.title }} sas</h2>
     </v-col>
@@ -77,37 +77,26 @@ const rowInput = computed(() => {
       </Tabs>
     </v-col>
     <v-col cols="12">
-      <v-row>
-        <v-col
-          v-for="(setRow, i) in rowInput"
-          v-show="!setRow.hidden"
-          v-bind="{ ...$attrs, ...(setRow.responsive || {}) }"
-          :key="i"
-          cols="12"
-        >
-          <component :is="setRow.themeComp" :row="setRow">
-            <Input
-              ref="dataFormInput"
-              :items="setRow.set"
-              :form-id="id"
-              :loading="loading"
-              :theme="setRow.theme"
-            >
-              <template v-for="inputSlot in slots(setRow.set)" #[inputSlot]="{ item }">
-                <slot :name="inputSlot" :item="item" />
-              </template>
-            </Input>
-          </component>
-        </v-col>
-        <v-col v-if="row.dynamic?.component" cols="12">
-          <component :is="row.theme ? themes[row.theme] : themes['Plain']" :row="row">
-            <component
-              :is="row.dynamic.component"
-              v-bind="{ ...props, ...row.dynamic }"
-            />
-          </component>
-        </v-col>
-      </v-row>
+      <template v-for="(setRow, i) in rowInput" :key="i">
+        <component :is="setRow.themeComp" v-show="!setRow.hidden" :row="setRow">
+          <Input
+            ref="dataFormInput"
+            :items="setRow.set"
+            :form-id="id"
+            :loading="loading"
+            :theme="setRow.theme"
+          >
+            <template v-for="inputSlot in slots(setRow.set)" #[inputSlot]="{ item }">
+              <slot :name="inputSlot" :item="item" />
+            </template>
+          </Input>
+        </component>
+      </template>
+      <div v-if="row.dynamic?.component">
+        <component :is="row.theme ? themes[row.theme] : themes['Plain']" :row="row">
+          <component :is="row.dynamic.component" v-bind="{ ...props, ...row.dynamic }" />
+        </component>
+      </div>
     </v-col>
   </v-row>
 </template>
