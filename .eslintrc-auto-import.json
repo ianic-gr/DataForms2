@@ -75,6 +75,8 @@
     "defineStore": true,
     "onBeforeRouteLeave": true,
     "onBeforeRouteUpdate": true,
-    "storeToRefs": true
+    "storeToRefs": true,
+    "Slot": true,
+    "Slots": true
   }
 }

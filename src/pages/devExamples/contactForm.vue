@@ -87,6 +87,11 @@ const api = {
               multiple: true,
               clearable: true,
             },
+            events: {
+              onChange: (value) => {
+                console.log(value);
+              },
+            },
             validation: "required",
           },
         },
