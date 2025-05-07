@@ -67,7 +67,7 @@ watch(
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
       @change="onSelect"
     >
-      <template #append>
+      <template v-if="$slots.append" #append>
         <slot name="append" />
       </template>
     </v-autocomplete>

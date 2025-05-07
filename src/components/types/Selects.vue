@@ -64,12 +64,10 @@ watch(
       v-bind="{ ...$attrs, ...options }"
       :error-messages="field.errorMessage.value"
       v-on="events"
-      @click="
-        () => events && events.hasOwnProperty('onClick') && events.onClick()
-      "
+      @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
       @change="onSelect"
     >
-      <template #append>
+      <template v-if="$slots.append" #append>
         <slot name="append" />
       </template>
     </v-select>

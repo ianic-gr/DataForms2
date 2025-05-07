@@ -86,7 +86,7 @@ const removeSelection = (index) => {
         />
       </template>
 
-      <template #append>
+      <template v-if="$slots.append" #append>
         <slot name="append" />
       </template>
     </v-combobox>

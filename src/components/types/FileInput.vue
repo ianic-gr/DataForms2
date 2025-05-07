@@ -61,7 +61,7 @@ watch(
       v-on="props.events"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
-      <template #append>
+      <template v-if="$slots.append" #append>
         <slot name="append" />
       </template>
     </v-file-input>
