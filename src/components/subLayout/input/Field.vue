@@ -207,8 +207,12 @@ const inputTypeComponent = computed(() => {
           :disabled="loading"
           :loading-indicator="loading"
         >
-          <template v-for="inputSlot in input.itemSlots" #[inputSlot]="{ item }">
-            <slot :name="inputSlot" :item="item" />
+          <template
+            v-for="(inputSlot, inputSlotKey) in input.itemSlots"
+            :key="inputSlotKey"
+            #[inputSlot.template]="slotProps"
+          >
+            <slot :name="inputSlot.template" v-bind="slotProps" />
           </template>
           <template v-if="input.tooltip" #append>
             <div

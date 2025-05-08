@@ -56,6 +56,7 @@ const rowInput = computed(() => {
 
 <template>
   <v-row v-if="showOnConditions(row.conditionals)" class="dataforms-row">
+    <slot />
     <v-col v-if="themeTitle" cols="12">
       <h2>{{ row.title }} sas</h2>
     </v-col>
@@ -86,8 +87,12 @@ const rowInput = computed(() => {
             :loading="loading"
             :theme="setRow.theme"
           >
-            <template v-for="inputSlot in slots(setRow.set)" #[inputSlot]="{ item }">
-              <slot :name="inputSlot" :item="item" />
+            <template
+              v-for="(inputSlot, inputSlotKey) in slots(setRow.set)"
+              :key="inputSlotKey"
+              #[inputSlot.template]="slotProps"
+            >
+              <slot :name="inputSlot.template" v-bind="slotProps" />
             </template>
           </Input>
         </component>

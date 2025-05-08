@@ -71,6 +71,14 @@ const removeSelection = (index) => {
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
       @change="onSelect"
     >
+      <template
+        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
+        :key="inputSlotKey"
+        #[inputSlot.slot]="slotProps"
+      >
+        <slot :name="inputSlot.template" v-bind="slotProps" />
+      </template>
+
       <template #selection="{ item, index }">
         <v-chip
           v-if="item === Object(item)"

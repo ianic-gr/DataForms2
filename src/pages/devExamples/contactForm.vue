@@ -87,6 +87,12 @@ const api = {
               multiple: true,
               clearable: true,
             },
+            itemSlots: [
+              {
+                slot: "item",
+                template: "pop",
+              },
+            ],
             events: {
               onChange: (value) => {
                 console.log(value);
@@ -132,6 +138,9 @@ const deleteForm = () => {
 
 <template>
   <DataForm id="contact-form" :api="api">
+    <template #pop="{ props, item }">
+      <v-list-item v-bind="props" :subtitle="item.raw.value" :title="item.raw.title" />
+    </template>
     <template #buttons>
       <v-btn variant="text" color="error" @click="deleteForm"> Delete </v-btn>
     </template>

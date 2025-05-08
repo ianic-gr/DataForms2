@@ -83,6 +83,14 @@ watch(
       :value="optionValue(checkb)"
       :error-messages="field.errorMessage.value"
       v-on="events"
-    />
+    >
+      <template
+        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
+        :key="inputSlotKey"
+        #[inputSlot.slot]="slotProps"
+      >
+        <slot :name="inputSlot.template" v-bind="slotProps" />
+      </template>
+    </v-checkbox>
   </div>
 </template>

@@ -61,6 +61,14 @@ watch(
       v-on="events"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
+      <template
+        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
+        :key="inputSlotKey"
+        #[inputSlot.slot]="slotProps"
+      >
+        <slot :name="inputSlot.template" v-bind="slotProps" />
+      </template>
+
       <template #append>
         <slot name="append" />
       </template>

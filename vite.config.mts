@@ -43,7 +43,7 @@ export default defineConfig(({ mode }) => {
       fileName: "dataforms",
     },
     rollupOptions: {
-      external: ["vue", "vuetify", "pinia"],
+      external: ["vue", "vuetify", "pinia", "moment"],
       output: {
         globals: {
           vue: "Vue",

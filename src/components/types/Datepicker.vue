@@ -59,6 +59,14 @@ function format(date) {
       :display-format="format"
       :error-messages="inputField.errorMessage.value"
       v-on="events"
-    />
+    >
+      <template
+        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
+        :key="inputSlotKey"
+        #[inputSlot.slot]="slotProps"
+      >
+        <slot :name="inputSlot.template" v-bind="slotProps" />
+      </template>
+    </v-date-input>
   </div>
 </template>

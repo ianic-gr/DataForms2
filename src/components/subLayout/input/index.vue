@@ -48,6 +48,7 @@ onMounted(() => {
     >
       <div v-for="(input, inputKey) in parsedCol(col)" :key="inputKey">
         <!-- Component changes when currentTab changes -->
+
         <Field
           :input="input"
           :input-key="inputKey"
@@ -55,8 +56,12 @@ onMounted(() => {
           :loading="loading"
           :theme="theme"
         >
-          <template v-for="inputSlot in input.itemSlots" #[inputSlot]="{ item }">
-            <slot :name="inputSlot" :item="item" />
+          <template
+            v-for="(inputSlot, inputSlotKey) in input.itemSlots"
+            :key="inputSlotKey"
+            #[inputSlot.template]="slotProps"
+          >
+            <slot :name="inputSlot.template" v-bind="slotProps" />
           </template>
         </Field>
       </div>
