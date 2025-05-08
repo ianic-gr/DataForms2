@@ -60,15 +60,15 @@ const api = {
               default: "normal_client",
               items: [
                 {
-                  text: "In 1 - 2 Months",
+                  title: "In 1 - 2 Months",
                   value: "normal_client",
                 },
                 {
-                  text: "Now!",
+                  title: "Now!",
                   value: "now",
                 },
                 {
-                  text: "Yesterday!!!",
+                  title: "Yesterday!!!",
                   value: "yesterday",
                 },
               ],

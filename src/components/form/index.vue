@@ -101,15 +101,15 @@ const leaveAlertWhenDataChanges = (data) => {
   }
 };
 
-const submit = (softSubmit = false) => {
+const submit = async (softSubmit = false) => {
   submitOK.value = false;
 
   makeFormInvalid(props.id);
 
   const theForm = getCurrentForm(props.id);
 
-  if ("beforeSubmit" in props.api.submit) {
-    props.api.submit.beforeSubmit(theForm.fields);
+  if (props.api.submit && "beforeSubmit" in props.api.submit) {
+    await props.api.submit.beforeSubmit(theForm.fields);
   }
 
   const binder = validateBinder();
@@ -199,17 +199,17 @@ const submitSuccess = async (binder) => {
     makeFormValid(props.id);
     submitOK.value = true;
 
-    if (props.api.submit) {
-      try {
+    try {
+      if (props.api.submit) {
         await props.api.submit.click(theForm.fields);
-
-        document.dispatchEvent(submitSuccessEvent);
-        emit("dataFormSubmitSuccess");
-
-        theForm.unsaved = false;
-      } catch (error) {
-        emit("dataFormSubmitWithErrors", error);
       }
+
+      document.dispatchEvent(submitSuccessEvent);
+      emit("dataFormSubmitSuccess", theForm.fields);
+
+      theForm.unsaved = false;
+    } catch (error) {
+      emit("dataFormSubmitWithErrors", error);
     }
   } else {
     submitErrors([]);
@@ -290,7 +290,10 @@ defineExpose({
       </Row>
     </transition-group>
     <v-row class="dataforms-actions-row">
-      <v-col class="d-flex align-center justify-end">
+      <v-col
+        v-if="typeof api.submit === 'object' || $slots.buttons"
+        class="d-flex align-center justify-end"
+      >
         <slot name="buttons" />
         <v-btn
           v-if="typeof api.submit === 'object'"
