@@ -72,13 +72,22 @@ const submitFailedEvent = new CustomEvent("dataFormSubmitFailed", {
   },
 });
 
-const leaveAlertWhenDataChanges = (data) => {
-  if (!("binder" in data) || !props.options.leaveAlertWhenDataChanges) return;
+const initBinderFn = (data) => {
+  if (!("binder" in data)) return;
 
   if (!initBinder.value) {
     initBinderValues.value = { ...data.binder } ?? {};
     initBinder.value = true;
   }
+
+  updateBinder({
+    formId: props.id,
+    binder: data.binder ?? {},
+  });
+};
+
+const leaveAlertWhenDataChanges = (data) => {
+  if (!props.options.leaveAlertWhenDataChanges) return;
 
   window.onbeforeunload = null;
 
@@ -90,11 +99,6 @@ const leaveAlertWhenDataChanges = (data) => {
       return true;
     };
   }
-
-  updateBinder({
-    formId: props.id,
-    binder: data.binder,
-  });
 };
 
 const submit = (softSubmit = false) => {
@@ -242,7 +246,10 @@ onMounted(() => {
 
 watch(
   () => props.api,
-  (newData) => leaveAlertWhenDataChanges(newData),
+  (newData) => {
+    initBinderFn(newData);
+    leaveAlertWhenDataChanges(newData);
+  },
   { deep: true }
 );
 
