@@ -52,8 +52,8 @@ watch(
   fieldValue,
   (v) => {
     if (v === null) return;
-    field.value.value = v;
 
+    field.value.value = v;
     fieldReturn.value = [...v].map(() => "*").join("");
   },
   { immediate: true }

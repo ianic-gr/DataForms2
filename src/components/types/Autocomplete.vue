@@ -45,13 +45,9 @@ watch(
   fieldValue,
   (v) => {
     if (v === null) return;
+
     field.value.value = v;
-
-    const selected = props.options?.items.find((item) => {
-      return item.value === v;
-    });
-
-    fieldReturn.value = selected?.text ?? v;
+    fieldReturn.value = v;
   },
   { immediate: true }
 );
