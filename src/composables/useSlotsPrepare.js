@@ -5,18 +5,30 @@ export function useSlotsPrepare() {
     if (api && api.tabs && api.tabs.items) {
       api.tabs.items.forEach((item) => {
         items.push(...(item?.input ?? []));
+
+        item.inputGroups?.forEach((inputGroup) => {
+          items.push(...(inputGroup?.input ?? []));
+        });
       });
     }
 
     if (api && api.accordion && api.accordion.items) {
       api.accordion.items.forEach((item) => {
         items.push(...(item && item.input));
+
+        item.inputGroups?.forEach((inputGroup) => {
+          items.push(...(inputGroup?.input ?? []));
+        });
       });
     }
 
     if (api && api.input) {
       api.input.forEach((item) => {
         items.push(item);
+      });
+
+      api.inputGroups?.forEach((inputGroup) => {
+        items.push(...(inputGroup?.input ?? []));
       });
     }
 
@@ -44,7 +56,7 @@ export function useSlotsPrepare() {
     const subLayoutSlots = [];
 
     row.forEach((col) => {
-      subLayoutSlots.push(...this.slots(col.input));
+      subLayoutSlots.push(...getApiSlots(col));
     });
 
     return subLayoutSlots;

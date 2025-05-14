@@ -1,6 +1,7 @@
 <script setup>
 import defu from "defu";
 import { useLeafValidation } from "@/composables/useLeafValidation.js";
+import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 
 const props = defineProps({
   items: {
@@ -18,6 +19,7 @@ const props = defineProps({
 });
 
 const { leaf, handleLeafError } = useLeafValidation(props);
+const { getApiSlots } = useSlotsPrepare();
 
 const tabsOptions = computed(() => {
   return defu(
@@ -61,7 +63,15 @@ onMounted(() => {
         <v-tabs-window-item v-for="(item, i) in items" :key="`tabitem_${i}`" eager>
           <v-card flat>
             <v-card-text>
-              <InputGroups v-bind="{ ...props }" :item="item" :leaf="leaf" :tab-key="i" />
+              <InputGroups v-bind="{ ...props }" :item="item" :leaf="leaf" :tab-key="i">
+                <template
+                  v-for="(inputSlot, inputSlotKey) in getApiSlots(item)"
+                  :key="inputSlotKey"
+                  #[inputSlot.template]="slotProps"
+                >
+                  <slot :name="inputSlot.template" v-bind="slotProps" />
+                </template>
+              </InputGroups>
             </v-card-text>
           </v-card>
         </v-tabs-window-item>

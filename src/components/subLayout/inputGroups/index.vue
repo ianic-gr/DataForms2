@@ -1,4 +1,7 @@
 <script setup>
+import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
+const { slots } = useSlotsPrepare();
+
 const props = defineProps({
   item: {
     type: [Array, Object],
@@ -25,7 +28,11 @@ const props = defineProps({
 
 <template>
   <div class="dataforms-inputGroups">
-    <RenderItem v-bind="{ ...props }" />
+    <RenderItem v-bind="{ ...props }">
+      <template v-for="inputSlot in slots(item.input)" #[inputSlot.template]="slotProps">
+        <slot :name="inputSlot.template" v-bind="slotProps" :active="leaf === tabKey" />
+      </template>
+    </RenderItem>
 
     <v-card
       v-for="(inputGroup, i) in item.inputGroups"
@@ -37,7 +44,18 @@ const props = defineProps({
         {{ inputGroup.title }}
       </v-card-title>
       <v-card-text>
-        <RenderItem v-bind="{ ...props, item: inputGroup }" />
+        <RenderItem v-bind="{ ...props, item: inputGroup }">
+          <template
+            v-for="inputSlot in slots(inputGroup.input)"
+            #[inputSlot.template]="slotProps"
+          >
+            <slot
+              :name="inputSlot.template"
+              v-bind="slotProps"
+              :active="leaf === tabKey"
+            />
+          </template>
+        </RenderItem>
       </v-card-text>
     </v-card>
   </div>

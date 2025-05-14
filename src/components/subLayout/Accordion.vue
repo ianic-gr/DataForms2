@@ -1,5 +1,6 @@
 <script setup>
 import { useLeafValidation } from "@/composables/useLeafValidation.js";
+import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 
 const props = defineProps({
   items: {
@@ -17,6 +18,7 @@ const props = defineProps({
 });
 
 const { leaf, handleLeafError } = useLeafValidation(props);
+const { getApiSlots } = useSlotsPrepare();
 
 onMounted(() => {
   document.addEventListener("dataFormSubmitFailed", (e) =>
@@ -30,7 +32,15 @@ onMounted(() => {
     <v-expansion-panel v-for="(item, i) in items" :key="i">
       <v-expansion-panel-title> {{ item.title }} </v-expansion-panel-title>
       <v-expansion-panel-text eager>
-        <InputGroups v-bind="{ ...props }" :item="item" :leaf="leaf" :tab-key="i" />
+        <InputGroups v-bind="{ ...props }" :item="item" :leaf="leaf" :tab-key="i">
+          <template
+            v-for="(inputSlot, inputSlotKey) in getApiSlots(item)"
+            :key="inputSlotKey"
+            #[inputSlot.template]="slotProps"
+          >
+            <slot :name="inputSlot.template" v-bind="slotProps" />
+          </template>
+        </InputGroups>
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>

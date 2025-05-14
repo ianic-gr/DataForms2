@@ -65,16 +65,25 @@ const rowInput = computed(() => {
     </v-col>
     <slot name="rowSlot" />
     <v-col v-if="row.accordion" cols="12">
-      <Accordion :id="id" :items="row.accordion.items" :options="row.accordion.options" />
+      <Accordion :id="id" :items="row.accordion.items" :options="row.accordion.options">
+        <template
+          v-for="(inputSlot, inputSlotKey) in subLayoutSlots(row.accordion.items)"
+          :key="inputSlotKey"
+          #[inputSlot.template]="slotProps"
+        >
+          <slot :name="inputSlot.template" v-bind="slotProps" />
+        </template>
+      </Accordion>
     </v-col>
     <v-col v-if="row.tabs" cols="12">
       <Tabs :id="id" :items="row.tabs.items" :options="row.tabs.options">
-        <!-- <template
-          v-for="inputSlot in subLayoutSlots(row.tabs.items)"
-          #[inputSlot]="{ item }"
+        <template
+          v-for="(inputSlot, inputSlotKey) in subLayoutSlots(row.tabs.items)"
+          :key="inputSlotKey"
+          #[inputSlot.template]="slotProps"
         >
-          <slot :name="inputSlot" :item="item" />
-        </template> -->
+          <slot :name="inputSlot.template" v-bind="slotProps" />
+        </template>
       </Tabs>
     </v-col>
     <v-col cols="12">
