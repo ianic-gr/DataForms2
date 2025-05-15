@@ -28,6 +28,7 @@ declare module 'vue-router/auto-routes' {
     '/devExamples/dynamicComponents': RouteRecordInfo<'/devExamples/dynamicComponents', '/devExamples/dynamicComponents', Record<never, never>, Record<never, never>>,
     '/devExamples/epic': RouteRecordInfo<'/devExamples/epic', '/devExamples/epic', Record<never, never>, Record<never, never>>,
     '/devExamples/fileInput': RouteRecordInfo<'/devExamples/fileInput', '/devExamples/fileInput', Record<never, never>, Record<never, never>>,
+    '/devExamples/fileUpload': RouteRecordInfo<'/devExamples/fileUpload', '/devExamples/fileUpload', Record<never, never>, Record<never, never>>,
     '/devExamples/password': RouteRecordInfo<'/devExamples/password', '/devExamples/password', Record<never, never>, Record<never, never>>,
     '/devExamples/readonly': RouteRecordInfo<'/devExamples/readonly', '/devExamples/readonly', Record<never, never>, Record<never, never>>,
     '/devExamples/slots': RouteRecordInfo<'/devExamples/slots', '/devExamples/slots', Record<never, never>, Record<never, never>>,

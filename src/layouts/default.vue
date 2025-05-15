@@ -37,6 +37,10 @@ onMounted(() => {
       to: `/${exampleFolder}/fileInput`,
     },
     {
+      title: "FileUpload",
+      to: `/${exampleFolder}/fileUpload`,
+    },
+    {
       title: "Conditionals",
       to: `/${exampleFolder}/conditionals`,
     },

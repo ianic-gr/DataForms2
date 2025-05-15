@@ -22,6 +22,7 @@ declare module 'vue' {
     Errors: typeof import('./components/subLayout/input/errors/index.vue')['default']
     Field: typeof import('./components/subLayout/input/Field.vue')['default']
     FileInput: typeof import('./components/types/FileInput.vue')['default']
+    FileUpload: typeof import('./components/types/FileUpload.vue')['default']
     Fluid: typeof import('./components/theme/Fluid.vue')['default']
     Form: typeof import('./components/form/index.vue')['default']
     Input: typeof import('./components/subLayout/input/index.vue')['default']

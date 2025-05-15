@@ -33,19 +33,12 @@ const deleteItem = (item) => {
         v-if="props.options.preview.deletable"
         class="preview-slider__delete"
         color="error"
-        small
-        :fab="!deleteButton.text"
-        :tile="!deleteButton.text"
+        size="small"
+        variant="flat"
+        rounded="xl"
+        v-bind="options.deleteButton"
         @click="deleteItem(props.options.preview)"
-      >
-        {{ deleteButton.text }}
-        <v-icon
-          :class="deleteButton.text ? 'ml-1' : ''"
-          :small="Boolean(deleteButton.text)"
-        >
-          {{ deleteButton.icon }}
-        </v-icon>
-      </v-btn>
+      />
       <v-img
         :src="props.options.preview.image"
         width="500"

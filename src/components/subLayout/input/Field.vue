@@ -17,6 +17,7 @@ import dateTimePicker from "@/components/types/DateTimePicker";
 import password from "@/components/types/Password";
 import epic from "@/components/types/Epic";
 import fileInput from "@/components/types/FileInput.vue";
+import fileUpload from "@/components/types/FileUpload.vue";
 import dynamic from "@/components/types/dynamic.vue";
 
 const types = {
@@ -34,6 +35,7 @@ const types = {
   password,
   epic,
   fileInput,
+  fileUpload,
   dynamic,
 };
 
@@ -116,7 +118,11 @@ const themeOptions = computed(() => {
   let variant = "filled";
   let density = "default";
   let singleLine = false;
-  const color = "primary";
+
+  console.log(props);
+
+  const color =
+    props.input.type && props.input.type.toLowerCase() === "fileupload" ? "" : "primary";
 
   if (props.theme === "Fluid" || props.theme === "Breeze") {
     variant = "outlined";

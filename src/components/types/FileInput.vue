@@ -1,6 +1,5 @@
 <script setup>
 import { useFieldType } from "@/composables/useFieldType";
-import { useInputEvents } from "@/composables/useInputEvents";
 import { useField } from "vee-validate";
 
 const props = defineProps({
@@ -20,10 +19,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  loadingIndicator: {
-    type: Boolean,
-    default: false,
-  },
   events: {
     type: Object,
     default: () => {},
@@ -35,7 +30,6 @@ const field = useField(
   props.inputKey,
   !props.input.readOnly ? props.input.validation : ""
 );
-const $useInputEvents = useInputEvents(props);
 
 const fieldReturn = defineModel("return");
 
@@ -56,7 +50,6 @@ watch(
     <v-file-input
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
-      :loading="props.loadingIndicator"
       :error-messages="field.errorMessage.value"
       v-on="props.events"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
@@ -68,16 +61,6 @@ watch(
       >
         <slot :name="inputSlot.template" v-bind="slotProps" />
       </template>
-
-      <template v-if="$slots.append" #append>
-        <slot name="append" />
-      </template>
     </v-file-input>
-    <Slider
-      v-if="Array.isArray(props.options.preview)"
-      :options="props.options"
-      @delete-item="$useInputEvents.onDelete"
-    />
-    <Single v-else :options="props.options" @delete-item="$useInputEvents.onDelete" />
   </div>
 </template>
