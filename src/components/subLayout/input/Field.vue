@@ -119,8 +119,6 @@ const themeOptions = computed(() => {
   let density = "default";
   let singleLine = false;
 
-  console.log(props);
-
   const color =
     props.input.type && props.input.type.toLowerCase() === "fileupload" ? "" : "primary";
 
