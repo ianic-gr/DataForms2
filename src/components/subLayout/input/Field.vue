@@ -85,7 +85,8 @@ const isRequired = computed(() => {
 });
 
 const label = computed(() => {
-  const decorator = props.theme === "Plain" && isRequired.value ? " *" : "";
+  const decorator =
+    !["Breeze", "Fluid"].includes(props.theme) && isRequired.value ? " *" : "";
 
   return `${props.input?.options?.label}${decorator}`;
 });
