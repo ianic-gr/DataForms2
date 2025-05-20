@@ -44,7 +44,7 @@ const fieldReturn = defineModel("return");
 watch(
   fieldValue,
   (v) => {
-    if (v === null) return;
+    if (v === null && !fieldReturn.value) return;
     field.value.value = v;
 
     const selected = props.options?.list.find((item) => {

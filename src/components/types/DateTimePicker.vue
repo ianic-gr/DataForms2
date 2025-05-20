@@ -62,7 +62,7 @@ const fieldReturn = defineModel("return");
 watch(
   field,
   (v) => {
-    if (v === null) return;
+    if (v === null && !fieldReturn.value) return;
 
     inputField.value.value = formattedDateTime.value;
     fieldReturn.value = formattedDateTime.value;

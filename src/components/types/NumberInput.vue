@@ -46,7 +46,7 @@ const fieldReturn = defineModel("return");
 watch(
   fieldValue,
   (v) => {
-    if (v === null) return;
+    if (v === null && !fieldReturn.value) return;
 
     field.value.value = v;
     fieldReturn.value = v;
