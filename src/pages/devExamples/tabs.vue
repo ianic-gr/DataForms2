@@ -192,8 +192,10 @@ const api = {
     },
   ],
   submit: {
-    title: "Place order",
-    color: "primary",
+    options: {
+      text: "Place order",
+      color: "primary",
+    },
     click: (formData) => {
       console.log("FormData: ", formData);
     },

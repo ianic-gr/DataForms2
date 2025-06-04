@@ -39,8 +39,10 @@ const api = {
     },
   ],
   submit: {
-    title: "Send Message",
-    color: "primary",
+    options: {
+      text: "Send Message",
+      color: "primary",
+    },
     click(data) {
       console.log("data: ", data);
     },

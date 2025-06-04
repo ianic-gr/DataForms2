@@ -294,13 +294,15 @@ defineExpose({
         v-if="typeof api.submit === 'object' || $slots.buttons"
         class="d-flex align-center justify-end"
       >
-        <slot name="buttons" />
+        <slot
+          name="buttons"
+          :submit-props="{ type: 'submit', class: 'ms-2', ...(api.submit.options || {}) }"
+        />
         <v-btn
-          v-if="typeof api.submit === 'object'"
+          v-if="typeof api.submit === 'object' && !$slots.buttons"
           type="submit"
           class="ms-2"
           :loading="loading"
-          :text="api.submit.title"
           v-bind="api.submit.options || {}"
         />
       </v-col>

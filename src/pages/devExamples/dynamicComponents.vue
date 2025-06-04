@@ -65,8 +65,10 @@ const api = {
     },
   ],
   submit: {
-    title: "Save",
-    color: "primary",
+    options: {
+      text: "Save",
+      color: "primary",
+    },
     click(data) {
       console.log("data: ", data);
     },

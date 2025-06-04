@@ -60,8 +60,10 @@ const api = {
     },
   ],
   submit: {
-    title: "Submit",
-    color: "primary",
+    options: {
+      text: "Submit",
+      color: "primary",
+    },
     click: (formData) => {
       console.log("FormData: ", formData);
       result.value = JSON.parse(JSON.stringify(formData));

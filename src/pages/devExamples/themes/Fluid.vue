@@ -54,18 +54,11 @@ const api = {
     },
   ],
   submit: {
-    title: "Message",
-    color: "primary",
     options: {
+      text: "Message",
       rounded: true,
-    },
-    icon: {
-      symbol: "mdi-heart",
-      options: {
-        small: true,
-        color: "red",
-        class: "mr-2",
-      },
+      color: "primary",
+      prependIcon: "mdi-heart",
     },
     click(data) {
       console.log("data: ", data);

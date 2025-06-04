@@ -27,8 +27,10 @@ const api = ref({
     phone: null,
   },
   submit: {
-    title: "Submit",
-    color: "primary",
+    options: {
+      text: "Submit",
+      color: "primary",
+    },
     beforeSubmit: (formData) => {
       api.value.binder.name.invalid = false;
 

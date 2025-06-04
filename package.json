@@ -1,6 +1,6 @@
 {
   "name": "@ianicdev/dataforms2",
-  "version": "1.12.4",
+  "version": "1.12.5",
   "type": "module",
   "homepage": "https://ianic-gr.github.io/DataForms2/",
   "repository": {
@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "rimraf dist && vue-tsc --noEmit && vite build",
+    "build": "rm -rf dist && vue-tsc --noEmit && vite build",
     "build:pages": "cross-env BUILD_TYPE=pages vite build && touch ./dist/.nojekyll && cp ./dist/index.html ./dist/404.html",
     "preview": "vite preview",
     "type-check": "vue-tsc --build --force",

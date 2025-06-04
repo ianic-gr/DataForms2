@@ -49,10 +49,11 @@ const api = {
     },
   ],
   submit: {
-    title: "Message",
-    color: "primary",
     options: {
+      text: "Message",
       rounded: true,
+      color: "primary",
+      prependIcon: "mdi-heart",
     },
     icon: {
       symbol: "mdi-heart",

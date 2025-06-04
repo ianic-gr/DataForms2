@@ -108,8 +108,10 @@ const api = {
     },
   ],
   submit: {
-    title: "Send Message",
-    color: "primary",
+    options: {
+      text: "Send Message",
+      color: "primary",
+    },
     click: (formData) => {
       console.log("FormData: ", formData);
       alert("Accordion ok!");

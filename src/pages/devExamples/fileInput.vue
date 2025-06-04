@@ -37,18 +37,11 @@ const api = {
     },
   ],
   submit: {
-    title: "Upload",
-    color: "primary",
     options: {
+      text: "Upload",
+      color: "primary",
       rounded: true,
-    },
-    icon: {
-      symbol: "mdi-upload",
-      options: {
-        small: true,
-        color: "white",
-        class: "mr-2",
-      },
+      prependIcon: "mdi-upload",
     },
     click(data) {
       console.log("data: ", data);

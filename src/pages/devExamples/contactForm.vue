@@ -118,9 +118,8 @@ const api = {
     },
   ],
   submit: {
-    title: "Message",
-    color: "primary",
     options: {
+      text: "Message",
       rounded: true,
       color: "primary",
       prependIcon: "mdi-heart",
@@ -141,8 +140,30 @@ const deleteForm = () => {
     <template #pop="{ props, item }">
       <v-list-item v-bind="props" :subtitle="item.raw.value" :title="item.raw.title" />
     </template>
-    <template #buttons>
+    <template #buttons="{ submitProps }">
       <v-btn variant="text" color="error" @click="deleteForm"> Delete </v-btn>
+
+      <v-btn-group color="primary" density="comfortable" rounded="pill" divided>
+        <v-btn v-bind="submitProps" />
+
+        <v-btn size="small" icon>
+          <v-icon icon="mdi-menu-down" />
+
+          <v-menu activator="parent" location="bottom end" transition="fade-transition">
+            <v-list density="compact" min-width="250" rounded="lg" slim>
+              <v-list-item prepend-icon="mdi-link" title="Copy link" link />
+
+              <v-divider class="my-2" />
+
+              <v-list-item min-height="24">
+                <template #subtitle>
+                  <div class="text-caption">Shared with John + 1 more</div>
+                </template>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-btn>
+      </v-btn-group>
     </template>
   </DataForm>
 </template>
