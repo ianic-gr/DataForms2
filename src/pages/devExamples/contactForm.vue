@@ -44,7 +44,7 @@ const api = {
               label: "Phone",
               prependIcon: "mdi-phone",
             },
-            validation: "required",
+            validation: "required|min:10",
           },
           _responsive: {
             sm: 12,
@@ -136,7 +136,7 @@ const deleteForm = () => {
 </script>
 
 <template>
-  <DataForm id="contact-form" :api="api">
+  <DataForm id="contact-form" :api="api" locale="el">
     <template #pop="{ props, item }">
       <v-list-item v-bind="props" :subtitle="item.raw.value" :title="item.raw.title" />
     </template>

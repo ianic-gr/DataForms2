@@ -1,16 +1,10 @@
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, provide, onBeforeUnmount } from "vue";
 import { useDataformsStore } from "@/stores/dataFormsStore";
 import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
-import { defineRule, useForm } from "vee-validate";
+import { defineRule, useForm, configure } from "vee-validate";
 import { all } from "@vee-validate/rules";
-
-Object.entries(all).forEach(([name, rule]) => {
-  defineRule(name, rule);
-});
-
-const dataformsStore = useDataformsStore();
-const { getApiSlots } = useSlotsPrepare();
+import { localize } from "@vee-validate/i18n";
 
 const props = defineProps({
   id: {
@@ -35,6 +29,20 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits([
+  "dataFormSubmit",
+  "dataFormSubmitSuccess",
+  "dataFormSubmitFailed",
+  "dataFormSubmitWithErrors",
+]);
+
+Object.entries(all).forEach(([name, rule]) => {
+  defineRule(name, rule);
+});
+
+const dataformsStore = useDataformsStore();
+const { getApiSlots } = useSlotsPrepare();
+
 const {
   getCurrentForm,
   addForm,
@@ -46,31 +54,19 @@ const {
   setFormErrors,
 } = dataformsStore;
 
-const emit = defineEmits([
-  "dataFormSubmit",
-  "dataFormSubmitSuccess",
-  "dataFormSubmitFailed",
-  "dataFormSubmitWithErrors",
-]);
-
 const vFormRef = ref(null);
 const loading = ref(false);
+const submitOK = ref(false);
 const submitEvent = new Event("dataFormSubmit");
+const submitSuccessEvent = new CustomEvent("dataFormSubmitSuccess", {
+  detail: { formID: props.id },
+});
+const submitFailedEvent = new CustomEvent("dataFormSubmitFailed", {
+  detail: { formID: props.id },
+});
+
 const initBinder = ref(false);
 const initBinderValues = ref({});
-const submitOK = ref(false);
-
-const submitSuccessEvent = new CustomEvent("dataFormSubmitSuccess", {
-  detail: {
-    formID: props.id,
-  },
-});
-
-const submitFailedEvent = new CustomEvent("dataFormSubmitFailed", {
-  detail: {
-    formID: props.id,
-  },
-});
 
 const initBinderFn = (data) => {
   if (!("binder" in data)) return;
@@ -95,40 +91,8 @@ const leaveAlertWhenDataChanges = (data) => {
     JSON.stringify(initBinderValues.value) !== JSON.stringify(data.binder) &&
     !submitOK.value
   ) {
-    window.onbeforeunload = function () {
-      return true;
-    };
+    window.onbeforeunload = () => true;
   }
-};
-
-const submit = async (softSubmit = false) => {
-  submitOK.value = false;
-
-  makeFormInvalid(props.id);
-
-  const theForm = getCurrentForm(props.id);
-
-  if (props.api.submit && "beforeSubmit" in props.api.submit) {
-    await props.api.submit.beforeSubmit(theForm.fields);
-  }
-
-  const binder = validateBinder();
-
-  setFormErrors({
-    formId: props.id,
-    errors: {},
-  });
-
-  document.dispatchEvent(submitEvent);
-  emit("dataFormSubmit");
-
-  handleSubmit(
-    () => {
-      if (softSubmit) return;
-      submitSuccess(binder);
-    },
-    (validationErrors) => submitErrors(validationErrors.errors)
-  )();
 };
 
 const addBinderDataToFields = () => {
@@ -158,7 +122,6 @@ const validateBinder = () => {
       if (data.invalid) {
         console.error("Binder value is not valid: ", item);
         validated = false;
-
         return;
       }
 
@@ -180,8 +143,8 @@ const changeLeaf = (leaf) => {
 };
 
 const scrollToError = () => {
-  const vFormEL = vFormRef.value.$el;
-  const el = vFormEL.querySelector(".v-input--error:first-of-type");
+  const vFormEL = vFormRef.value?.$el;
+  const el = vFormEL?.querySelector(".v-input--error:first-of-type");
 
   if (el) {
     const yOffset = -200;
@@ -191,6 +154,37 @@ const scrollToError = () => {
 };
 
 const { handleSubmit } = useForm();
+
+const submit = async (softSubmit = false) => {
+  submitOK.value = false;
+  makeFormInvalid(props.id);
+
+  const theForm = getCurrentForm(props.id);
+
+  if (props.api.submit?.beforeSubmit) {
+    await props.api.submit.beforeSubmit(theForm.fields);
+  }
+
+  const binder = validateBinder();
+
+  setFormErrors({
+    formId: props.id,
+    errors: {},
+  });
+
+  document.dispatchEvent(submitEvent);
+  emit("dataFormSubmit");
+
+  handleSubmit(
+    () => {
+      if (softSubmit) return;
+      submitSuccess(binder);
+    },
+    (validationErrors) => submitErrors(validationErrors.errors)
+  )();
+};
+
+const validateOnly = () => submit(true);
 
 const submitSuccess = async (binder) => {
   if (binder) {
@@ -219,7 +213,7 @@ const submitSuccess = async (binder) => {
 const submitErrors = (errors) => {
   setFormErrors({
     formId: props.id,
-    errors: errors,
+    errors,
   });
 
   document.dispatchEvent(submitFailedEvent);
@@ -227,7 +221,48 @@ const submitErrors = (errors) => {
   scrollToError();
 };
 
-const validateOnly = () => submit(true);
+const loadLocale = async (locale) => {
+  try {
+    const localeMap = {
+      en: () => import("@vee-validate/i18n/dist/locale/en.json"),
+      el: () => import("@vee-validate/i18n/dist/locale/el.json"),
+      de: () => import("@vee-validate/i18n/dist/locale/de.json"),
+      ro: () => import("@vee-validate/i18n/dist/locale/ro.json"),
+    };
+
+    if (!localeMap[locale]) {
+      console.warn(`Unsupported locale: ${locale}`);
+      return;
+    }
+
+    const { default: localeMessages } = await localeMap[locale]();
+
+    const fieldLabels = {};
+    const theForm = getCurrentForm(props.id);
+
+    if (theForm?.inputs) {
+      Object.entries(theForm.inputs).forEach(([key, input]) => {
+        const label = input?.options?.label;
+        if (label) {
+          fieldLabels[key] = `${label} (${key})`;
+        }
+      });
+    }
+
+    configure({
+      generateMessage: localize({
+        [locale]: {
+          ...localeMessages,
+          names: fieldLabels,
+        },
+      }),
+    });
+
+    localize(locale);
+  } catch (err) {
+    console.warn(`Failed to load validation messages for locale: ${locale}`, err);
+  }
+};
 
 onMounted(() => {
   addForm({
@@ -242,6 +277,7 @@ onMounted(() => {
   });
 
   addBinderDataToFields();
+  loadLocale(props.locale);
 });
 
 watch(
