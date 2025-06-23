@@ -38,7 +38,7 @@ const props = defineProps({
       v-for="(inputGroup, i) in item.inputGroups"
       v-bind="{ ...inputGroup.options }"
       :key="i"
-      class="mt-4"
+      class="inputGroup-card mt-4"
     >
       <v-card-title>
         {{ inputGroup.title }}

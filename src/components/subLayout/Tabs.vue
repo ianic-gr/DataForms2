@@ -38,7 +38,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-card id="sub-layout-tabs">
+  <v-card class="sublayout-tabs">
     <v-toolbar
       v-if="tabsOptions.header"
       v-bind="{ ...(tabsOptions.toolbar || {}) }"
@@ -61,7 +61,7 @@ onMounted(() => {
     <v-card-text class="pa-0">
       <v-tabs-window v-model="leaf">
         <v-tabs-window-item v-for="(item, i) in items" :key="`tabitem_${i}`" eager>
-          <v-card flat>
+          <v-card class="sublayout-tabs__tab-card" flat>
             <v-card-text>
               <InputGroups v-bind="{ ...props }" :item="item" :leaf="leaf" :tab-key="i">
                 <template

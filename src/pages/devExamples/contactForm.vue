@@ -1,4 +1,6 @@
 <script setup>
+const binder = ref({});
+
 const api = {
   rows: [
     {
@@ -117,6 +119,7 @@ const api = {
       ],
     },
   ],
+  binder: binder.value,
   submit: {
     options: {
       text: "Message",

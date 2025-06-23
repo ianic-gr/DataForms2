@@ -51,10 +51,11 @@ export function useFieldType(props) {
   onMounted(async () => {
     await nextTick();
 
-    if (props.input?.readOnly) return;
-
     syncFieldWithFormData();
     initializeField();
+
+    if (props.input?.readOnly) return;
+
     handleFieldChange();
   });
 

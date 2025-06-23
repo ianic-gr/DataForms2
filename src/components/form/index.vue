@@ -5,6 +5,7 @@ import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 import { defineRule, useForm, configure } from "vee-validate";
 import { all } from "@vee-validate/rules";
 import { localize } from "@vee-validate/i18n";
+import deepClone from "@/utils/deepClone";
 
 const props = defineProps({
   id: {
@@ -65,33 +66,34 @@ const submitFailedEvent = new CustomEvent("dataFormSubmitFailed", {
   detail: { formID: props.id },
 });
 
-const initBinder = ref(false);
-const initBinderValues = ref({});
+const initBinderValues = ref();
 
-const initBinderFn = (data) => {
-  if (!("binder" in data)) return;
+const theForm = computed(() => getCurrentForm(props.id));
 
-  if (!initBinder.value) {
-    initBinderValues.value = { ...data.binder } ?? {};
-    initBinder.value = true;
+const initBinderFn = async () => {
+  await nextTick();
+
+  if ("binder" in props.api) {
+    updateBinder({
+      formId: props.id,
+      binder: props.api.binder ?? {},
+    });
   }
 
-  updateBinder({
-    formId: props.id,
-    binder: data.binder ?? {},
-  });
+  if (!initBinderValues.value) {
+    initBinderValues.value = deepClone(theForm.value.binder ?? {});
+  }
 };
 
-const leaveAlertWhenDataChanges = (data) => {
+const leaveAlertWhenDataChanges = (event) => {
   if (!props.options.leaveAlertWhenDataChanges) return;
 
-  window.onbeforeunload = null;
-
   if (
-    JSON.stringify(initBinderValues.value) !== JSON.stringify(data.binder) &&
+    JSON.stringify(initBinderValues.value) !== JSON.stringify(theForm.value.binder) &&
     !submitOK.value
   ) {
-    window.onbeforeunload = () => true;
+    event.preventDefault();
+    event.returnValue = "";
   }
 };
 
@@ -159,10 +161,8 @@ const submit = async (softSubmit = false) => {
   submitOK.value = false;
   makeFormInvalid(props.id);
 
-  const theForm = getCurrentForm(props.id);
-
   if (props.api.submit?.beforeSubmit) {
-    await props.api.submit.beforeSubmit(theForm.fields);
+    await props.api.submit.beforeSubmit(theForm.value.fields);
   }
 
   const binder = validateBinder();
@@ -238,10 +238,9 @@ const loadLocale = async (locale) => {
     const { default: localeMessages } = await localeMap[locale]();
 
     const fieldLabels = {};
-    const theForm = getCurrentForm(props.id);
 
     if (theForm?.inputs) {
-      Object.entries(theForm.inputs).forEach(([key, input]) => {
+      Object.entries(theForm.value.inputs).forEach(([key, input]) => {
         const label = input?.options?.label;
         if (label) {
           fieldLabels[key] = `${label} (${key})`;
@@ -264,6 +263,11 @@ const loadLocale = async (locale) => {
   }
 };
 
+watch(theForm, async () => {
+  await nextTick();
+  initBinderFn();
+});
+
 onMounted(() => {
   addForm({
     form_id: props.id,
@@ -278,21 +282,12 @@ onMounted(() => {
 
   addBinderDataToFields();
   loadLocale(props.locale);
+
+  window.addEventListener("beforeunload", leaveAlertWhenDataChanges);
 });
 
-watch(
-  () => props.api,
-  (newData) => {
-    initBinderFn(newData);
-    leaveAlertWhenDataChanges(newData);
-  },
-  { deep: true }
-);
-
-watch(submitOK, () => leaveAlertWhenDataChanges(props.api));
-
 onBeforeUnmount(() => {
-  leaveAlertWhenDataChanges(props.api);
+  window.removeEventListener("beforeunload", leaveAlertWhenDataChanges);
   removeForm(props.id);
 });
 
