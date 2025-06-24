@@ -119,7 +119,6 @@ const api = {
       ],
     },
   ],
-  binder: binder.value,
   submit: {
     options: {
       text: "Message",
@@ -139,7 +138,7 @@ const deleteForm = () => {
 </script>
 
 <template>
-  <DataForm id="contact-form" :api="api" locale="el">
+  <DataForm id="contact-form" v-model:binder="binder" :api="api" locale="el">
     <template #pop="{ props, item }">
       <v-list-item v-bind="props" :subtitle="item.raw.value" :title="item.raw.title" />
     </template>

@@ -33,7 +33,6 @@ export const useDataformsStore = defineStore("dataforms", () => {
       valid: false,
       fields: {},
       inputs: {},
-      binder: {},
       errors: {},
       locale,
       locale_strings,
@@ -92,25 +91,12 @@ export const useDataformsStore = defineStore("dataforms", () => {
     const computedForm = forms.value.map((form) => {
       if (form.id === appendFieldData.formId) {
         form.fields[appendFieldData.fieldName] = appendFieldData.fieldValue;
-        form.binder[appendFieldData.fieldName] = appendFieldData.fieldValue;
 
         if (unsaved) {
           form.unsaved = true;
         }
       }
 
-      return form;
-    });
-
-    forms.value = computedForm;
-  };
-
-  const updateBinder = (appendFieldData) => {
-    // Keep reactivity
-    const computedForm = forms.value.map((form) => {
-      if (form.id === appendFieldData.formId) {
-        form.binder = appendFieldData.binder;
-      }
       return form;
     });
 
@@ -130,6 +116,5 @@ export const useDataformsStore = defineStore("dataforms", () => {
     addInput,
     addField,
     updateField,
-    updateBinder,
   };
 });

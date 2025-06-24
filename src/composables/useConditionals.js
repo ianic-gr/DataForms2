@@ -4,14 +4,14 @@ import { useDataformsStore } from "@/stores/dataFormsStore";
 export function useConditionals(formID) {
   const { getCurrentForm } = useDataformsStore();
 
-  const binder = computed(() => {
+  const formFields = computed(() => {
     const currentForm = getCurrentForm(formID);
-    return currentForm?.binder ?? {};
+    return currentForm?.fields ?? {};
   });
 
   /**
    * This function takes an array of objects
-   * that compares its values with the binder of the current form
+   * that compares its values with the formFields of the current form
    * and returns a boolean value.
    *
    * the array compares its objects with OR operator,
@@ -35,12 +35,12 @@ export function useConditionals(formID) {
       Object.entries(batch).forEach(([key, value], i) => {
         conditionalBatchArr[i] = 0;
 
-        if (Array.isArray(binder.value[key])) {
-          if (binder.value[key].includes(value)) {
+        if (Array.isArray(formFields.value[key])) {
+          if (formFields.value[key].includes(value)) {
             conditionalBatchArr[i] = 1;
           }
         } else {
-          if (binder.value[key] === value) {
+          if (formFields.value[key] === value) {
             conditionalBatchArr[i] = 1;
           }
         }

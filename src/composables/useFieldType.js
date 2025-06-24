@@ -11,12 +11,12 @@ export function useFieldType(props) {
   const currentFormData = computed(() => getCurrentForm(props.formId));
 
   const initializeField = () => {
-    const binder = currentFormData.value.binder;
+    const formFields = currentFormData.value.fields;
 
     addField({
       formId: props.formId,
       fieldName: props.inputKey,
-      fieldValue: binder?.[props?.inputKey] ?? field.value,
+      fieldValue: formFields?.[props?.inputKey] ?? field.value,
     });
     addInput(props.formId, props.inputKey, props.input);
   };
@@ -26,8 +26,8 @@ export function useFieldType(props) {
     watch(
       currentFormData,
       (data) => {
-        if (data?.binder) {
-          field.value = data.binder[props.inputKey];
+        if (data?.fields) {
+          field.value = data.fields[props.inputKey];
         }
       },
       { deep: true }

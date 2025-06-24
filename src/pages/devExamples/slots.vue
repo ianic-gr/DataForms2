@@ -1,5 +1,13 @@
 <script setup>
 const result = ref(null);
+const binder = ref({
+  name: "",
+  surname: "",
+  phone: "",
+});
+const validation = ref({});
+const customInvalid = ref(true);
+
 const api = ref({
   rows: [
     { slots: ["Binding"] },
@@ -17,25 +25,16 @@ const api = ref({
       ],
     },
   ],
-  binder: {
-    name: {
-      value: "",
-      error: "super fail!",
-      invalid: false,
-    },
-    surname: null,
-    phone: null,
-  },
   submit: {
     options: {
       text: "Submit",
       color: "primary",
     },
     beforeSubmit: (formData) => {
-      api.value.binder.name.invalid = false;
+      validation.value.name = null;
 
-      if (!formData.name.value.length) {
-        api.value.binder.name.invalid = true;
+      if (!formData.name?.length && customInvalid.value) {
+        validation.value.name = "invalid";
       }
     },
     click: (formData) => {
@@ -47,27 +46,32 @@ const api = ref({
 </script>
 
 <template>
-  <DataForm id="slots-form" :api="api">
+  <DataForm
+    id="slots-form"
+    v-model:binder="binder"
+    v-model:validation="validation"
+    :api="api"
+  >
     <template #Binding>
       <h2>Binded form</h2>
       <v-row>
         <v-col cols="12">
-          <v-btn @click="api.binder.name.invalid = false"> Make name valid </v-btn>
+          <v-btn @click="customInvalid = false"> Make name valid </v-btn>
         </v-col>
         <v-col>
           <v-text-field
-            v-model="api.binder.name.value"
+            v-model="binder.name"
             label="Name"
             outlined
             required
-            :error-messages="api.binder.name.invalid ? api.binder.name.error : ''"
+            :error-messages="validation.name"
           />
         </v-col>
         <v-col>
-          <v-text-field v-model="api.binder.surname" label="Surname" outlined />
+          <v-text-field v-model="binder.surname" label="Surname" outlined />
         </v-col>
         <v-col>
-          <v-text-field v-model="api.binder.phone" label="Phone" outlined />
+          <v-text-field v-model="binder.phone" label="Phone" outlined />
         </v-col>
       </v-row>
     </template>

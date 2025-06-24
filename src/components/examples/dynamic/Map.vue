@@ -41,8 +41,8 @@ const initMap = () => {
   marker.value.on("dragend", function (event) {
     const { lat, lng } = marker.value.getLatLng();
 
-    currentForm.value.binder.latitude = lat;
-    currentForm.value.binder.longitude = lng;
+    currentForm.value.fields.latitude = lat;
+    currentForm.value.fields.longitude = lng;
   });
 };
 
@@ -82,7 +82,7 @@ watch(
 );
 
 watch(
-  () => currentForm.value.binder,
+  () => currentForm.value.fields,
   async ({ latitude, longitude }) => {
     await nextTick();
 
