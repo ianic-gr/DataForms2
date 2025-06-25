@@ -52,6 +52,8 @@ const {
 const vFormRef = ref();
 const loading = ref(false);
 const submitOK = ref(false);
+const initFormValues = ref();
+
 const submitEvent = new Event("dataFormSubmit");
 const submitSuccessEvent = new CustomEvent("dataFormSubmitSuccess", {
   detail: { formID: props.id },
@@ -60,9 +62,15 @@ const submitFailedEvent = new CustomEvent("dataFormSubmitFailed", {
   detail: { formID: props.id },
 });
 
-const initFormValues = ref();
-
 const theForm = computed(() => getCurrentForm(props.id));
+const formOptions = computed(() => {
+  const defaultOptions = {
+    submitReadonlyFields: true,
+    leaveAlertWhenDataChanges: true,
+  };
+
+  return defu(props.options, defaultOptions);
+});
 
 const initFormValuesFn = async () => {
   await nextTick();
@@ -73,7 +81,7 @@ const initFormValuesFn = async () => {
 };
 
 const leaveAlertWhenDataChanges = (event: any) => {
-  if (!props.options.leaveAlertWhenDataChanges) return;
+  if (!formOptions.value.leaveAlertWhenDataChanges) return;
 
   if (
     JSON.stringify(initFormValues.value) !== JSON.stringify(theForm.value.fields) &&
@@ -153,16 +161,22 @@ const validateOnly = () => submit(true);
 const submitSuccess = async () => {
   const theForm = getCurrentForm(props.id);
 
+  const cleanedData: Record<string, any> = Object.fromEntries(
+    Object.entries(theForm.fields).filter(([key]) => !theForm.inputs[key]?.readOnly)
+  );
+
+  const fields = formOptions.value.submitReadonlyFields ? theForm.fields : cleanedData;
+
   makeFormValid(props.id);
   submitOK.value = true;
 
   try {
     if (props.api.submit) {
-      await props.api.submit.click(theForm.fields);
+      await props.api.submit.click(fields);
     }
 
     document.dispatchEvent(submitSuccessEvent);
-    emit("dataFormSubmitSuccess", theForm.fields);
+    emit("dataFormSubmitSuccess", fields);
 
     theForm.unsaved = false;
   } catch (error) {

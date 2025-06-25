@@ -58,6 +58,15 @@ const api = {
       ],
     },
   ],
+  submit: {
+    options: {
+      text: "Save",
+      color: "primary",
+    },
+    click(data) {
+      console.log("data: ", data);
+    },
+  },
 };
 </script>
 
@@ -66,5 +75,5 @@ const api = {
     To show the Budget 💸 field, we should provide the name with <b>Bob</b>, or
     <b>John</b>, if the name is bob we need to provide the deadline with <b>Now!</b> value
   </p>
-  <dataForm id="readonly" :api="api" />
+  <dataForm id="readonly" :api="api" :options="{ submitReadonlyFields: false }" />
 </template>
