@@ -33,8 +33,19 @@ const emit = defineEmits([
   "dataFormSubmitWithErrors",
 ]);
 
+// Form String Rules
 Object.entries(all).forEach(([name, rule]) => {
   defineRule(name, rule);
+});
+
+defineRule("uuid", (value: string) => {
+  if (!value || !value.length) {
+    return true;
+  }
+
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(value) || "This field must be a valid UUID";
 });
 
 const dataformsStore = useDataformsStore();
