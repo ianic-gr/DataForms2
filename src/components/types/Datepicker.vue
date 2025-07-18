@@ -57,6 +57,7 @@ function format(date) {
       v-model="date"
       v-bind="{ ...options?.datepicker, ...options }"
       :display-format="format"
+      :input-format="options.returnFormat.toLowerCase()"
       :error-messages="inputField.errorMessage.value"
       v-on="events"
     >

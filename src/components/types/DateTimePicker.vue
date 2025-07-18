@@ -1,7 +1,6 @@
 <script setup>
 import moment from "moment";
 import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
-import { VTimePicker } from "vuetify/labs/VTimePicker";
 import { useField } from "vee-validate";
 
 const props = defineProps({
