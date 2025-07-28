@@ -1,16 +1,16 @@
 <script setup>
 const multiplePreview = ref([
   {
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3YNRu7aelgluNIXT1OXPXdS5Xr2TbFpPf8Q&s",
-    id: 1,
-    deletable: true,
+    id: 14,
+    file: "https:\/\/smartville-api.lndo.site\/kos\/tenancy\/assets\/water_meter_images\/14\/GvffMsTXIAAM8KB.jpeg",
   },
   {
-    image:
-      "https://www.pdsa.org.uk/media/7646/golden-retriever-gallery-2.jpg?anchor=center&mode=crop&quality=100&height=500&bgcolor=fff&rnd=133020229510000000",
-    id: 2,
-    deletable: true,
+    id: 45,
+    file: "https:\/\/smartville-api.lndo.site\/kos\/tenancy\/assets\/water_meter_images\/45\/Screenshot-From-2025-06-06-13-57-32.png",
+  },
+  {
+    id: 46,
+    file: "https:\/\/smartville-api.lndo.site\/kos\/tenancy\/assets\/water_meter_images\/46\/Screenshot-From-2025-06-27-11-54-16.png",
   },
 ]);
 
@@ -26,18 +26,16 @@ const api = computed(() => ({
               label: "Files",
               prependIcon: "mdi-file",
               multiple: true,
-              deleteButton: {
-                text: "Delete",
-                prependIcon: "mdi-delete",
-              },
-              preview: multiplePreview.value,
             },
-            events: {
-              onDelete: (item) => {
-                multiplePreview.value = multiplePreview.value.filter(
-                  (x) => x.id !== item.id
-                );
-              },
+            preview: multiplePreview.value,
+            onDelete: (v) => {
+              multiplePreview.value = multiplePreview.value.filter((item) => {
+                console.log(item.id, v.id);
+                return item.id !== v.id;
+              });
+            },
+            validation: {
+              mimes: "image/*",
             },
           },
         },
@@ -50,23 +48,19 @@ const api = computed(() => ({
           singleFile: {
             type: "FileUpload",
             options: {
-              label: "File",
-              prependIcon: "mdi-file",
-              deleteButton: {
-                text: "Delete",
-                prependIcon: "mdi-delete",
-              },
-              preview: {
-                image:
-                  "https://13630656.rocketcdn.me/wp-content/uploads/2020/01/Golden4.jpg.webp",
-                id: 1,
-                deletable: true,
-              },
+              label: "KML",
+              clearable: true,
             },
-            events: {
-              onDelete: (item) => {
-                console.log(item);
-              },
+            preview: null,
+            validation: {
+              mimes: [
+                "application/zip",
+                "text/xml",
+                "application/xml",
+                "text/xsl",
+                "application/vnd.google-earth.kml+xml",
+                "application/vnd.google-earth.kmz",
+              ],
             },
           },
         },

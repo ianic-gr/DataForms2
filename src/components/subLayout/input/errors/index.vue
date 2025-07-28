@@ -13,6 +13,6 @@ const props = defineProps({
 
 <template>
   <div v-for="(item, i) in props.items" :key="i">
-    <Item :item="item" />
+    <SubLayoutInputErrorsItem :item="item" />
   </div>
 </template>

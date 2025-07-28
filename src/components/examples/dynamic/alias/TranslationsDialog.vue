@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { AliasLanguages } from "@/types/Alias";
 import deepClone from "@/utils/deepClone";
+import { watch, ref } from "vue";
 
 const emit = defineEmits(["submit"]);
 const dialog = defineModel<boolean>({ default: false });

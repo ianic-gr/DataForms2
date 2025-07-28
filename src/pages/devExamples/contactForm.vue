@@ -95,11 +95,6 @@ const api = {
                 template: "pop",
               },
             ],
-            events: {
-              onChange: (value) => {
-                console.log(value);
-              },
-            },
             validation: "required",
           },
         },

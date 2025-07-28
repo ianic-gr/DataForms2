@@ -2,6 +2,7 @@
 import type { AliasLanguages } from "@/types/Alias";
 import fillAttributes from "@/utils/fillAttributes";
 import fillEmptyAttributes from "@/utils/fillEmptyAttributes";
+import { computed, ref } from "vue";
 
 interface Props {
   fieldProps?: Record<string, any>;
@@ -27,7 +28,7 @@ const onBlur = () => {
 
 <template>
   <div>
-    <TranslationsDialog v-model="dialog" v-model:alias="alias" />
+    <ExamplesDynamicAliasTranslationsDialog v-model="dialog" v-model:alias="alias" />
     <v-text-field
       v-if="Object.hasOwn(alias, currentLanguageKey)"
       v-model="alias[currentLanguageKey]"

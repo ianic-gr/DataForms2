@@ -28,11 +28,11 @@ const props = defineProps({
 
 <template>
   <div class="dataforms-renderItem">
-    <Input v-if="item.input?.length" :items="item.input" :form-id="id">
+    <SubLayoutInput v-if="item.input?.length" :items="item.input" :form-id="id">
       <template v-for="inputSlot in slots(item.input)" #[inputSlot.template]="slotProps">
         <slot :name="inputSlot.template" v-bind="slotProps" :active="leaf === tabKey" />
       </template>
-    </Input>
+    </SubLayoutInput>
 
     <component
       :is="item.dynamic.component"

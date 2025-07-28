@@ -65,7 +65,11 @@ const rowInput = computed(() => {
     </v-col>
     <slot name="rowSlot" />
     <v-col v-if="row.accordion" cols="12">
-      <Accordion :id="id" :items="row.accordion.items" :options="row.accordion.options">
+      <SubLayoutAccordion
+        :id="id"
+        :items="row.accordion.items"
+        :options="row.accordion.options"
+      >
         <template
           v-for="(inputSlot, inputSlotKey) in subLayoutSlots(row.accordion.items)"
           :key="inputSlotKey"
@@ -73,10 +77,10 @@ const rowInput = computed(() => {
         >
           <slot :name="inputSlot.template" v-bind="slotProps" />
         </template>
-      </Accordion>
+      </SubLayoutAccordion>
     </v-col>
     <v-col v-if="row.tabs" cols="12">
-      <Tabs :id="id" :items="row.tabs.items" :options="row.tabs.options">
+      <SubLayoutTabs :id="id" :items="row.tabs.items" :options="row.tabs.options">
         <template
           v-for="(inputSlot, inputSlotKey) in subLayoutSlots(row.tabs.items)"
           :key="inputSlotKey"
@@ -84,12 +88,12 @@ const rowInput = computed(() => {
         >
           <slot :name="inputSlot.template" v-bind="slotProps" />
         </template>
-      </Tabs>
+      </SubLayoutTabs>
     </v-col>
     <v-col cols="12">
       <template v-for="(setRow, i) in rowInput" :key="i">
         <component :is="setRow.themeComp" v-show="!setRow.hidden" :row="setRow">
-          <Input
+          <SubLayoutInput
             ref="dataFormInput"
             :items="setRow.set"
             :form-id="id"
@@ -103,7 +107,7 @@ const rowInput = computed(() => {
             >
               <slot :name="inputSlot.template" v-bind="slotProps" />
             </template>
-          </Input>
+          </SubLayoutInput>
         </component>
       </template>
       <div v-if="row.dynamic?.component">

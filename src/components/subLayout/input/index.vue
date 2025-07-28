@@ -49,7 +49,7 @@ onMounted(() => {
       <div v-for="(input, inputKey) in parsedCol(col)" :key="inputKey">
         <!-- Component changes when currentTab changes -->
 
-        <Field
+        <SubLayoutInputField
           :input="input"
           :input-key="inputKey"
           :form-id="formId"
@@ -63,7 +63,7 @@ onMounted(() => {
           >
             <slot :name="inputSlot.template" v-bind="slotProps" />
           </template>
-        </Field>
+        </SubLayoutInputField>
       </div>
     </v-col>
   </v-row>

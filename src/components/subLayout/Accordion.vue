@@ -32,7 +32,12 @@ onMounted(() => {
     <v-expansion-panel v-for="(item, i) in items" :key="i">
       <v-expansion-panel-title> {{ item.title }} </v-expansion-panel-title>
       <v-expansion-panel-text eager>
-        <InputGroups v-bind="{ ...props }" :item="item" :leaf="leaf" :tab-key="i">
+        <SubLayoutInputGroups
+          v-bind="{ ...props }"
+          :item="item"
+          :leaf="leaf"
+          :tab-key="i"
+        >
           <template
             v-for="(inputSlot, inputSlotKey) in getApiSlots(item)"
             :key="inputSlotKey"
@@ -40,7 +45,7 @@ onMounted(() => {
           >
             <slot :name="inputSlot.template" v-bind="slotProps" />
           </template>
-        </InputGroups>
+        </SubLayoutInputGroups>
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>

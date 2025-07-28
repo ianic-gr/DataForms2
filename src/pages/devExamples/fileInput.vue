@@ -12,6 +12,9 @@ const api = {
               prependIcon: "mdi-file",
               multiple: true,
             },
+            validation: {
+              mimes: "image/*",
+            },
             events: {
               onDelete: (item) => {
                 console.log(item);

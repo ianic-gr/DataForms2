@@ -89,6 +89,8 @@ export default defineConfig(({ mode }) => {
       }),
       Components({
         dts: "src/components.d.ts",
+        deep: true,
+        directoryAsNamespace: true,
       }),
       Vue({
         template: { transformAssetUrls },

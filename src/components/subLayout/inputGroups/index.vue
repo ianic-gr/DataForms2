@@ -28,11 +28,11 @@ const props = defineProps({
 
 <template>
   <div class="dataforms-inputGroups">
-    <RenderItem v-bind="{ ...props }">
+    <SubLayoutInputGroupsRenderItem v-bind="{ ...props }">
       <template v-for="inputSlot in slots(item.input)" #[inputSlot.template]="slotProps">
         <slot :name="inputSlot.template" v-bind="slotProps" :active="leaf === tabKey" />
       </template>
-    </RenderItem>
+    </SubLayoutInputGroupsRenderItem>
 
     <v-card
       v-for="(inputGroup, i) in item.inputGroups"
@@ -44,7 +44,7 @@ const props = defineProps({
         {{ inputGroup.title }}
       </v-card-title>
       <v-card-text>
-        <RenderItem v-bind="{ ...props, item: inputGroup }">
+        <SubLayoutInputGroupsRenderItem v-bind="{ ...props, item: inputGroup }">
           <template
             v-for="inputSlot in slots(inputGroup.input)"
             #[inputSlot.template]="slotProps"
@@ -55,7 +55,7 @@ const props = defineProps({
               :active="leaf === tabKey"
             />
           </template>
-        </RenderItem>
+        </SubLayoutInputGroupsRenderItem>
       </v-card-text>
     </v-card>
   </div>

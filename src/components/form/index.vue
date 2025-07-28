@@ -5,7 +5,7 @@ import { useSlotsPrepare } from "@/composables/useSlotsPrepare";
 import { defineRule, useForm, configure } from "vee-validate";
 import { all } from "@vee-validate/rules";
 import { localize } from "@vee-validate/i18n";
-import deepClone from "@/utils/deepClone";
+import deepClone from "@/utils/deepClone.js";
 import { defu } from "defu";
 
 const binder = defineModel<Record<string, any>>("binder", { default: () => ({}) });
@@ -288,7 +288,13 @@ defineExpose({
 <template>
   <v-form ref="vFormRef" @submit.prevent="submit()">
     <transition-group name="form">
-      <Row v-for="(row, i) in api.rows" :id="id" :key="i" :row="row" :loading="loading">
+      <FormRow
+        v-for="(row, i) in api.rows"
+        :id="id"
+        :key="i"
+        :row="row"
+        :loading="loading"
+      >
         <template
           v-for="(inputSlot, inputSlotKey) in getApiSlots(row)"
           :key="inputSlotKey"
@@ -301,7 +307,7 @@ defineExpose({
             <slot :name="slot" />
           </v-col>
         </template>
-      </Row>
+      </FormRow>
     </transition-group>
     <v-row class="dataforms-actions-row">
       <v-col

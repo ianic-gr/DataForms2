@@ -1,8 +1,6 @@
 <script setup>
 import { useFieldType } from "@/composables/useFieldType";
-import { useInputEvents } from "@/composables/useInputEvents";
 import { useField } from "vee-validate";
-import { VFileUpload } from "vuetify/labs/VFileUpload";
 
 const props = defineProps({
   input: {
@@ -21,10 +19,6 @@ const props = defineProps({
     required: true,
     type: String,
   },
-  loadingIndicator: {
-    type: Boolean,
-    default: false,
-  },
   events: {
     type: Object,
     default: () => {},
@@ -36,20 +30,33 @@ const field = useField(
   props.inputKey,
   !props.input.readOnly ? props.input.validation : ""
 );
-const $useInputEvents = useInputEvents(props);
 
 const fieldReturn = defineModel("return");
 
-const fileInputDensity = computed(() => {
-  const preview = Array.isArray(props.options.preview)
-    ? props.options.preview.length
-    : props.options.preview;
-  const field = Array.isArray(fieldValue.value)
-    ? fieldValue.value.length
-    : fieldValue.value;
+const uploadedFiles = ref([]);
+const key = ref(0);
 
-  return preview || field ? "compact" : "default";
+const previewFiles = computed(() => {
+  if (!props.input.preview) return [];
+  return Array.isArray(props.input.preview) ? props.input.preview : [props.input.preview];
 });
+
+const submitFiles = (files) => {
+  uploadedFiles.value = files;
+  const submittedFiles = uploadedFiles.value.map((v) => v.file);
+
+  if (props.input.options.multiple) {
+    fieldValue.value = submittedFiles;
+  } else {
+    fieldValue.value = submittedFiles.length ? submittedFiles[0] : null;
+  }
+};
+
+const deleteFiles = async (files) => {
+  for (const file of files) {
+    await props.input.onDelete(file);
+  }
+};
 
 watch(
   fieldValue,
@@ -61,74 +68,61 @@ watch(
   },
   { immediate: true }
 );
+
+watch([previewFiles, uploadedFiles], () => {
+  key.value++;
+});
 </script>
 
 <template>
-  <div class="df2-file-upload">
-    <v-card variant="tonal">
-      <v-card-text>
-        <v-file-upload
-          v-model="fieldValue"
-          clearable
-          show-size
-          v-bind="{ ...$attrs, ...options }"
-          :density="fileInputDensity"
-          :variant="fileInputDensity"
-          :loading="props.loadingIndicator"
-          :error-messages="field.errorMessage.value"
-          v-on="props.events"
-          @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
-        >
-          <template
-            v-for="(inputSlot, inputSlotKey) in input.itemSlots"
-            :key="inputSlotKey"
-            #[inputSlot.slot]="slotProps"
-          >
-            <slot :name="inputSlot.template" v-bind="slotProps" />
-          </template>
-        </v-file-upload>
-      </v-card-text>
-    </v-card>
+  <div>
+    <div>
+      <v-card
+        v-if="!previewFiles?.length && !uploadedFiles.length"
+        color="grey-lighten-4"
+        class="pa-6 text-center"
+      >
+        <v-icon size="x-large" color="grey" class="mb-4">
+          mdi-file-document-remove
+        </v-icon>
+        <div class="text-h6 mb-3">No Files Uploaded Yet</div>
 
-    <Slider
-      v-if="Array.isArray(props.options.preview)"
-      :options="props.options"
-      @delete-item="$useInputEvents.onDelete"
-    />
-    <Single v-else :options="props.options" @delete-item="$useInputEvents.onDelete" />
+        <div
+          v-if="input.options.multiple"
+          class="text-subtitle-1 mb-4 text-medium-emphasis"
+        >
+          You can upload multiple files at once
+        </div>
+
+        <v-btn
+          variant="tonal"
+          color="primary"
+          size="large"
+          prepend-icon="mdi-upload-circle"
+        >
+          upload
+          <FileUploadDialogUpload :options="input.options" @submit-files="submitFiles" />
+        </v-btn>
+      </v-card>
+      <div v-else>
+        <FileUploadToolbar
+          :key="key"
+          v-model:uploaded-files="uploadedFiles"
+          :preview-files="previewFiles"
+          :errors="field.errorMessage.value"
+          @delete-files="deleteFiles"
+        >
+          <template #upload>
+            <v-btn variant="tonal" prepend-icon="mdi-upload-circle">
+              upload
+              <FileUploadDialogUpload
+                :options="input.options"
+                @submit-files="submitFiles"
+              />
+            </v-btn>
+          </template>
+        </FileUploadToolbar>
+      </div>
+    </div>
   </div>
 </template>
-
-<style lang="scss">
-.df2-file-upload {
-  .v-file-upload-items {
-    margin-bottom: 0;
-  }
-
-  .v-file-upload {
-    padding: 24px !important;
-
-    .v-file-upload-divider {
-      margin: 1rem !important;
-    }
-    .v-file-upload-icon {
-      font-size: 2rem !important;
-      opacity: unset !important;
-    }
-
-    .v-btn {
-      --v-theme-overlay-multiplier: var(--v-theme-primary-overlay-multiplier);
-      background-color: rgb(var(--v-theme-primary)) !important;
-      color: rgb(var(--v-theme-on-primary)) !important;
-
-      &.v-btn--size-large {
-        --v-btn-size: 0.75rem;
-        --v-btn-height: 28px;
-        font-size: var(--v-btn-size);
-        min-width: 50px;
-        padding: 0 12px;
-      }
-    }
-  }
-}
-</style>
