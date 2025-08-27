@@ -10,7 +10,7 @@ import Vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
 import * as path from "path";
 
 // Utilities
-import { BuildEnvironmentOptions, defineConfig, CSSOptions } from "vite";
+import { BuildEnvironmentOptions, defineConfig } from "vite";
 import { fileURLToPath, URL } from "node:url";
 
 // https://vitejs.dev/config/
@@ -22,17 +22,6 @@ export default defineConfig(({ mode }) => {
 
   // Check for build type
   const isPageBuild = process.env.BUILD_TYPE === "pages";
-
-  const css: CSSOptions = {
-    preprocessorOptions: {
-      sass: {
-        api: "modern-compiler",
-      },
-      scss: {
-        api: "modern-compiler",
-      },
-    },
-  };
 
   let buildOptions: BuildEnvironmentOptions = {
     cssCodeSplit: false,
@@ -131,10 +120,8 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
     },
-    css,
     build: {
       ...buildOptions,
-      css,
     },
   };
 });

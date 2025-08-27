@@ -51,4 +51,156 @@ declare module 'vue-router/auto-routes' {
     '/examples/themes/Breeze': RouteRecordInfo<'/examples/themes/Breeze', '/examples/themes/Breeze', Record<never, never>, Record<never, never>>,
     '/examples/themes/Fluid': RouteRecordInfo<'/examples/themes/Fluid', '/examples/themes/Fluid', Record<never, never>, Record<never, never>>,
   }
+
+  /**
+   * Route file to route info map by unplugin-vue-router.
+   * Used by the volar plugin to automatically type useRoute()
+   *
+   * Each key is a file path relative to the project root with 2 properties:
+   * - routes: union of route names of the possible routes when in this page (passed to useRoute<...>())
+   * - views: names of nested views (can be passed to <RouterView name="...">)
+   *
+   * @internal
+   */
+  export interface _RouteFileInfoMap {
+    'src/pages/index.vue': {
+      routes: '/'
+      views: never
+    }
+    'src/pages/devExamples/index.vue': {
+      routes: '/devExamples/'
+      views: never
+    }
+    'src/pages/devExamples/accordion.vue': {
+      routes: '/devExamples/accordion'
+      views: never
+    }
+    'src/pages/devExamples/checks-radios.vue': {
+      routes: '/devExamples/checks-radios'
+      views: never
+    }
+    'src/pages/devExamples/conditionals.vue': {
+      routes: '/devExamples/conditionals'
+      views: never
+    }
+    'src/pages/devExamples/contactForm.vue': {
+      routes: '/devExamples/contactForm'
+      views: never
+    }
+    'src/pages/devExamples/datepickers.vue': {
+      routes: '/devExamples/datepickers'
+      views: never
+    }
+    'src/pages/devExamples/dynamicComponents.vue': {
+      routes: '/devExamples/dynamicComponents'
+      views: never
+    }
+    'src/pages/devExamples/epic.vue': {
+      routes: '/devExamples/epic'
+      views: never
+    }
+    'src/pages/devExamples/fileInput.vue': {
+      routes: '/devExamples/fileInput'
+      views: never
+    }
+    'src/pages/devExamples/fileUpload.vue': {
+      routes: '/devExamples/fileUpload'
+      views: never
+    }
+    'src/pages/devExamples/password.vue': {
+      routes: '/devExamples/password'
+      views: never
+    }
+    'src/pages/devExamples/readonly.vue': {
+      routes: '/devExamples/readonly'
+      views: never
+    }
+    'src/pages/devExamples/slots.vue': {
+      routes: '/devExamples/slots'
+      views: never
+    }
+    'src/pages/devExamples/tabs.vue': {
+      routes: '/devExamples/tabs'
+      views: never
+    }
+    'src/pages/devExamples/themes/Breeze.vue': {
+      routes: '/devExamples/themes/Breeze'
+      views: never
+    }
+    'src/pages/devExamples/themes/Fluid.vue': {
+      routes: '/devExamples/themes/Fluid'
+      views: never
+    }
+    'src/pages/diagrams.vue': {
+      routes: '/diagrams'
+      views: never
+    }
+    'src/pages/examples/index.vue': {
+      routes: '/examples/'
+      views: never
+    }
+    'src/pages/examples/accordion.vue': {
+      routes: '/examples/accordion'
+      views: never
+    }
+    'src/pages/examples/checks-radios.vue': {
+      routes: '/examples/checks-radios'
+      views: never
+    }
+    'src/pages/examples/conditionals.vue': {
+      routes: '/examples/conditionals'
+      views: never
+    }
+    'src/pages/examples/contactForm.vue': {
+      routes: '/examples/contactForm'
+      views: never
+    }
+    'src/pages/examples/datepickers.vue': {
+      routes: '/examples/datepickers'
+      views: never
+    }
+    'src/pages/examples/dynamicComponents.vue': {
+      routes: '/examples/dynamicComponents'
+      views: never
+    }
+    'src/pages/examples/epic.vue': {
+      routes: '/examples/epic'
+      views: never
+    }
+    'src/pages/examples/fileInput.vue': {
+      routes: '/examples/fileInput'
+      views: never
+    }
+    'src/pages/examples/password.vue': {
+      routes: '/examples/password'
+      views: never
+    }
+    'src/pages/examples/slots.vue': {
+      routes: '/examples/slots'
+      views: never
+    }
+    'src/pages/examples/tabs.vue': {
+      routes: '/examples/tabs'
+      views: never
+    }
+    'src/pages/examples/themes/Breeze.vue': {
+      routes: '/examples/themes/Breeze'
+      views: never
+    }
+    'src/pages/examples/themes/Fluid.vue': {
+      routes: '/examples/themes/Fluid'
+      views: never
+    }
+  }
+
+  /**
+   * Get a union of possible route names in a certain route component file.
+   * Used by the volar plugin to automatically type useRoute()
+   *
+   * @internal
+   */
+  export type _RouteNamesForFilePath<FilePath extends string> =
+    _RouteFileInfoMap extends Record<FilePath, infer Info>
+      ? Info['routes']
+      : keyof RouteNamedMap
 }
