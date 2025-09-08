@@ -1,5 +1,7 @@
 <script setup>
+const dataForm = ref();
 const binder = ref({});
+const result = ref(null);
 
 const api = {
   rows: [
@@ -121,8 +123,9 @@ const api = {
       color: "primary",
       prependIcon: "mdi-heart",
     },
-    click(data) {
-      console.log("data: ", data);
+    click(formData) {
+      console.log("data: ", formData);
+      result.value = JSON.parse(JSON.stringify(formData));
     },
   },
 };
@@ -133,7 +136,13 @@ const deleteForm = () => {
 </script>
 
 <template>
-  <DataForm id="contact-form" v-model:binder="binder" :api="api" locale="el">
+  <DataForm
+    id="contact-form"
+    ref="dataForm"
+    v-model:binder="binder"
+    :api="api"
+    locale="el"
+  >
     <template #pop="{ props, item }">
       <v-list-item v-bind="props" :subtitle="item.raw.value" :title="item.raw.title" />
     </template>
@@ -148,7 +157,12 @@ const deleteForm = () => {
 
           <v-menu activator="parent" location="bottom end" transition="fade-transition">
             <v-list density="compact" min-width="250" rounded="lg" slim>
-              <v-list-item prepend-icon="mdi-link" title="Copy link" link />
+              <v-list-item
+                prepend-icon="mdi-link"
+                title="Force Submit"
+                link
+                @click="dataForm.submit(false, true)"
+              />
 
               <v-divider class="my-2" />
 
@@ -163,4 +177,8 @@ const deleteForm = () => {
       </v-btn-group>
     </template>
   </DataForm>
+  <div v-if="result" class="mt-4">
+    <h3>Result:</h3>
+    {{ result }}
+  </div>
 </template>

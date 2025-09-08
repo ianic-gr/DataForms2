@@ -124,7 +124,7 @@ const scrollToError = () => {
 
 const { handleSubmit, setFieldError } = useForm();
 
-const submit = async (softSubmit = false) => {
+const submit = async (softSubmit = false, forceSubmitSuccess = false) => {
   submitOK.value = false;
   makeFormInvalid(props.id);
 
@@ -139,6 +139,11 @@ const submit = async (softSubmit = false) => {
 
   document.dispatchEvent(submitEvent);
   emit("dataFormSubmit");
+
+  if (forceSubmitSuccess) {
+    submitSuccess();
+    return;
+  }
 
   handleSubmit(
     async () => {

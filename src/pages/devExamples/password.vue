@@ -13,6 +13,13 @@ const api = {
             },
             validation: "min:6|required|max:18",
           },
+          confirm_password: {
+            type: "password",
+            options: {
+              label: "Confirm Password",
+            },
+            validation: "min:6|required|max:18|confirmed:@password",
+          },
         },
       ],
     },

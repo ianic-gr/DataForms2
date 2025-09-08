@@ -29,6 +29,7 @@ declare module 'vue-router/auto-routes' {
     '/devExamples/epic': RouteRecordInfo<'/devExamples/epic', '/devExamples/epic', Record<never, never>, Record<never, never>>,
     '/devExamples/fileInput': RouteRecordInfo<'/devExamples/fileInput', '/devExamples/fileInput', Record<never, never>, Record<never, never>>,
     '/devExamples/fileUpload': RouteRecordInfo<'/devExamples/fileUpload', '/devExamples/fileUpload', Record<never, never>, Record<never, never>>,
+    '/devExamples/numberInput': RouteRecordInfo<'/devExamples/numberInput', '/devExamples/numberInput', Record<never, never>, Record<never, never>>,
     '/devExamples/password': RouteRecordInfo<'/devExamples/password', '/devExamples/password', Record<never, never>, Record<never, never>>,
     '/devExamples/readonly': RouteRecordInfo<'/devExamples/readonly', '/devExamples/readonly', Record<never, never>, Record<never, never>>,
     '/devExamples/slots': RouteRecordInfo<'/devExamples/slots', '/devExamples/slots', Record<never, never>, Record<never, never>>,
@@ -45,6 +46,7 @@ declare module 'vue-router/auto-routes' {
     '/examples/dynamicComponents': RouteRecordInfo<'/examples/dynamicComponents', '/examples/dynamicComponents', Record<never, never>, Record<never, never>>,
     '/examples/epic': RouteRecordInfo<'/examples/epic', '/examples/epic', Record<never, never>, Record<never, never>>,
     '/examples/fileInput': RouteRecordInfo<'/examples/fileInput', '/examples/fileInput', Record<never, never>, Record<never, never>>,
+    '/examples/numberInput': RouteRecordInfo<'/examples/numberInput', '/examples/numberInput', Record<never, never>, Record<never, never>>,
     '/examples/password': RouteRecordInfo<'/examples/password', '/examples/password', Record<never, never>, Record<never, never>>,
     '/examples/slots': RouteRecordInfo<'/examples/slots', '/examples/slots', Record<never, never>, Record<never, never>>,
     '/examples/tabs': RouteRecordInfo<'/examples/tabs', '/examples/tabs', Record<never, never>, Record<never, never>>,
@@ -105,6 +107,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/devExamples/fileUpload.vue': {
       routes: '/devExamples/fileUpload'
+      views: never
+    }
+    'src/pages/devExamples/numberInput.vue': {
+      routes: '/devExamples/numberInput'
       views: never
     }
     'src/pages/devExamples/password.vue': {
@@ -169,6 +175,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/examples/fileInput.vue': {
       routes: '/examples/fileInput'
+      views: never
+    }
+    'src/pages/examples/numberInput.vue': {
+      routes: '/examples/numberInput'
       views: never
     }
     'src/pages/examples/password.vue': {

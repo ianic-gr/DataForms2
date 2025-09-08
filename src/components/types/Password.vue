@@ -64,11 +64,11 @@ watch(
   <div>
     <v-text-field
       v-model="fieldValue"
-      :append-icon="fieldIcon"
+      :append-inner-icon="fieldIcon"
       :type="fieldType"
       v-bind="{ ...$attrs, ...options }"
       :error-messages="field.errorMessage.value"
-      @click:append="showPassword = !showPassword"
+      @click:append-inner="showPassword = !showPassword"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
       <template

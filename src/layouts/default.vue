@@ -41,6 +41,10 @@ onMounted(() => {
       to: `/${exampleFolder}/fileUpload`,
     },
     {
+      title: "Number Input",
+      to: `/${exampleFolder}/numberinput`,
+    },
+    {
       title: "Conditionals",
       to: `/${exampleFolder}/conditionals`,
     },
