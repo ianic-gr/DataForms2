@@ -125,6 +125,7 @@ const scrollToError = () => {
 const { handleSubmit, setFieldError } = useForm();
 
 const submit = async (softSubmit = false, forceSubmitSuccess = false) => {
+  let validateStatus = false;
   submitOK.value = false;
   makeFormInvalid(props.id);
 
@@ -145,7 +146,7 @@ const submit = async (softSubmit = false, forceSubmitSuccess = false) => {
     return;
   }
 
-  handleSubmit(
+  await handleSubmit(
     async () => {
       const validationErrors = Object.entries(validation.value)
         .filter(([, value]) => value !== null)
@@ -163,6 +164,8 @@ const submit = async (softSubmit = false, forceSubmitSuccess = false) => {
         return;
       }
 
+      validateStatus = true;
+
       if (softSubmit) return;
       submitSuccess();
     },
@@ -170,6 +173,8 @@ const submit = async (softSubmit = false, forceSubmitSuccess = false) => {
       submitErrors(validationErrors.errors);
     }
   )();
+
+  return validateStatus;
 };
 
 const validateOnly = () => submit(true);

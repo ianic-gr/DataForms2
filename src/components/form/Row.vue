@@ -2,10 +2,11 @@
 import { isObject } from "vuetify/lib/util/helpers";
 import { useSlotsPrepare } from "@/composables/useSlotsPrepare.js";
 import { useConditionals } from "@/composables/useConditionals.js";
-import Plain from "../../components/theme/Plain.vue";
-import Fluid from "../../components/theme/Fluid.vue";
-import Breeze from "../../components/theme/Breeze.vue";
-import Card from "../../components/theme/Card.vue";
+
+const Plain = defineAsyncComponent(() => import("@/components/theme/Plain.vue"));
+const Fluid = defineAsyncComponent(() => import("@/components/theme/Fluid.vue"));
+const Breeze = defineAsyncComponent(() => import("@/components/theme/Breeze.vue"));
+const Card = defineAsyncComponent(() => import("@/components/theme/Card.vue"));
 
 const props = defineProps({
   row: {

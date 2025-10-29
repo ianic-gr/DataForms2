@@ -1,43 +1,9 @@
 <script setup>
 import { useConditionals } from "@/composables/useConditionals.js";
+import { useInputFieldComponents } from "@/composables/useInputFieldComponents";
 import { normalizeString } from "@/utils/normalizeString";
 
-// Components
-import textField from "@/components/types/TextField";
-import textArea from "@/components/types/TextArea";
-import radioButtons from "@/components/types/RadioButtons";
-import selects from "@/components/types/Selects";
-import autocomplete from "@/components/types/Autocomplete";
-import combobox from "@/components/types/Combobox.vue";
-import switchButton from "@/components/types/Switch";
-import checkBoxes from "@/components/types/CheckBoxes";
-import numberInput from "@/components/types/NumberInput";
-import datepicker from "@/components/types/Datepicker";
-import dateTimePicker from "@/components/types/DateTimePicker";
-import password from "@/components/types/Password";
-import epic from "@/components/types/Epic";
-import fileInput from "@/components/types/FileInput.vue";
-import fileUpload from "@/components/types/FileUpload.vue";
-import dynamic from "@/components/types/dynamic.vue";
-
-const types = {
-  textField,
-  textArea,
-  radioButtons,
-  selects,
-  autocomplete,
-  combobox,
-  switchButton,
-  checkBoxes,
-  numberInput,
-  datepicker,
-  dateTimePicker,
-  password,
-  epic,
-  fileInput,
-  fileUpload,
-  dynamic,
-};
+const types = useInputFieldComponents();
 
 const props = defineProps({
   input: {
@@ -145,7 +111,7 @@ const inputTypeComponent = computed(() => {
   const selectedInputType =
     Object.entries(types).find(
       ([key]) => normalizeString(key) === normalizeString(props.input?.type ?? "")
-    )?.[1] ?? textField;
+    )?.[1] ?? types.textField;
 
   return selectedInputType;
 });
