@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
+import { useI18n } from "vue-i18n";
 
+const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
 interface Props {
   images: Record<string, any>[];
   uploadedFiles: Record<string, any>[];
@@ -10,6 +11,8 @@ defineProps<Props>();
 const selected = defineModel<(Record<string, any> | Blob)[]>("selected", {
   required: true,
 });
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -32,7 +35,7 @@ const selected = defineModel<(Record<string, any> | Blob)[]>("selected", {
             </v-avatar>
 
             <v-avatar class="position-absolute" style="z-index: 9; top: 4px; right: 0">
-              <v-tooltip text="Image has not uploaded yet" location="top">
+              <v-tooltip :text="t('$dataforms.fileUpload.fileNotUploadedYet')" location="top">
                 <template #activator="{ props }">
                   <v-icon v-bind="props" color="warning" :icon="dataformsPluginOptions?.icons.fileUpload.upload" />
                 </template>

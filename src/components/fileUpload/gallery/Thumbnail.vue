@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref, onUnmounted } from "vue";
-
 const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
 
 interface Props {
@@ -95,12 +93,12 @@ onUnmounted(() => {
 
       <v-card v-else>
         <v-card-text>
-          <div class="d-flex align-center justify-center flex-column w-100 h-100" style="aspect-ratio: 1">
+          <div class="d-flex align-center text-center justify-center flex-column w-100 h-100" style="aspect-ratio: 1">
             <v-icon v-if="fileError" size="50" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
             <v-icon v-else size="50" :icon="dataformsPluginOptions?.icons.fileUpload.file" />
             <br />
             <div class="text-truncate w-100">
-              {{ imageUrl }}
+              {{ imageUrl || img.name }}
             </div>
           </div>
         </v-card-text>

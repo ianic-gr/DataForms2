@@ -71,9 +71,13 @@ const deleteRows = async () => {
 
       <v-spacer />
 
-      <v-btn v-if="selected.length" :loading="loading" icon @click="deleteRows">
-        <v-icon :icon="dataformsPluginOptions?.icons.fileUpload.delete" />
-      </v-btn>
+      <v-tooltip :text="$t('$dataforms.fileUpload.removeSelectedFiles')" location="top">
+        <template #activator="{ props: tooltipProps }">
+          <v-btn v-if="selected.length" :loading="loading" icon v-bind="tooltipProps" @click="deleteRows">
+            <v-icon :icon="dataformsPluginOptions?.icons.fileUpload.delete" />
+          </v-btn>
+        </template>
+      </v-tooltip>
 
       <slot name="upload" />
     </v-toolbar>
