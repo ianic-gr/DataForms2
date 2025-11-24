@@ -4,7 +4,7 @@ import defu from "defu";
 export default {
   install(app, options) {
     app.provide(
-      "pluginOptions",
+      "dataformsPluginOptions",
       defu(options, {
         icons: {
           alert: "mdi-alert-circle",

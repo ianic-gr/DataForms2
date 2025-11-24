@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-const pluginOptions = inject<Record<string, any>>("pluginOptions");
+const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
 
 interface Props {
   previewFiles: Record<string, any>[];
@@ -72,7 +72,7 @@ const deleteRows = async () => {
       <v-spacer />
 
       <v-btn v-if="selected.length" :loading="loading" icon @click="deleteRows">
-        <v-icon :icon="pluginOptions?.icons.fileUpload.delete" />
+        <v-icon :icon="dataformsPluginOptions?.icons.fileUpload.delete" />
       </v-btn>
 
       <slot name="upload" />

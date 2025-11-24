@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const pluginOptions = inject<Record<string, any>>("pluginOptions");
+const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
 
 interface Props {
   images: Record<string, any>[];
@@ -34,7 +34,7 @@ const selected = defineModel<(Record<string, any> | Blob)[]>("selected", {
             <v-avatar class="position-absolute" style="z-index: 9; top: 4px; right: 0">
               <v-tooltip text="Image has not uploaded yet" location="top">
                 <template #activator="{ props }">
-                  <v-icon v-bind="props" color="warning" :icon="pluginOptions?.icons.fileUpload.upload" />
+                  <v-icon v-bind="props" color="warning" :icon="dataformsPluginOptions?.icons.fileUpload.upload" />
                 </template>
               </v-tooltip>
             </v-avatar>

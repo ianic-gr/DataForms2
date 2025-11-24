@@ -2,7 +2,7 @@
 import type { AliasLanguages } from "@/types/Alias";
 import deepClone from "@/utils/deepClone";
 
-const pluginOptions = inject<Record<string, any>>("pluginOptions");
+const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
 
 const emit = defineEmits(["submit"]);
 const dialog = defineModel<boolean>({ default: false });
@@ -38,7 +38,7 @@ watch(alias, (v: any) => (translations.value = deepClone(v)), {
         <v-card-title class="d-flex justify-space-between align-center">
           <div class="text-h5 text-medium-emphasis ps-2">Translations</div>
 
-          <v-btn :icon="pluginOptions?.icons.close" variant="text" @click="isActive.value = false" />
+          <v-btn :icon="dataformsPluginOptions?.icons.close" variant="text" @click="isActive.value = false" />
         </v-card-title>
 
         <v-divider class="mb-4" />

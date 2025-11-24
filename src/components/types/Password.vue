@@ -2,7 +2,7 @@
 import { useFieldType } from "@/composables/useFieldType";
 import { useField } from "vee-validate";
 
-const pluginOptions = inject("pluginOptions");
+const dataformsPluginOptions = inject("dataformsPluginOptions");
 
 const props = defineProps({
   input: {
@@ -42,7 +42,7 @@ const fieldType = computed(() => {
 });
 
 const fieldIcon = computed(() => {
-  return showPassword.value ? pluginOptions?.icons.eye : pluginOptions?.icons.eyeOff;
+  return showPassword.value ? dataformsPluginOptions?.icons.eye : dataformsPluginOptions?.icons.eyeOff;
 });
 
 const fieldReturn = defineModel("return");

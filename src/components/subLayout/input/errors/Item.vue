@@ -1,7 +1,7 @@
 <script setup>
 import { useField } from "vee-validate";
 
-const pluginOptions = inject("pluginOptions");
+const dataformsPluginOptions = inject("dataformsPluginOptions");
 
 const props = defineProps({
   item: {
@@ -23,7 +23,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-alert v-if="field.errorMessage.value" color="error" :icon="pluginOptions?.icons.alert" class="mb-4" border>
+  <v-alert v-if="field.errorMessage.value" color="error" :icon="dataformsPluginOptions?.icons.alert" class="mb-4" border>
     {{ field.errorMessage.value }}
   </v-alert>
 </template>

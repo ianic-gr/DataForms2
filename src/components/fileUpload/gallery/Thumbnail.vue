@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from "vue";
 
-const pluginOptions = inject<Record<string, any>>("pluginOptions");
+const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
 
 interface Props {
   img: any;
@@ -60,7 +60,7 @@ onUnmounted(() => {
         <v-card v-else>
           <v-card-text>
             <div class="d-flex align-center justify-center flex-column w-100 h-100" style="aspect-ratio: 1">
-              <v-icon size="50" :icon="pluginOptions?.icons.fileUpload.file" />
+              <v-icon size="50" :icon="dataformsPluginOptions?.icons.fileUpload.file" />
               <br />
               <div class="text-truncate w-100">
                 {{ img }}
@@ -77,7 +77,7 @@ onUnmounted(() => {
               {{ img }}
             </div>
 
-            <v-btn :icon="pluginOptions?.icons.close" variant="text" color="dark" @click="isActive.value = false" />
+            <v-btn :icon="dataformsPluginOptions?.icons.close" variant="text" color="dark" @click="isActive.value = false" />
           </v-card-title>
 
           <v-card-text class="pa-0 overflow-auto">
@@ -96,8 +96,8 @@ onUnmounted(() => {
       <v-card v-else>
         <v-card-text>
           <div class="d-flex align-center justify-center flex-column w-100 h-100" style="aspect-ratio: 1">
-            <v-icon v-if="fileError" size="50" :icon="pluginOptions?.icons.fileUpload.documentRemove" />
-            <v-icon v-else size="50" :icon="pluginOptions?.icons.fileUpload.file" />
+            <v-icon v-if="fileError" size="50" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
+            <v-icon v-else size="50" :icon="dataformsPluginOptions?.icons.fileUpload.file" />
             <br />
             <div class="text-truncate w-100">
               {{ imageUrl }}

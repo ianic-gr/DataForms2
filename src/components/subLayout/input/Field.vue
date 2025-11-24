@@ -3,7 +3,7 @@ import { useConditionals } from "@/composables/useConditionals.js";
 import { useInputFieldComponents } from "@/composables/useInputFieldComponents";
 import { normalizeString } from "@/utils/normalizeString";
 
-const pluginOptions = inject("pluginOptions");
+const dataformsPluginOptions = inject("dataformsPluginOptions");
 
 const types = useInputFieldComponents();
 
@@ -179,7 +179,7 @@ const inputTypeComponent = computed(() => {
               <v-tooltip v-bind="input.tooltip">
                 <template #activator="{ props }">
                   <div v-bind="props">
-                    <v-icon color="primary" :icon="pluginOptions?.icons.information" />
+                    <v-icon color="primary" :icon="dataformsPluginOptions?.icons.information" />
                   </div>
                 </template>
               </v-tooltip>

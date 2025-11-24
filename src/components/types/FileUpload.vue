@@ -2,7 +2,7 @@
 import { useFieldType } from "@/composables/useFieldType";
 import { useField } from "vee-validate";
 
-const pluginOptions = inject("pluginOptions");
+const dataformsPluginOptions = inject("dataformsPluginOptions");
 
 const props = defineProps({
   input: {
@@ -75,9 +75,11 @@ watch([previewFiles, uploadedFiles], () => {
 
 <template>
   <div>
+    {{ dataformsPluginOptions }}
     <div>
       <v-card v-if="!previewFiles?.length && !uploadedFiles.length" color="grey-lighten-4" class="pa-6 text-center">
-        <v-icon size="x-large" color="grey" class="mb-4" :icon="pluginOptions?.icons.fileUpload.documentRemove" />
+        <v-icon size="x-large" color="grey" class="mb-4" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
+
         <div class="text-h6 mb-3">
           {{ $t("$dataforms.fileUpload.noFilesUploadedYet") }}
         </div>
@@ -86,7 +88,7 @@ watch([previewFiles, uploadedFiles], () => {
           {{ $t("$dataforms.fileUpload.canUploadMultiple") }}
         </div>
 
-        <v-btn variant="tonal" color="primary" size="large" :prepend-icon="pluginOptions?.icons.fileUpload.upload">
+        <v-btn variant="tonal" color="primary" size="large" :prepend-icon="dataformsPluginOptions?.icons.fileUpload.upload">
           {{ $t("$dataforms.fileUpload.upload") }}
           <FileUploadDialogUpload :options="input.options" @submit-files="submitFiles" />
         </v-btn>
@@ -100,7 +102,7 @@ watch([previewFiles, uploadedFiles], () => {
           @delete-files="deleteFiles"
         >
           <template #upload>
-            <v-btn variant="tonal" :prepend-icon="pluginOptions?.icons.fileUpload.upload">
+            <v-btn variant="tonal" :prepend-icon="dataformsPluginOptions?.icons.fileUpload.upload">
               {{ $t("$dataforms.fileUpload.upload") }}
               <FileUploadDialogUpload :options="input.options" @submit-files="submitFiles" />
             </v-btn>
