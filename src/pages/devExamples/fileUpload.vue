@@ -2,15 +2,15 @@
 const multiplePreview = ref([
   {
     id: 14,
-    file: "https:\/\/smartville-api.lndo.site\/kos\/tenancy\/assets\/water_meter_images\/14\/GvffMsTXIAAM8KB.jpeg",
+    file: "https://hips.hearstapps.com/hmg-prod/images/call-duck-695733614-67f4fc458cf92.jpg?crop=0.668xw:1.00xh;0.181xw,0&resize=980:*",
   },
   {
     id: 45,
-    file: "https:\/\/smartville-api.lndo.site\/kos\/tenancy\/assets\/water_meter_images\/45\/Screenshot-From-2025-06-06-13-57-32.png",
+    file: "https://upload.wikimedia.org/wikipedia/commons/b/bf/Bucephala-albeola-010.jpg",
   },
   {
     id: 46,
-    file: "https:\/\/smartville-api.lndo.site\/kos\/tenancy\/assets\/water_meter_images\/46\/Screenshot-From-2025-06-27-11-54-16.png",
+    file: "https://media.4-paws.org/a/f/4/7/af47ae6aa55812faa4d7fd857a6e283a8c8226bc/VIER%20PFOTEN_2019-07-18_013-2890x2000-1920x1329.jpg",
   },
 ]);
 

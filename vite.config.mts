@@ -32,10 +32,12 @@ export default defineConfig(({ mode }) => {
       fileName: "dataforms",
     },
     rollupOptions: {
-      external: ["vue", "vuetify", "pinia", "moment"],
+      external: ["vue", "vuetify", "pinia", "moment", "vue-i18n", "moment", "@vueuse/core"],
       output: {
         globals: {
           vue: "Vue",
+          vuetify: "Vuetify",
+          pinia: "Pinia",
         },
       },
     },

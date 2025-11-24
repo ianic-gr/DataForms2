@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, onUnmounted } from "vue";
 
+const pluginOptions = inject<Record<string, any>>("pluginOptions");
+
 interface Props {
   img: any;
   uploaded?: boolean;
@@ -57,11 +59,8 @@ onUnmounted(() => {
 
         <v-card v-else>
           <v-card-text>
-            <div
-              class="d-flex align-center justify-center flex-column w-100 h-100"
-              style="aspect-ratio: 1"
-            >
-              <v-icon size="50"> mdi-file </v-icon>
+            <div class="d-flex align-center justify-center flex-column w-100 h-100" style="aspect-ratio: 1">
+              <v-icon size="50" :icon="pluginOptions?.icons.fileUpload.file" />
               <br />
               <div class="text-truncate w-100">
                 {{ img }}
@@ -73,20 +72,12 @@ onUnmounted(() => {
 
       <template #default="{ isActive }">
         <v-card rounded="xl">
-          <v-card-title
-            class="d-flex justify-space-between align-center"
-            style="min-height: 70px"
-          >
+          <v-card-title class="d-flex justify-space-between align-center" style="min-height: 70px">
             <div class="text-medium-emphasis ps-2">
               {{ img }}
             </div>
 
-            <v-btn
-              icon="mdi-close"
-              variant="text"
-              color="dark"
-              @click="isActive.value = false"
-            />
+            <v-btn :icon="pluginOptions?.icons.close" variant="text" color="dark" @click="isActive.value = false" />
           </v-card-title>
 
           <v-card-text class="pa-0 overflow-auto">
@@ -104,12 +95,9 @@ onUnmounted(() => {
 
       <v-card v-else>
         <v-card-text>
-          <div
-            class="d-flex align-center justify-center flex-column w-100 h-100"
-            style="aspect-ratio: 1"
-          >
-            <v-icon v-if="fileError" size="50"> mdi-file-document-remove </v-icon>
-            <v-icon v-else size="50"> mdi-file </v-icon>
+          <div class="d-flex align-center justify-center flex-column w-100 h-100" style="aspect-ratio: 1">
+            <v-icon v-if="fileError" size="50" :icon="pluginOptions?.icons.fileUpload.documentRemove" />
+            <v-icon v-else size="50" :icon="pluginOptions?.icons.fileUpload.file" />
             <br />
             <div class="text-truncate w-100">
               {{ imageUrl }}

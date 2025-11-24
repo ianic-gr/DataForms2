@@ -4,6 +4,8 @@ import fillAttributes from "@/utils/fillAttributes";
 import fillEmptyAttributes from "@/utils/fillEmptyAttributes";
 import { computed, ref } from "vue";
 
+const pluginOptions = inject<Record<string, any>>("pluginOptions");
+
 interface Props {
   fieldProps?: Record<string, any>;
 }
@@ -33,7 +35,7 @@ const onBlur = () => {
       v-if="Object.hasOwn(alias, currentLanguageKey)"
       v-model="alias[currentLanguageKey]"
       label="Title"
-      append-inner-icon="mdi-translate-variant"
+      :append-inner-icon="pluginOptions?.icons.alias.translate"
       v-bind="{ ...$attrs, ...fieldProps }"
       clearable
       @click:append-inner="dialog = true"

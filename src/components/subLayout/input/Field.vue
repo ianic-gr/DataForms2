@@ -3,6 +3,8 @@ import { useConditionals } from "@/composables/useConditionals.js";
 import { useInputFieldComponents } from "@/composables/useInputFieldComponents";
 import { normalizeString } from "@/utils/normalizeString";
 
+const pluginOptions = inject("pluginOptions");
+
 const types = useInputFieldComponents();
 
 const props = defineProps({
@@ -43,16 +45,11 @@ const hasLabelTitle = computed(() => {
 const isRequired = computed(() => {
   const validation = props.input?.validation;
 
-  return (
-    typeof validation === "string" &&
-    validation?.includes("required") &&
-    !props.input?.readOnly
-  );
+  return typeof validation === "string" && validation?.includes("required") && !props.input?.readOnly;
 });
 
 const label = computed(() => {
-  const decorator =
-    !["Breeze", "Fluid"].includes(props.theme) && isRequired.value ? " *" : "";
+  const decorator = !["Breeze", "Fluid"].includes(props.theme) && isRequired.value ? " *" : "";
 
   return `${props.input?.options?.label}${decorator}`;
 });
@@ -86,8 +83,7 @@ const themeOptions = computed(() => {
   let density = "default";
   let singleLine = false;
 
-  const color =
-    props.input.type && props.input.type.toLowerCase() === "fileupload" ? "" : "primary";
+  const color = props.input.type && props.input.type.toLowerCase() === "fileupload" ? "" : "primary";
 
   if (props.theme === "Fluid" || props.theme === "Breeze") {
     variant = "outlined";
@@ -109,9 +105,8 @@ const themeOptions = computed(() => {
 
 const inputTypeComponent = computed(() => {
   const selectedInputType =
-    Object.entries(types).find(
-      ([key]) => normalizeString(key) === normalizeString(props.input?.type ?? "")
-    )?.[1] ?? types.textField;
+    Object.entries(types).find(([key]) => normalizeString(key) === normalizeString(props.input?.type ?? ""))?.[1] ??
+    types.textField;
 
   return selectedInputType;
 });
@@ -126,13 +121,7 @@ const inputTypeComponent = computed(() => {
     class="input-field-row"
   >
     <v-col v-if="hasLabelTitle" style="max-width: 165px">
-      <v-label
-        :style="
-          theme === 'Fluid'
-            ? 'font-size: 0.8125rem;font-weight: 500;text-wrap: wrap'
-            : 'text-wrap: wrap'
-        "
-      >
+      <v-label :style="theme === 'Fluid' ? 'font-size: 0.8125rem;font-weight: 500;text-wrap: wrap' : 'text-wrap: wrap'">
         {{ label }}
       </v-label>
     </v-col>
@@ -186,24 +175,18 @@ const inputTypeComponent = computed(() => {
             <slot :name="inputSlot.template" v-bind="slotProps" />
           </template>
           <template v-if="input.tooltip" #append>
-            <div
-              class="text-center d-flex align-center justify-space-around"
-              style="cursor: pointer"
-            >
+            <div class="text-center d-flex align-center justify-space-around" style="cursor: pointer">
               <v-tooltip v-bind="input.tooltip">
                 <template #activator="{ props }">
                   <div v-bind="props">
-                    <v-icon color="primary"> mdi-information </v-icon>
+                    <v-icon color="primary" :icon="pluginOptions?.icons.information" />
                   </div>
                 </template>
               </v-tooltip>
             </div>
           </template>
           <template v-else-if="input.appendInner" #append>
-            <div
-              class="text-center d-flex align-center justify-space-around"
-              style="cursor: pointer"
-            >
+            <div class="text-center d-flex align-center justify-space-around" style="cursor: pointer">
               <component
                 :is="input.appendInner.component"
                 v-bind="input.appendInner.options"
@@ -214,14 +197,8 @@ const inputTypeComponent = computed(() => {
             </div>
           </template>
           <template v-if="input.appendOuter" #append-outer>
-            <div
-              class="text-center d-flex align-center justify-space-around"
-              style="cursor: pointer"
-            />
-            <component
-              :is="input.appendOuter.component"
-              v-bind="input.appendOuter.options"
-            >
+            <div class="text-center d-flex align-center justify-space-around" style="cursor: pointer" />
+            <component :is="input.appendOuter.component" v-bind="input.appendOuter.options">
               {{ input.appendOuter.text }}
             </component>
           </template>

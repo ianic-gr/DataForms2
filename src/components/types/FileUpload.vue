@@ -2,6 +2,8 @@
 import { useFieldType } from "@/composables/useFieldType";
 import { useField } from "vee-validate";
 
+const pluginOptions = inject("pluginOptions");
+
 const props = defineProps({
   input: {
     type: Object,
@@ -26,10 +28,7 @@ const props = defineProps({
 });
 
 const { field: fieldValue } = useFieldType(props);
-const field = useField(
-  props.inputKey,
-  !props.input.readOnly ? props.input.validation : ""
-);
+const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
 
 const fieldReturn = defineModel("return");
 
@@ -77,30 +76,18 @@ watch([previewFiles, uploadedFiles], () => {
 <template>
   <div>
     <div>
-      <v-card
-        v-if="!previewFiles?.length && !uploadedFiles.length"
-        color="grey-lighten-4"
-        class="pa-6 text-center"
-      >
-        <v-icon size="x-large" color="grey" class="mb-4">
-          mdi-file-document-remove
-        </v-icon>
-        <div class="text-h6 mb-3">No Files Uploaded Yet</div>
-
-        <div
-          v-if="input.options.multiple"
-          class="text-subtitle-1 mb-4 text-medium-emphasis"
-        >
-          You can upload multiple files at once
+      <v-card v-if="!previewFiles?.length && !uploadedFiles.length" color="grey-lighten-4" class="pa-6 text-center">
+        <v-icon size="x-large" color="grey" class="mb-4" :icon="pluginOptions?.icons.fileUpload.documentRemove" />
+        <div class="text-h6 mb-3">
+          {{ $t("$dataforms.fileUpload.noFilesUploadedYet") }}
         </div>
 
-        <v-btn
-          variant="tonal"
-          color="primary"
-          size="large"
-          prepend-icon="mdi-upload-circle"
-        >
-          upload
+        <div v-if="input.options.multiple" class="text-subtitle-1 mb-4 text-medium-emphasis">
+          {{ $t("$dataforms.fileUpload.canUploadMultiple") }}
+        </div>
+
+        <v-btn variant="tonal" color="primary" size="large" :prepend-icon="pluginOptions?.icons.fileUpload.upload">
+          {{ $t("$dataforms.fileUpload.upload") }}
           <FileUploadDialogUpload :options="input.options" @submit-files="submitFiles" />
         </v-btn>
       </v-card>
@@ -113,12 +100,9 @@ watch([previewFiles, uploadedFiles], () => {
           @delete-files="deleteFiles"
         >
           <template #upload>
-            <v-btn variant="tonal" prepend-icon="mdi-upload-circle">
-              upload
-              <FileUploadDialogUpload
-                :options="input.options"
-                @submit-files="submitFiles"
-              />
+            <v-btn variant="tonal" :prepend-icon="pluginOptions?.icons.fileUpload.upload">
+              {{ $t("$dataforms.fileUpload.upload") }}
+              <FileUploadDialogUpload :options="input.options" @submit-files="submitFiles" />
             </v-btn>
           </template>
         </FileUploadToolbar>

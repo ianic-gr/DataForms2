@@ -37,36 +37,23 @@ const submit = () => {
   <v-dialog v-model="dialog" activator="parent" max-width="800">
     <template #default="{ isActive }">
       <v-card rounded="lg">
-        <v-card-title class="d-flex justify-space-between align-center">
-          <div class="text-h5 text-medium-emphasis ps-2">Upload Files</div>
-
-          <v-btn icon="mdi-close" variant="text" @click="isActive.value = false" />
-        </v-card-title>
-
-        <v-divider class="mb-4" />
-
-        <v-card-text>
+        <v-card-text class="pa-6">
           <v-file-upload
             v-model="uploadFiles"
             v-bind="options"
             :density="!uploadFiles ? 'default' : 'compact'"
+            clearable
           />
         </v-card-text>
 
-        <v-divider class="mt-2" />
+        <v-divider />
 
         <v-card-actions class="my-2 d-flex justify-end">
-          <v-btn
-            class="text-none"
-            rounded="xl"
-            text="Cancel"
-            @click="isActive.value = false"
-          />
+          <v-btn class="text-none" text="Cancel" @click="isActive.value = false" />
 
           <v-btn
             class="text-none"
             color="primary"
-            rounded="xl"
             text="Submit"
             variant="flat"
             @click="submit"

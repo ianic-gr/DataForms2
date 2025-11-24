@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
+const pluginOptions = inject<Record<string, any>>("pluginOptions");
+
 interface Props {
   previewFiles: Record<string, any>[];
   errors: any;
@@ -23,11 +25,7 @@ const imageList = computed(() => {
 
 const selectAll = computed({
   get: () => {
-    return (
-      imageList.value &&
-      imageList.value.length &&
-      selected.value.length === imageList.value.length
-    );
+    return imageList.value && imageList.value.length && selected.value.length === imageList.value.length;
   },
   set: (v) => {
     selectAllStatus.value = Boolean(v);
@@ -58,15 +56,13 @@ const deleteRows = async () => {
 <template>
   <v-card color="grey-lighten-4" class="mb-4" rounded="0" flat>
     <v-toolbar :color="errors ? 'error' : ''" rounded density="compact">
-      <v-checkbox
-        v-model="selectAll"
-        class="ms-1"
-        hide-details
-        :indeterminate="Boolean(!selectAll && selected.length)"
-      />
+      <v-checkbox v-model="selectAll" class="ms-1" hide-details :indeterminate="Boolean(!selectAll && selected.length)" />
 
       <v-toolbar-title v-if="selected.length">
-        {{ selected.length }} imagesSelected
+        {{ selected.length }}
+        {{
+          selected.length === 1 ? $t("$dataforms.fileUpload.selected.singular") : $t("$dataforms.fileUpload.selected.plural")
+        }}
       </v-toolbar-title>
 
       <v-toolbar-title v-else-if="errors">
@@ -76,15 +72,11 @@ const deleteRows = async () => {
       <v-spacer />
 
       <v-btn v-if="selected.length" :loading="loading" icon @click="deleteRows">
-        <v-icon>mdi-delete</v-icon>
+        <v-icon :icon="pluginOptions?.icons.fileUpload.delete" />
       </v-btn>
 
       <slot name="upload" />
     </v-toolbar>
-    <FileUploadGallery
-      v-model:selected="selected"
-      :images="previewFiles"
-      :uploaded-files="uploadedFiles"
-    />
+    <FileUploadGallery v-model:selected="selected" :images="previewFiles" :uploaded-files="uploadedFiles" />
   </v-card>
 </template>

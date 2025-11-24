@@ -30,10 +30,10 @@ export default [
           allowTernary: true,
         },
       ],
-      "vue/multi-word-component-names": "off",
-      "vue/max-attributes-per-line": "off",
-      "vue/block-lang": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "vue/multi-word-component-names": "off",
+      "vue/block-lang": "off",
+      "vue/max-attributes-per-line": "off",
     },
   },
 ];

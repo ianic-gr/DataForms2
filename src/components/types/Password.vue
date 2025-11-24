@@ -2,6 +2,8 @@
 import { useFieldType } from "@/composables/useFieldType";
 import { useField } from "vee-validate";
 
+const pluginOptions = inject("pluginOptions");
+
 const props = defineProps({
   input: {
     type: Object,
@@ -32,10 +34,7 @@ const props = defineProps({
 });
 
 const { field: fieldValue } = useFieldType(props);
-const field = useField(
-  props.inputKey,
-  !props.input.readOnly ? props.input.validation : ""
-);
+const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
 const showPassword = ref(false);
 
 const fieldType = computed(() => {
@@ -43,7 +42,7 @@ const fieldType = computed(() => {
 });
 
 const fieldIcon = computed(() => {
-  return showPassword.value ? "mdi-eye" : "mdi-eye-off";
+  return showPassword.value ? pluginOptions?.icons.eye : pluginOptions?.icons.eyeOff;
 });
 
 const fieldReturn = defineModel("return");
@@ -71,11 +70,7 @@ watch(
       @click:append-inner="showPassword = !showPassword"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
-      <template
-        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
-        :key="inputSlotKey"
-        #[inputSlot.slot]="slotProps"
-      >
+      <template v-for="(inputSlot, inputSlotKey) in input.itemSlots" :key="inputSlotKey" #[inputSlot.slot]="slotProps">
         <slot :name="inputSlot.template" v-bind="slotProps" />
       </template>
 
