@@ -75,7 +75,6 @@ watch([previewFiles, uploadedFiles], () => {
 
 <template>
   <div>
-    {{ dataformsPluginOptions }}
     <div>
       <v-card v-if="!previewFiles?.length && !uploadedFiles.length" color="grey-lighten-4" class="pa-6 text-center">
         <v-icon size="x-large" color="grey" class="mb-4" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
