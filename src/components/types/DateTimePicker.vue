@@ -26,26 +26,15 @@ const props = defineProps({
   },
 });
 
-const inputField = useField(
-  props.inputKey,
-  !props.input.readOnly ? props.input.validation : ""
-);
-const {
-  field,
-  currentFormData,
-  date,
-  time,
-  formattedDateTime,
-  defaultDateFormat,
-  defaultTimeFormat,
-} = useDateTimeFieldType(props);
+const inputField = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
+const { field, currentFormData, date, time, formattedDateTime, defaultDateFormat, defaultTimeFormat } =
+  useDateTimeFieldType(props);
 
 const dialog = ref(false);
 const pickerTab = ref("date");
 
 const saveDate = () => {
-  const format =
-    props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
+  const format = props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
   const extractedDate = moment(date.value).format(defaultDateFormat);
 
   field.value = moment(`${extractedDate} ${time.value}`).format(format);

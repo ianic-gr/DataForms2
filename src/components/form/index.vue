@@ -26,12 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
   options: () => ({}),
 });
 
-const emit = defineEmits([
-  "dataFormSubmit",
-  "dataFormSubmitSuccess",
-  "dataFormSubmitFailed",
-  "dataFormSubmitWithErrors",
-]);
+const emit = defineEmits(["dataFormSubmit", "dataFormSubmitSuccess", "dataFormSubmitFailed", "dataFormSubmitWithErrors"]);
 
 // Form String Rules
 Object.entries(all).forEach(([name, rule]) => {
@@ -43,22 +38,14 @@ defineRule("uuid", (value: string) => {
     return true;
   }
 
-  const uuidRegex =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   return uuidRegex.test(value) || "This field must be a valid UUID";
 });
 
 const dataformsStore = useDataformsStore();
 const { getApiSlots } = useSlotsPrepare();
 
-const {
-  getCurrentForm,
-  addForm,
-  removeForm,
-  makeFormValid,
-  makeFormInvalid,
-  setFormErrors,
-} = dataformsStore;
+const { getCurrentForm, addForm, removeForm, makeFormValid, makeFormInvalid, setFormErrors } = dataformsStore;
 
 const vFormRef = ref();
 const loading = ref(false);
@@ -94,10 +81,7 @@ const initFormValuesFn = async () => {
 const leaveAlertWhenDataChanges = (event: any) => {
   if (!formOptions.value.leaveAlertWhenDataChanges) return;
 
-  if (
-    JSON.stringify(initFormValues.value) !== JSON.stringify(theForm.value.fields) &&
-    !submitOK.value
-  ) {
+  if (JSON.stringify(initFormValues.value) !== JSON.stringify(theForm.value.fields) && !submitOK.value) {
     event.preventDefault();
     event.returnValue = "";
   }
@@ -298,13 +282,7 @@ defineExpose({
 <template>
   <v-form ref="vFormRef" @submit.prevent="submit()">
     <transition-group name="form">
-      <FormRow
-        v-for="(row, i) in api.rows"
-        :id="id"
-        :key="i"
-        :row="row"
-        :loading="loading"
-      >
+      <FormRow v-for="(row, i) in api.rows" :id="id" :key="i" :row="row" :loading="loading">
         <template
           v-for="(inputSlot, inputSlotKey) in getApiSlots(row)"
           :key="inputSlotKey"
@@ -320,14 +298,8 @@ defineExpose({
       </FormRow>
     </transition-group>
     <v-row class="dataforms-actions-row">
-      <v-col
-        v-if="typeof api.submit === 'object' || $slots.buttons"
-        class="d-flex align-center justify-end"
-      >
-        <slot
-          name="buttons"
-          :submit-props="{ type: 'submit', class: 'ms-2', ...(api.submit.options || {}) }"
-        />
+      <v-col v-if="typeof api.submit === 'object' || $slots.buttons" class="d-flex align-center justify-end">
+        <slot name="buttons" :submit-props="{ type: 'submit', class: 'ms-2', ...(api.submit.options || {}) }" />
         <v-btn
           v-if="typeof api.submit === 'object' && !$slots.buttons"
           type="submit"

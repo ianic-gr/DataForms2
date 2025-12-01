@@ -11,19 +11,13 @@ export function useDateTimeFieldType(props) {
 
   const tempDate = ref("");
   const tempTime = ref("");
-  const initialized = ref(false);
 
-  const format = computed(
-    () => props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`
-  );
+  const format = computed(() => props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`);
   const dateFormat = computed(() => format.value.split(" ")[0] ?? defaultDateFormat);
   const displayFormat = computed(() => props.options?.format ?? defaultDateFormat);
 
   const isMultiple = computed(
-    () =>
-      props.input.type === "datepicker" &&
-      props.options?.datepicker &&
-      "multiple" in props.options.datepicker
+    () => props.input.type === "datepicker" && props.options?.datepicker && "multiple" in props.options.datepicker
   );
 
   const parseDateTime = (value, format) => {
@@ -37,7 +31,6 @@ export function useDateTimeFieldType(props) {
   };
 
   const parseDefaultValue = () => {
-    if (initialized.value) return;
     if (!field.value && !props.input.options.default) return;
 
     const defaultVal = field.value || props.input.options.default;
@@ -58,17 +51,13 @@ export function useDateTimeFieldType(props) {
         tempDate.value = parsedDate.toDate();
       }
     }
-
-    initialized.value = true;
   };
 
   const handleMultipleDefaultValue = (defaultVal) => {
     if (!Array.isArray(defaultVal)) return;
 
     if (props.options.datepicker.multiple === "range" && defaultVal.length === 2) {
-      const [startDate, endDate] = defaultVal.map((val) =>
-        parseDateTime(val, format.value)
-      );
+      const [startDate, endDate] = defaultVal.map((val) => parseDateTime(val, format.value));
       if (startDate?.isValid() && endDate?.isValid()) {
         const dates = [];
         let currentDate = startDate.clone();
@@ -87,9 +76,7 @@ export function useDateTimeFieldType(props) {
         })
         .filter(Boolean);
       field.value = validDates;
-      tempDate.value = validDates.map((date) =>
-        parseDateTime(date, format.value).toDate()
-      );
+      tempDate.value = validDates.map((date) => parseDateTime(date, format.value).toDate());
     }
   };
 
@@ -160,9 +147,7 @@ export function useDateTimeFieldType(props) {
             parseDateTime(field.value[field.value.length - 1], dateFormat.value),
           ];
           return startDate?.isValid() && endDate?.isValid()
-            ? `${startDate.format(displayFormat.value)} ~ ${endDate.format(
-                displayFormat.value
-              )}`
+            ? `${startDate.format(displayFormat.value)} ~ ${endDate.format(displayFormat.value)}`
             : "";
         }
         return `${field.value.length} Selected`;

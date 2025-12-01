@@ -32,10 +32,7 @@ const props = defineProps({
 });
 
 const { field: fieldValue } = useFieldType(props);
-const field = useField(
-  props.inputKey,
-  !props.input.readOnly ? props.input.validation : ""
-);
+const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
 
 const fieldReturn = defineModel("return");
 
@@ -62,11 +59,7 @@ watch(
       :error-messages="field.errorMessage.value"
       v-on="events"
     >
-      <template
-        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
-        :key="inputSlotKey"
-        #[inputSlot.slot]="slotProps"
-      >
+      <template v-for="(inputSlot, inputSlotKey) in input.itemSlots" :key="inputSlotKey" #[inputSlot.slot]="slotProps">
         <slot :name="inputSlot.template" v-bind="slotProps" />
       </template>
     </v-switch>

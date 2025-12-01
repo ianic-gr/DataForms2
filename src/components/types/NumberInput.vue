@@ -32,10 +32,7 @@ const props = defineProps({
 });
 
 const { field: fieldValue } = useFieldType(props);
-const field = useField(
-  props.inputKey,
-  !props.input.readOnly ? props.input.validation : ""
-);
+const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
 
 watch(fieldValue, (v) => {
   field.value.value = v;
@@ -64,11 +61,7 @@ watch(
       v-on="events"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
-      <template
-        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
-        :key="inputSlotKey"
-        #[inputSlot.slot]="slotProps"
-      >
+      <template v-for="(inputSlot, inputSlotKey) in input.itemSlots" :key="inputSlotKey" #[inputSlot.slot]="slotProps">
         <slot :name="inputSlot.template" v-bind="slotProps" />
       </template>
 

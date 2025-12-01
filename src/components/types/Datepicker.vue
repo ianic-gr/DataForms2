@@ -27,10 +27,7 @@ const props = defineProps({
   },
 });
 
-const inputField = useField(
-  props.inputKey,
-  !props.input.readOnly ? props.input.validation : ""
-);
+const inputField = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
 const { field, date, formattedDate } = useDateTimeFieldType(props);
 
 const fieldReturn = defineModel("return");
@@ -61,11 +58,7 @@ function format(date) {
       :error-messages="inputField.errorMessage.value"
       v-on="events"
     >
-      <template
-        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
-        :key="inputSlotKey"
-        #[inputSlot.slot]="slotProps"
-      >
+      <template v-for="(inputSlot, inputSlotKey) in input.itemSlots" :key="inputSlotKey" #[inputSlot.slot]="slotProps">
         <slot :name="inputSlot.template" v-bind="slotProps" />
       </template>
     </v-date-input>

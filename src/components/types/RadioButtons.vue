@@ -33,10 +33,7 @@ const props = defineProps({
 });
 
 const { field: fieldValue } = useFieldType(props);
-const field = useField(
-  props.inputKey,
-  !props.input.readOnly ? props.input.validation : ""
-);
+const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
 const { optionLabel, optionValue } = useOptionFieldType();
 
 const fieldReturn = defineModel("return");
@@ -59,11 +56,7 @@ watch(
 
 <template>
   <div>
-    <v-radio-group
-      v-model="fieldValue"
-      v-bind="{ ...$attrs, ...options }"
-      :error-messages="field.errorMessage.value"
-    >
+    <v-radio-group v-model="fieldValue" v-bind="{ ...$attrs, ...options }" :error-messages="field.errorMessage.value">
       <v-radio
         v-for="(radio, i) in options.list || options.items"
         :key="i"

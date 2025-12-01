@@ -33,10 +33,7 @@ const props = defineProps({
 });
 
 const { field: fieldValue, fieldProps } = useFieldType(props);
-const field = useField(
-  props.inputKey,
-  !props.input.readOnly ? props.input.validation : ""
-);
+const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
 const { onSelect } = useInputEvents(fieldProps);
 
 const fieldReturn = defineModel("return");
@@ -67,22 +64,14 @@ const removeSelection = (index) => {
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
       @change="onSelect"
     >
-      <template
-        v-for="(inputSlot, inputSlotKey) in input.itemSlots"
-        :key="inputSlotKey"
-        #[inputSlot.slot]="slotProps"
-      >
+      <template v-for="(inputSlot, inputSlotKey) in input.itemSlots" :key="inputSlotKey" #[inputSlot.slot]="slotProps">
         <slot :name="inputSlot.template" v-bind="slotProps" />
       </template>
 
       <template #selection="{ item, index }">
         <v-chip
           v-if="item === Object(item)"
-          :color="
-            options.items.some((o) => JSON.stringify(o) === JSON.stringify(item.raw))
-              ? 'primary'
-              : 'dark'
-          "
+          :color="options.items.some((o) => JSON.stringify(o) === JSON.stringify(item.raw)) ? 'primary' : 'dark'"
           :text="item.title"
           size="small"
           closable
