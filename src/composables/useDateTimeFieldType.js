@@ -163,7 +163,13 @@ export function useDateTimeFieldType(props) {
     return formatDateTime(field.value, displayFormat.value);
   });
 
-  watch(field, () => parseDefaultValue(), { immediate: true });
+  watch(
+    () => props.input.options?.default,
+    () => {
+      parseDefaultValue();
+    },
+    { immediate: true }
+  );
 
   return {
     ..._useFieldType,
