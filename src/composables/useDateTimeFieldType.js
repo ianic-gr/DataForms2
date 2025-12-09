@@ -11,6 +11,8 @@ export function useDateTimeFieldType(props) {
 
   const tempDate = ref("");
   const tempTime = ref("");
+  const isInitializing = ref(false);
+  const isFirstSync = ref(true);
 
   const format = computed(() => props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`);
   const dateFormat = computed(() => format.value.split(" ")[0] ?? defaultDateFormat);
@@ -30,31 +32,8 @@ export function useDateTimeFieldType(props) {
     return parsed ? parsed.format(format) : "";
   };
 
-  const parseDefaultValue = () => {
-    if (!field.value && !props.input.options.default) return;
-
-    const defaultVal = field.value || props.input.options.default;
-
-    if (props.input.type === "dateTimePicker") {
-      const parsedDateTime = parseDateTime(defaultVal, format.value);
-      if (parsedDateTime) {
-        field.value = parsedDateTime.format(format.value);
-        tempDate.value = parsedDateTime.toDate();
-        tempTime.value = parsedDateTime.format(defaultTimeFormat);
-      }
-    } else if (isMultiple.value) {
-      handleMultipleDefaultValue(defaultVal);
-    } else {
-      const parsedDate = parseDateTime(defaultVal, format.value);
-      if (parsedDate) {
-        field.value = parsedDate.format(format.value);
-        tempDate.value = parsedDate.toDate();
-      }
-    }
-  };
-
   const handleMultipleDefaultValue = (defaultVal) => {
-    if (!Array.isArray(defaultVal)) return;
+    if (!Array.isArray(defaultVal)) return null;
 
     if (props.options.datepicker.multiple === "range" && defaultVal.length === 2) {
       const [startDate, endDate] = defaultVal.map((val) => parseDateTime(val, format.value));
@@ -65,8 +44,10 @@ export function useDateTimeFieldType(props) {
           dates.push(currentDate.format(format.value));
           currentDate.add(1, "days");
         }
-        field.value = dates;
-        tempDate.value = dates.map((date) => parseDateTime(date, format.value).toDate());
+        return {
+          fieldValue: dates,
+          tempDateValue: dates.map((date) => parseDateTime(date, format.value).toDate()),
+        };
       }
     } else {
       const validDates = defaultVal
@@ -75,9 +56,55 @@ export function useDateTimeFieldType(props) {
           return parsedDate?.isValid() ? parsedDate.format(format.value) : null;
         })
         .filter(Boolean);
-      field.value = validDates;
-      tempDate.value = validDates.map((date) => parseDateTime(date, format.value).toDate());
+      return {
+        fieldValue: validDates,
+        tempDateValue: validDates.map((date) => parseDateTime(date, format.value).toDate()),
+      };
     }
+    return null;
+  };
+
+  const syncTempValuesFromField = (value) => {
+    if (!value) {
+      tempDate.value = "";
+      tempTime.value = "";
+      return;
+    }
+
+    isInitializing.value = true;
+
+    if (props.input.type === "dateTimePicker") {
+      const parsedDateTime = parseDateTime(value, format.value);
+      if (parsedDateTime) {
+        tempDate.value = parsedDateTime.toDate();
+        tempTime.value = parsedDateTime.format(defaultTimeFormat);
+      }
+    } else if (isMultiple.value && Array.isArray(value)) {
+      if (isFirstSync.value && props.options.datepicker.multiple === "range" && value.length === 2) {
+        const result = handleMultipleDefaultValue(value);
+        if (result) {
+          field.value = result.fieldValue;
+          tempDate.value = result.tempDateValue;
+        }
+      } else {
+        tempDate.value = value
+          .map((date) => {
+            const parsed = parseDateTime(date, format.value);
+            return parsed?.isValid() ? parsed.toDate() : null;
+          })
+          .filter(Boolean);
+      }
+    } else {
+      const parsedDate = parseDateTime(value, format.value);
+      if (parsedDate) {
+        tempDate.value = parsedDate.toDate();
+      }
+    }
+
+    nextTick(() => {
+      isInitializing.value = false;
+      isFirstSync.value = false;
+    });
   };
 
   const date = computed({
@@ -100,6 +127,8 @@ export function useDateTimeFieldType(props) {
       return parsedDate?.isValid() ? parsedDate.toDate() : null;
     },
     set: (value) => {
+      if (isInitializing.value) return;
+
       if (!value) {
         tempDate.value = "";
         field.value = "";
@@ -128,6 +157,8 @@ export function useDateTimeFieldType(props) {
       return parsedDateTime?.isValid() ? parsedDateTime.format(defaultTimeFormat) : null;
     },
     set: (value) => {
+      if (isInitializing.value) return;
+
       tempTime.value = value;
       if (tempDate.value) {
         const dateTime = moment(tempDate.value).format("YYYY-MM-DD") + " " + value;
@@ -163,24 +194,16 @@ export function useDateTimeFieldType(props) {
     return formatDateTime(field.value, displayFormat.value);
   });
 
-  watch(
-    () => props.input.options?.default,
-    () => {
-      parseDefaultValue();
-    },
-    { immediate: true }
-  );
+  watch(field, syncTempValuesFromField, { immediate: true });
 
   return {
     ..._useFieldType,
-    tempDate,
-    tempTime,
     date,
     time,
     formattedDate,
     formattedDateTime,
     defaultDateFormat,
     defaultTimeFormat,
-    parseDefaultValue,
+    handleMultipleDefaultValue,
   };
 }
