@@ -100,11 +100,13 @@ watch([previewFiles, uploadedFiles], () => {
         </v-btn>
       </v-card>
       <div v-else>
+        <div class="text-h6 mb-0">{{ options.label }}:</div>
         <FileUploadToolbar
           :key="key"
           v-model:uploaded-files="uploadedFiles"
           :preview-files="previewFiles"
           :errors="field.errorMessage.value"
+          :label="options.label"
           @delete-files="deleteFiles"
         >
           <template #upload>
