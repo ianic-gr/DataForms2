@@ -94,8 +94,8 @@ watch(
           </v-card-text>
           <v-spacer />
           <v-card-actions>
-            <v-btn text color="primary" @click="dialog = false"> Cancel </v-btn>
-            <v-btn text color="primary" @click="saveDate"> OK </v-btn>
+            <v-btn :text="$t('$dataforms.global.cancel')" color="primary" @click="dialog = false" />
+            <v-btn :text="$t('$dataforms.global.submit')" color="primary" @click="saveDate" />
           </v-card-actions>
         </v-card>
       </template>

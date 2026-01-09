@@ -50,8 +50,8 @@ const submit = () => {
         <v-divider />
 
         <v-card-actions class="my-2 d-flex justify-end">
-          <v-btn class="text-none" text="Cancel" @click="isActive.value = false" />
-          <v-btn class="text-none" color="primary" text="Submit" variant="flat" @click="submit" />
+          <v-btn class="text-none" :text="$t('$dataforms.global.cancel')" @click="isActive.value = false" />
+          <v-btn class="text-none" color="primary" :text="$t('$dataforms.global.submit')" variant="flat" @click="submit" />
         </v-card-actions>
       </v-card>
     </template>

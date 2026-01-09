@@ -56,8 +56,15 @@ watch(alias, (v: any) => (translations.value = deepClone(v)), {
         <v-divider class="mt-2" />
 
         <v-card-actions class="my-2 d-flex justify-end">
-          <v-btn class="text-none" rounded="xl" text="Cancel" @click="isActive.value = false" />
-          <v-btn class="text-none px-4" color="primary" rounded="xl" text="Confirm" variant="tonal" @click="submit" />
+          <v-btn class="text-none" rounded="xl" :text="$t('$dataforms.global.cancel')" @click="isActive.value = false" />
+          <v-btn
+            class="text-none px-4"
+            color="primary"
+            rounded="xl"
+            :text="$t('$dataforms.global.submit')"
+            variant="tonal"
+            @click="submit"
+          />
         </v-card-actions>
       </v-card>
     </template>
