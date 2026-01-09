@@ -16,10 +16,6 @@ defineProps({
       return {};
     },
   },
-  formId: {
-    required: true,
-    type: String,
-  },
   events: {
     type: Object,
     default: () => {
@@ -30,9 +26,7 @@ defineProps({
 </script>
 
 <template>
-  <div
-    :class="`dataforms-field dataforms-epic--${formId}_${inputKey} dataforms-epic--${formId} dataforms-epic--${inputKey}`"
-  >
+  <div>
     <div v-if="options.html" v-html="options.html" />
     <p v-else>
       {{ options.text }}

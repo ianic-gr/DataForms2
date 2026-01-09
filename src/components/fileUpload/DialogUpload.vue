@@ -2,6 +2,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { VFileUpload } from "vuetify/labs/VFileUpload";
 
+const dataformsPluginOptions = inject("dataformsPluginOptions");
+
 defineProps({
   options: {
     type: Object,
@@ -15,9 +17,7 @@ const dialog = ref(false);
 const uploadFiles = ref();
 
 const submit = () => {
-  const files = Array.isArray(uploadFiles.value)
-    ? uploadFiles.value
-    : [uploadFiles.value];
+  const files = Array.isArray(uploadFiles.value) ? uploadFiles.value : [uploadFiles.value];
 
   emit(
     "submitFiles",
@@ -43,6 +43,7 @@ const submit = () => {
             v-bind="options"
             :density="!uploadFiles ? 'default' : 'compact'"
             clearable
+            :icon="dataformsPluginOptions?.icons.fileUpload.cloudUpload"
           />
         </v-card-text>
 
@@ -50,14 +51,7 @@ const submit = () => {
 
         <v-card-actions class="my-2 d-flex justify-end">
           <v-btn class="text-none" text="Cancel" @click="isActive.value = false" />
-
-          <v-btn
-            class="text-none"
-            color="primary"
-            text="Submit"
-            variant="flat"
-            @click="submit"
-          />
+          <v-btn class="text-none" color="primary" text="Submit" variant="flat" @click="submit" />
         </v-card-actions>
       </v-card>
     </template>

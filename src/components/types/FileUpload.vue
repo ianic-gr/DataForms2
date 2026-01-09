@@ -79,15 +79,22 @@ watch([previewFiles, uploadedFiles], () => {
       <v-card v-if="!previewFiles?.length && !uploadedFiles.length" color="grey-lighten-4" class="pa-6 text-center">
         <v-icon size="x-large" color="grey" class="mb-4" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
 
-        <div class="text-h6 mb-3">
+        <div class="text-h6 mb-0">
+          {{ options.label }}
+        </div>
+
+        <div class="text-subtitle-1 text-medium-emphasis">
           {{ $t("$dataforms.fileUpload.noFilesUploadedYet") }}
+          <span v-if="input.options.multiple">, {{ $t("$dataforms.fileUpload.canUploadMultiple") }}</span>
         </div>
 
-        <div v-if="input.options.multiple" class="text-subtitle-1 mb-4 text-medium-emphasis">
-          {{ $t("$dataforms.fileUpload.canUploadMultiple") }}
-        </div>
-
-        <v-btn variant="tonal" color="primary" size="large" :prepend-icon="dataformsPluginOptions?.icons.fileUpload.upload">
+        <v-btn
+          variant="tonal"
+          color="primary"
+          size="large"
+          class="mt-4"
+          :prepend-icon="dataformsPluginOptions?.icons.fileUpload.upload"
+        >
           {{ $t("$dataforms.fileUpload.upload") }}
           <FileUploadDialogUpload :options="input.options" @submit-files="submitFiles" />
         </v-btn>

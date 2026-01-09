@@ -17,6 +17,7 @@ export default {
             upload: "mdi-upload-circle",
             documentRemove: "mdi-file-document-remove",
             delete: "mdi-delete",
+            cloudUpload: "mdi-cloud-upload",
           },
           alias: {
             translate: "mdi-translate-variant",

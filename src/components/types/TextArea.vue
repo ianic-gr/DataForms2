@@ -49,9 +49,7 @@ watch(
 </script>
 
 <template>
-  <div
-    :class="`dataforms-field dataforms-textArea--${formId}_${inputKey} dataforms-textArea--${formId} dataforms-textArea--${inputKey}`"
-  >
+  <div>
     <v-textarea
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
