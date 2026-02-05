@@ -55,10 +55,20 @@ watch(
   (v) => {
     if (v === null && !fieldReturn.value) return;
 
+    // Process the initial value so it matches what select expects to return.
+    let processedValue = v;
+    if (Array.isArray(v) && v.length > 0 && typeof v[0] === "object" && !props.options.returnObject) {
+      const itemValue = props.options.itemValue || props.options["item-value"] || "value";
+      processedValue = v.map((item) => item[itemValue]);
+      nextTick(() => {
+        fieldValue.value = processedValue;
+      });
+    }
+
     field.value.value = v;
     fieldReturn.value = v;
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 
