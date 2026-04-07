@@ -72,7 +72,7 @@
     "roboto-fontface": "*",
     "uuid": "^13.0.0",
     "vee-validate": "^4.15.1",
-    "vue": "^3.5.32",
+    "vue": "3.5.30",
     "vue-i18n": "^11.3.1",
     "vuetify": "^3.12.5"
   },
