@@ -104,11 +104,14 @@ const themeOptions = computed(() => {
 });
 
 const inputTypeComponent = computed(() => {
-  const selectedInputType =
-    Object.entries(types).find(([key]) => normalizeString(key) === normalizeString(props.input?.type ?? ""))?.[1] ??
-    types.textField;
+  const selectedInputType = Object.entries(types).find(([key]) => {
+    return normalizeString(key) === normalizeString(props.input?.type ?? "textField");
+  });
 
-  return selectedInputType;
+  return {
+    key: selectedInputType[0],
+    component: selectedInputType[1],
+  };
 });
 </script>
 
@@ -151,10 +154,10 @@ const inputTypeComponent = computed(() => {
         </div>
 
         <component
-          :is="inputTypeComponent"
+          :is="inputTypeComponent.component"
           v-show="!input.readOnly"
           v-model:return="fieldReturn"
-          :class="`dataforms-field dataforms-${inputTypeComponent.__name}--${formId}_${inputKey} dataforms-${inputTypeComponent.__name}--${formId} dataforms-${inputTypeComponent.__name}--${inputKey}`"
+          :class="`dataforms-field dataforms-${inputTypeComponent.key}--${formId}_${inputKey} dataforms-${inputTypeComponent.key}--${formId} dataforms-${inputTypeComponent.key}--${inputKey}`"
           :input="input"
           :form-id="formId"
           :input-key="inputKey"
