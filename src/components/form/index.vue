@@ -42,10 +42,12 @@ defineRule("uuid", (value: string) => {
   return uuidRegex.test(value) || "This field must be a valid UUID";
 });
 
-defineRule("requiredAlias", (value: Record<string, string>) => {
+defineRule("requiredAlias", (value: Record<string, Record<string, string>>) => {
   if (!value || typeof value !== "object") return "This field is required";
 
-  const hasEmpty = Object.values(value).some((v) => !v?.trim());
+  const hasEmpty = Object.values(value)
+    .flatMap((nested) => Object.values(nested))
+    .some((v) => !v?.trim());
 
   return hasEmpty ? "This field is required" : true;
 });
