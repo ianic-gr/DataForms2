@@ -16,7 +16,7 @@ const api = {
                 en: "",
               },
             },
-            validation: "required",
+            validation: "requiredAlias",
             component: Alias,
           },
 

@@ -42,6 +42,14 @@ defineRule("uuid", (value: string) => {
   return uuidRegex.test(value) || "This field must be a valid UUID";
 });
 
+defineRule("requiredAlias", (value: Record<string, string>) => {
+  if (!value || typeof value !== "object") return "This field is required";
+
+  const hasEmpty = Object.values(value).some((v) => !v?.trim());
+
+  return hasEmpty ? "This field is required" : true;
+});
+
 const dataformsStore = useDataformsStore();
 const { getApiSlots } = useSlotsPrepare();
 
@@ -155,7 +163,7 @@ const submit = async (softSubmit = false, forceSubmitSuccess = false) => {
     },
     (validationErrors) => {
       submitErrors(validationErrors.errors);
-    }
+    },
   )();
 
   return validateStatus;
@@ -167,7 +175,7 @@ const submitSuccess = async () => {
   const theForm = getCurrentForm(props.id);
 
   const cleanedData: Record<string, any> = Object.fromEntries(
-    Object.entries(theForm.fields).filter(([key]) => !theForm.inputs[key]?.readOnly)
+    Object.entries(theForm.fields).filter(([key]) => !theForm.inputs[key]?.readOnly),
   );
 
   const fields = formOptions.value.submitReadonlyFields ? theForm.fields : cleanedData;
