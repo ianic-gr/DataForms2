@@ -108,9 +108,11 @@ const inputTypeComponent = computed(() => {
     return normalizeString(key) === normalizeString(props.input?.type ?? "textField");
   });
 
+  if (!selectedInputType) return null;
+
   return {
-    key: selectedInputType[0],
-    component: selectedInputType[1],
+    key: selectedInputType?.[0],
+    component: selectedInputType?.[1],
   };
 });
 </script>
@@ -155,6 +157,7 @@ const inputTypeComponent = computed(() => {
 
         <component
           :is="inputTypeComponent.component"
+          v-if="inputTypeComponent"
           v-show="!input.readOnly"
           v-model:return="fieldReturn"
           :class="`dataforms-field dataforms-${inputTypeComponent.key}--${formId}_${inputKey} dataforms-${inputTypeComponent.key}--${formId} dataforms-${inputTypeComponent.key}--${inputKey}`"
@@ -206,6 +209,9 @@ const inputTypeComponent = computed(() => {
             </component>
           </template>
         </component>
+        <div v-else>
+          Cannot find component type: <b>{{ input?.type ?? "textField" }}</b>
+        </div>
       </div>
     </v-col>
   </v-row>
