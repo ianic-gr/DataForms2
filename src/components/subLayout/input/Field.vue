@@ -148,7 +148,7 @@ const inputTypeComponent = computed(() => {
           <v-card class="w-100" variant="tonal" min-height="59">
             <v-card-text class="py-2">
               <div>
-                <small>{{ input?.options?.label }}</small>
+                <small>{{ input?.options?.label || inputKey }}</small>
                 <p>{{ fieldReturn ?? "-" }}</p>
               </div>
             </v-card-text>
