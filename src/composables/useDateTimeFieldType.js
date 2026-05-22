@@ -19,7 +19,7 @@ export function useDateTimeFieldType(props) {
   const displayFormat = computed(() => props.options?.format ?? defaultDateFormat);
 
   const isMultiple = computed(
-    () => props.input.type === "datepicker" && props.options?.datepicker && "multiple" in props.options.datepicker
+    () => props.input.type === "datepicker" && props.options?.datepicker && "multiple" in props.options.datepicker,
   );
 
   const parseDateTime = (value, format) => {
@@ -183,7 +183,7 @@ export function useDateTimeFieldType(props) {
         }
         return `${field.value.length} Selected`;
       }
-      return formatDateTime(field.value[0], displayFormat.value);
+      return field.value?.[0] ? formatDateTime(field.value[0], displayFormat.value) : null;
     }
 
     return formatDateTime(field.value, displayFormat.value);
