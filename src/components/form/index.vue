@@ -42,6 +42,10 @@ defineRule("uuid", (value: string) => {
   return uuidRegex.test(value) || "This field must be a valid UUID";
 });
 
+defineRule("array", (value: unknown) => {
+  return Array.isArray(value) || "This field must be an array";
+});
+
 defineRule("requiredAlias", (value: Record<string, Record<string, string>>) => {
   if (!value || typeof value !== "object") return "This field is required";
 
