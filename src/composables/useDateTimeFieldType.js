@@ -83,7 +83,15 @@ export function useDateTimeFieldType(props) {
       if (isFirstSync.value && props.options.datepicker.multiple === "range" && value.length === 2) {
         const result = handleMultipleDefaultValue(value);
         if (result) {
-          field.value = result.fieldValue;
+          const newFieldValue = result.fieldValue;
+          const isSame =
+            Array.isArray(field.value) &&
+            field.value.length === newFieldValue.length &&
+            field.value.every((v, i) => v === newFieldValue[i]);
+
+          if (!isSame) {
+            field.value = newFieldValue;
+          }
           tempDate.value = result.tempDateValue;
         }
       } else {

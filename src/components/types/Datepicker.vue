@@ -37,10 +37,14 @@ watch(
   (v) => {
     if (v === null && !fieldReturn.value) return;
 
-    inputField.value.value = formattedDate.value;
-    fieldReturn.value = formattedDate.value;
+    const formatted = formattedDate.value;
+
+    if (formatted === fieldReturn.value) return;
+
+    inputField.value.value = formatted;
+    fieldReturn.value = formatted;
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 function format(date) {
