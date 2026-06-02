@@ -52,10 +52,14 @@ watch(
   (v) => {
     if (v === null && !fieldReturn.value) return;
 
-    inputField.value.value = formattedDateTime.value;
-    fieldReturn.value = formattedDateTime.value;
+    const formatted = formattedDateTime.value;
+
+    if (formatted === fieldReturn.value) return;
+
+    inputField.value.value = formatted;
+    fieldReturn.value = formatted;
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 
