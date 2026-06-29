@@ -7,6 +7,7 @@ import { all } from "@vee-validate/rules";
 import { localize } from "@vee-validate/i18n";
 import deepClone from "@/utils/deepClone.js";
 import { defu } from "defu";
+import { useI18n } from "vue-i18n";
 
 const binder = defineModel<Record<string, any>>("binder", { default: () => ({}) });
 const validation = defineModel<Record<string, any>>("validation", {
@@ -28,6 +29,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(["dataFormSubmit", "dataFormSubmitSuccess", "dataFormSubmitFailed", "dataFormSubmitWithErrors"]);
 
+const { t } = useI18n();
+
 // Form String Rules
 Object.entries(all).forEach(([name, rule]) => {
   defineRule(name, rule);
@@ -39,21 +42,21 @@ defineRule("uuid", (value: string) => {
   }
 
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  return uuidRegex.test(value) || "This field must be a valid UUID";
+  return uuidRegex.test(value) || t("$dataforms.validation.uuidRequired");
 });
 
 defineRule("array", (value: unknown) => {
-  return Array.isArray(value) || "This field must be an array";
+  return Array.isArray(value) || t("$dataforms.validation.arrayRequired");
 });
 
 defineRule("requiredAlias", (value: Record<string, Record<string, string>>) => {
-  if (!value || typeof value !== "object") return "This field is required";
+  if (!value || typeof value !== "object") return t("$dataforms.validation.requiredAlias");
 
   const hasEmpty = Object.values(value)
     .flatMap((nested) => Object.values(nested))
     .some((v) => !v?.trim());
 
-  return hasEmpty ? "This field is required" : true;
+  return hasEmpty ? t("$dataforms.validation.requiredAlias") : true;
 });
 
 const dataformsStore = useDataformsStore();
