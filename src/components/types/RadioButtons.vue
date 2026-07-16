@@ -1,57 +1,60 @@
 <script setup>
-import { useFieldType } from "@/composables/useFieldType";
-import { useOptionFieldType } from "@/composables/useOptionFieldType";
-import { useField } from "vee-validate";
+  import { useFieldType } from "@/composables/useFieldType";
+  import { useOptionFieldType } from "@/composables/useOptionFieldType";
+  import { useField } from "vee-validate";
+  import { deepEqual } from "@/utils/deepEqual";
 
-const props = defineProps({
-  input: {
-    type: Object,
-    default: () => {
-      return {};
+  const props = defineProps({
+    input: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
-  },
-  inputKey: {
-    type: String,
-    default: "",
-  },
-  options: {
-    type: Object,
-    default: () => {
-      return {};
+    inputKey: {
+      type: String,
+      default: "",
     },
-  },
-  formId: {
-    required: true,
-    type: String,
-  },
-  events: {
-    type: Object,
-    default: () => {
-      return {};
+    options: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
-  },
-});
+    formId: {
+      required: true,
+      type: String,
+    },
+    events: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  });
 
-const { field: fieldValue } = useFieldType(props);
-const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
-const { optionLabel, optionValue } = useOptionFieldType();
+  const { field: fieldValue } = useFieldType(props);
+  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+    initialValue: props.options.default,
+  });
+  const { optionLabel, optionValue } = useOptionFieldType();
 
-const fieldReturn = defineModel("return");
+  const fieldReturn = defineModel("return");
 
-watch(
-  fieldValue,
-  (v) => {
-    if (v === null && !fieldReturn.value) return;
-    field.value.value = v;
+  watch(
+    fieldValue,
+    (v) => {
+      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      field.value.value = v;
 
-    const selected = props.options?.list.find((item) => {
-      return item.value === v;
-    });
+      const selected = props.options?.list.find((item) => {
+        return item.value === v;
+      });
 
-    fieldReturn.value = selected?.label ?? v;
-  },
-  { immediate: true }
-);
+      fieldReturn.value = selected?.label ?? v;
+    },
+    { immediate: true }
+  );
 </script>
 
 <template>

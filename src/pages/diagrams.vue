@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="mb-9">
-      <h2 class="text-center display-3 mb-9">DataForms Api</h2>
+      <h2 class="text-center display-3 mb-9">
+        DataForms Api
+      </h2>
       <iframe
         frameborder="0"
         style="width: 100%; height: 923px"
@@ -9,7 +11,9 @@
       />
     </div>
     <div>
-      <h2 class="text-center display-3 mb-9">DataForms State</h2>
+      <h2 class="text-center display-3 mb-9">
+        DataForms State
+      </h2>
       <iframe
         frameborder="0"
         style="width: 100%; height: 1525px"

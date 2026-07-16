@@ -1,76 +1,79 @@
 <script setup>
-import { useFieldType } from "@/composables/useFieldType";
-import { useField } from "vee-validate";
+  import { useFieldType } from "@/composables/useFieldType";
+  import { useField } from "vee-validate";
+  import { deepEqual } from "@/utils/deepEqual";
 
-const dataformsPluginOptions = inject("dataformsPluginOptions");
+  const dataformsPluginOptions = inject("dataformsPluginOptions");
 
-const props = defineProps({
-  input: {
-    type: Object,
-    default: () => {},
-  },
-  inputKey: {
-    type: String,
-    default: "",
-  },
-  options: {
-    type: Object,
-    default: () => {},
-  },
-  formId: {
-    required: true,
-    type: String,
-  },
-  events: {
-    type: Object,
-    default: () => {},
-  },
-});
+  const props = defineProps({
+    input: {
+      type: Object,
+      default: () => {},
+    },
+    inputKey: {
+      type: String,
+      default: "",
+    },
+    options: {
+      type: Object,
+      default: () => {},
+    },
+    formId: {
+      required: true,
+      type: String,
+    },
+    events: {
+      type: Object,
+      default: () => {},
+    },
+  });
 
-const { field: fieldValue } = useFieldType(props);
-const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
+  const { field: fieldValue } = useFieldType(props);
+  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+    initialValue: props.options.default,
+  });
 
-const fieldReturn = defineModel("return");
+  const fieldReturn = defineModel("return");
 
-const uploadedFiles = ref([]);
-const key = ref(0);
+  const uploadedFiles = ref([]);
+  const key = ref(0);
 
-const previewFiles = computed(() => {
-  if (!props.input.preview) return [];
-  return Array.isArray(props.input.preview) ? props.input.preview : [props.input.preview];
-});
+  const previewFiles = computed(() => {
+    if (!props.input.preview) return [];
+    return Array.isArray(props.input.preview) ? props.input.preview : [props.input.preview];
+  });
 
-const submitFiles = (files) => {
-  uploadedFiles.value = files;
-  const submittedFiles = uploadedFiles.value.map((v) => v.file);
+  const submitFiles = (files) => {
+    uploadedFiles.value = files;
+    const submittedFiles = uploadedFiles.value.map((v) => v.file);
 
-  if (props.input.options.multiple) {
-    fieldValue.value = submittedFiles;
-  } else {
-    fieldValue.value = submittedFiles.length ? submittedFiles[0] : null;
-  }
-};
+    if (props.input.options.multiple) {
+      fieldValue.value = submittedFiles;
+    } else {
+      fieldValue.value = submittedFiles.length ? submittedFiles[0] : null;
+    }
+  };
 
-const deleteFiles = async (files) => {
-  for (const file of files) {
-    await props.input.onDelete(file);
-  }
-};
+  const deleteFiles = async (files) => {
+    for (const file of files) {
+      await props.input.onDelete(file);
+    }
+  };
 
-watch(
-  fieldValue,
-  (v) => {
-    if (v === null && !fieldReturn.value) return;
+  watch(
+    fieldValue,
+    (v) => {
+      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
 
-    field.value.value = v;
-    fieldReturn.value = (Array.isArray(v) ? v : [v]).map((item) => item.name).join(", ");
-  },
-  { immediate: true }
-);
+      field.value.value = v;
+      fieldReturn.value = (Array.isArray(v) ? v : [v]).map((item) => item.name).join(", ");
+    },
+    { immediate: true }
+  );
 
-watch([previewFiles, uploadedFiles], () => {
-  key.value++;
-});
+  watch([previewFiles, uploadedFiles], () => {
+    key.value++;
+  });
 </script>
 
 <template>

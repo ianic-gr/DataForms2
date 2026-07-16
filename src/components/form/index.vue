@@ -1,299 +1,303 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, provide, onBeforeUnmount, nextTick, computed } from "vue";
-import { useDataformsStore } from "@/stores/dataFormsStore";
-import { useSlotsPrepare } from "@/composables/useSlotsPrepare";
-import { defineRule, useForm, configure } from "vee-validate";
-import { all } from "@vee-validate/rules";
-import { localize } from "@vee-validate/i18n";
-import deepClone from "@/utils/deepClone.js";
-import { defu } from "defu";
-import { useI18n } from "vue-i18n";
+  import { ref, onMounted, watch, provide, onBeforeUnmount, nextTick, computed } from "vue";
+  import { useDataformsStore } from "@/stores/dataFormsStore";
+  import { useSlotsPrepare } from "@/composables/useSlotsPrepare";
+  import { defineRule, useForm, configure } from "vee-validate";
+  import { all } from "@vee-validate/rules";
+  import { localize } from "@vee-validate/i18n";
+  import deepClone from "@/utils/deepClone.js";
+  import { defu } from "defu";
+  import { useI18n } from "vue-i18n";
 
-const binder = defineModel<Record<string, any>>("binder", { default: () => ({}) });
-const validation = defineModel<Record<string, any>>("validation", {
-  default: () => ({}),
-});
-
-interface Props {
-  id: string;
-  api: Record<string, any>;
-  locale?: string;
-  localeStrings?: Record<string, any>;
-  options?: Record<string, any>;
-}
-const props = withDefaults(defineProps<Props>(), {
-  locale: "en",
-  localeStrings: () => ({}),
-  options: () => ({}),
-});
-
-const emit = defineEmits(["dataFormSubmit", "dataFormSubmitSuccess", "dataFormSubmitFailed", "dataFormSubmitWithErrors"]);
-
-const { t } = useI18n();
-
-// Form String Rules
-Object.entries(all).forEach(([name, rule]) => {
-  defineRule(name, rule);
-});
-
-defineRule("uuid", (value: string) => {
-  if (!value || !value.length) {
-    return true;
-  }
-
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  return uuidRegex.test(value) || t("$dataforms.validation.uuidRequired");
-});
-
-defineRule("array", (value: unknown) => {
-  return Array.isArray(value) || t("$dataforms.validation.arrayRequired");
-});
-
-defineRule("requiredAlias", (value: Record<string, Record<string, string>>) => {
-  if (!value || typeof value !== "object") return t("$dataforms.validation.requiredAlias");
-
-  const hasEmpty = Object.values(value)
-    .flatMap((nested) => Object.values(nested))
-    .some((v) => !v?.trim());
-
-  return hasEmpty ? t("$dataforms.validation.requiredAlias") : true;
-});
-
-const dataformsStore = useDataformsStore();
-const { getApiSlots } = useSlotsPrepare();
-
-const { getCurrentForm, addForm, removeForm, makeFormValid, makeFormInvalid, setFormErrors } = dataformsStore;
-
-const vFormRef = ref();
-const loading = ref(false);
-const submitOK = ref(false);
-const initFormValues = ref();
-
-const submitEvent = new Event("dataFormSubmit");
-const submitSuccessEvent = new CustomEvent("dataFormSubmitSuccess", {
-  detail: { formID: props.id },
-});
-const submitFailedEvent = new CustomEvent("dataFormSubmitFailed", {
-  detail: { formID: props.id },
-});
-
-const theForm = computed(() => getCurrentForm(props.id));
-const formOptions = computed(() => {
-  const defaultOptions = {
-    submitReadonlyFields: true,
-    leaveAlertWhenDataChanges: true,
-  };
-
-  return defu(props.options, defaultOptions);
-});
-
-const initFormValuesFn = async () => {
-  await nextTick();
-
-  if (!initFormValues.value) {
-    initFormValues.value = deepClone(theForm.value.fields ?? {});
-  }
-};
-
-const leaveAlertWhenDataChanges = (event: any) => {
-  if (!formOptions.value.leaveAlertWhenDataChanges) return;
-
-  if (JSON.stringify(initFormValues.value) !== JSON.stringify(theForm.value.fields) && !submitOK.value) {
-    event.preventDefault();
-    event.returnValue = "";
-  }
-};
-
-const setLoading = (value: boolean) => {
-  loading.value = value;
-};
-
-const changeLeaf = (leaf: number) => {
-  document.dispatchEvent(new CustomEvent("changeLeaf", { detail: { leaf } }));
-};
-
-const scrollToError = () => {
-  const vFormEL = vFormRef.value?.$el;
-  const el = vFormEL?.querySelector(".v-input--error:first-of-type");
-
-  if (el) {
-    const yOffset = -200;
-    const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-};
-
-const { handleSubmit, setFieldError } = useForm();
-
-const submit = async (softSubmit = false, forceSubmitSuccess = false) => {
-  let validateStatus = false;
-  submitOK.value = false;
-  makeFormInvalid(props.id);
-
-  if (props.api.submit?.beforeSubmit) {
-    await props.api.submit.beforeSubmit(theForm.value.fields);
-  }
-
-  setFormErrors({
-    formId: props.id,
-    errors: {},
+  const binder = defineModel<Record<string, any>>("binder", { default: () => ({}) });
+  const validation = defineModel<Record<string, any>>("validation", {
+    default: () => ({}),
   });
 
-  document.dispatchEvent(submitEvent);
-  emit("dataFormSubmit");
-
-  if (forceSubmitSuccess) {
-    submitSuccess();
-    return;
+  interface Props {
+    id: string;
+    api: Record<string, any>;
+    locale?: string;
+    localeStrings?: Record<string, any>;
+    options?: typeof configure;
+    veeValidateConfig?: Parameters<typeof configure>[0];
   }
+  const props = withDefaults(defineProps<Props>(), {
+    locale: "en",
+    localeStrings: () => ({}),
+    options: () => ({}),
+    veeValidateConfig: () => ({}),
+  });
 
-  await handleSubmit(
-    async () => {
-      const validationErrors = Object.entries(validation.value)
-        .filter(([, value]) => value !== null)
-        .reduce((acc: any, [key, value]) => {
-          acc[key] = value;
-          return acc;
-        }, {});
+  const emit = defineEmits(["dataFormSubmit", "dataFormSubmitSuccess", "dataFormSubmitFailed", "dataFormSubmitWithErrors"]);
 
-      if (Object.keys(validationErrors).length) {
-        Object.entries(validationErrors).forEach(([field, error]: any) => {
-          setFieldError(field, error);
-        });
+  const { t } = useI18n();
 
-        submitErrors(validationErrors);
-        return;
-      }
+  // Form String Rules
+  Object.entries(all).forEach(([name, rule]) => {
+    defineRule(name, rule);
+  });
 
-      validateStatus = true;
-
-      if (softSubmit) return;
-      submitSuccess();
-    },
-    (validationErrors) => {
-      submitErrors(validationErrors.errors);
-    },
-  )();
-
-  return validateStatus;
-};
-
-const validateOnly = () => submit(true);
-
-const submitSuccess = async () => {
-  const theForm = getCurrentForm(props.id);
-
-  const cleanedData: Record<string, any> = Object.fromEntries(
-    Object.entries(theForm.fields).filter(([key]) => !theForm.inputs[key]?.readOnly),
-  );
-
-  const fields = formOptions.value.submitReadonlyFields ? theForm.fields : cleanedData;
-
-  makeFormValid(props.id);
-  submitOK.value = true;
-
-  try {
-    if (props.api.submit) {
-      await props.api.submit.click(fields);
+  defineRule("uuid", (value: string) => {
+    if (!value || !value.length) {
+      return true;
     }
 
-    document.dispatchEvent(submitSuccessEvent);
-    emit("dataFormSubmitSuccess", fields);
-
-    theForm.unsaved = false;
-  } catch (error) {
-    emit("dataFormSubmitWithErrors", error);
-  }
-};
-
-const submitErrors = (errors: Record<string, any>) => {
-  setFormErrors({
-    formId: props.id,
-    errors,
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(value) || t("$dataforms.validation.uuidRequired");
   });
 
-  document.dispatchEvent(submitFailedEvent);
-  emit("dataFormSubmitFailed");
-  scrollToError();
-};
+  defineRule("array", (value: unknown) => {
+    return Array.isArray(value) || t("$dataforms.validation.arrayRequired");
+  });
 
-const loadLocale = async (locale: string) => {
-  try {
-    const localeMap: Record<string, any> = {
-      en: () => import("@vee-validate/i18n/dist/locale/en.json"),
-      el: () => import("@vee-validate/i18n/dist/locale/el.json"),
-      de: () => import("@vee-validate/i18n/dist/locale/de.json"),
-      ro: () => import("@vee-validate/i18n/dist/locale/ro.json"),
+  defineRule("requiredAlias", (value: Record<string, Record<string, string>>) => {
+    if (!value || typeof value !== "object") return t("$dataforms.validation.requiredAlias");
+
+    const hasEmpty = Object.values(value)
+      .flatMap((nested) => Object.values(nested))
+      .some((v) => !v?.trim());
+
+    return hasEmpty ? t("$dataforms.validation.requiredAlias") : true;
+  });
+
+  const dataformsStore = useDataformsStore();
+  const { getApiSlots } = useSlotsPrepare();
+
+  const { getCurrentForm, addForm, removeForm, makeFormValid, makeFormInvalid, setFormErrors } = dataformsStore;
+
+  const vFormRef = ref();
+  const loading = ref(false);
+  const submitOK = ref(false);
+  const initFormValues = ref();
+
+  const submitEvent = new Event("dataFormSubmit");
+  const submitSuccessEvent = new CustomEvent("dataFormSubmitSuccess", {
+    detail: { formID: props.id },
+  });
+  const submitFailedEvent = new CustomEvent("dataFormSubmitFailed", {
+    detail: { formID: props.id },
+  });
+
+  const theForm = computed(() => getCurrentForm(props.id));
+  const formOptions = computed(() => {
+    const defaultOptions = {
+      submitReadonlyFields: true,
+      leaveAlertWhenDataChanges: true,
     };
 
-    if (!localeMap[locale]) {
-      console.warn(`Unsupported locale: ${locale}`);
+    return defu(props.options, defaultOptions);
+  });
+
+  const initFormValuesFn = async () => {
+    await nextTick();
+
+    if (!initFormValues.value) {
+      initFormValues.value = deepClone(theForm.value.fields ?? {});
+    }
+  };
+
+  const leaveAlertWhenDataChanges = (event: any) => {
+    if (!formOptions.value.leaveAlertWhenDataChanges) return;
+
+    if (JSON.stringify(initFormValues.value) !== JSON.stringify(theForm.value.fields) && !submitOK.value) {
+      event.preventDefault();
+      event.returnValue = "";
+    }
+  };
+
+  const setLoading = (value: boolean) => {
+    loading.value = value;
+  };
+
+  const changeLeaf = (leaf: number) => {
+    document.dispatchEvent(new CustomEvent("changeLeaf", { detail: { leaf } }));
+  };
+
+  const scrollToError = () => {
+    const vFormEL = vFormRef.value?.$el;
+    const el = vFormEL?.querySelector(".v-input--error:first-of-type");
+
+    if (el) {
+      const yOffset = -200;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+
+  const { handleSubmit, setFieldError } = useForm();
+
+  const submit = async (softSubmit = false, forceSubmitSuccess = false) => {
+    let validateStatus = false;
+    submitOK.value = false;
+    makeFormInvalid(props.id);
+
+    if (props.api.submit?.beforeSubmit) {
+      await props.api.submit.beforeSubmit(theForm.value.fields);
+    }
+
+    setFormErrors({
+      formId: props.id,
+      errors: {},
+    });
+
+    document.dispatchEvent(submitEvent);
+    emit("dataFormSubmit");
+
+    if (forceSubmitSuccess) {
+      submitSuccess();
       return;
     }
 
-    const { default: localeMessages } = await localeMap[locale]();
+    await handleSubmit(
+      async () => {
+        const validationErrors = Object.entries(validation.value)
+          .filter(([, value]) => value !== null)
+          .reduce((acc: any, [key, value]) => {
+            acc[key] = value;
+            return acc;
+          }, {});
 
-    const fieldLabels: Record<string, any> = {};
+        if (Object.keys(validationErrors).length) {
+          Object.entries(validationErrors).forEach(([field, error]: any) => {
+            setFieldError(field, error);
+          });
 
-    if (theForm.value?.inputs) {
-      Object.entries(theForm.value.inputs).forEach(([key, input]: any) => {
-        const label = input?.options?.label;
-        if (label) {
-          fieldLabels[key] = `${label} (${key})`;
+          submitErrors(validationErrors);
+          return;
         }
-      });
-    }
 
-    configure({
-      generateMessage: localize({
-        [locale]: {
-          ...localeMessages,
-          names: fieldLabels,
-        },
-      }),
+        validateStatus = true;
+
+        if (softSubmit) return;
+        submitSuccess();
+      },
+      (validationErrors) => {
+        submitErrors(validationErrors.errors);
+      }
+    )();
+
+    return validateStatus;
+  };
+
+  const validateOnly = () => submit(true);
+
+  const submitSuccess = async () => {
+    const theForm = getCurrentForm(props.id);
+
+    const cleanedData: Record<string, any> = Object.fromEntries(
+      Object.entries(theForm.fields).filter(([key]) => !theForm.inputs[key]?.readOnly)
+    );
+
+    const fields = formOptions.value.submitReadonlyFields ? theForm.fields : cleanedData;
+
+    makeFormValid(props.id);
+    submitOK.value = true;
+
+    try {
+      if (props.api.submit) {
+        await props.api.submit.click(fields);
+      }
+
+      document.dispatchEvent(submitSuccessEvent);
+      emit("dataFormSubmitSuccess", fields);
+
+      theForm.unsaved = false;
+    } catch (error) {
+      emit("dataFormSubmitWithErrors", error);
+    }
+  };
+
+  const submitErrors = (errors: Record<string, any>) => {
+    setFormErrors({
+      formId: props.id,
+      errors,
     });
 
-    localize(locale);
-  } catch (err) {
-    console.warn(`Failed to load validation messages for locale: ${locale}`, err);
-  }
-};
+    document.dispatchEvent(submitFailedEvent);
+    emit("dataFormSubmitFailed");
+    scrollToError();
+  };
 
-watch(theForm, async () => {
-  await nextTick();
-  initFormValuesFn();
-});
+  const loadLocale = async (locale: string) => {
+    try {
+      const localeMap: Record<string, any> = {
+        en: () => import("@vee-validate/i18n/dist/locale/en.json"),
+        el: () => import("@vee-validate/i18n/dist/locale/el.json"),
+        de: () => import("@vee-validate/i18n/dist/locale/de.json"),
+        ro: () => import("@vee-validate/i18n/dist/locale/ro.json"),
+      };
 
-onMounted(async () => {
-  addForm({
-    form_id: props.id,
-    locale: props.locale,
-    locale_strings: props.localeStrings,
+      if (!localeMap[locale]) {
+        console.warn(`Unsupported locale: ${locale}`);
+        return;
+      }
+
+      const { default: localeMessages } = await localeMap[locale]();
+
+      const fieldLabels: Record<string, any> = {};
+
+      if (theForm.value?.inputs) {
+        Object.entries(theForm.value.inputs).forEach(([key, input]: any) => {
+          const label = input?.options?.label;
+          if (label) {
+            fieldLabels[key] = `${label} (${key})`;
+          }
+        });
+      }
+
+      configure(
+        defu(props.veeValidateConfig, {
+          generateMessage: localize({
+            [locale]: {
+              ...localeMessages,
+              names: fieldLabels,
+            },
+          }),
+        })
+      );
+
+      localize(locale);
+    } catch (err) {
+      console.warn(`Failed to load validation messages for locale: ${locale}`, err);
+    }
+  };
+
+  watch(theForm, async () => {
+    await nextTick();
+    initFormValuesFn();
   });
 
-  await nextTick();
+  onMounted(async () => {
+    addForm({
+      form_id: props.id,
+      locale: props.locale,
+      locale_strings: props.localeStrings,
+    });
 
-  theForm.value.fields = defu(binder.value, theForm.value.fields);
-  binder.value = theForm.value.fields;
+    await nextTick();
 
-  loadLocale(props.locale);
-  window.addEventListener("beforeunload", leaveAlertWhenDataChanges);
-});
+    theForm.value.fields = defu(binder.value, theForm.value.fields);
+    binder.value = theForm.value.fields;
 
-onBeforeUnmount(() => {
-  window.removeEventListener("beforeunload", leaveAlertWhenDataChanges);
-  removeForm(props.id);
-});
+    loadLocale(props.locale);
+    window.addEventListener("beforeunload", leaveAlertWhenDataChanges);
+  });
 
-provide("dataformsStore", dataformsStore);
+  onBeforeUnmount(() => {
+    window.removeEventListener("beforeunload", leaveAlertWhenDataChanges);
+    removeForm(props.id);
+  });
 
-defineExpose({
-  setLoading,
-  changeLeaf,
-  dataformsStore,
-  submit,
-  validateOnly,
-});
+  provide("dataformsStore", dataformsStore);
+
+  defineExpose({
+    setLoading,
+    changeLeaf,
+    dataformsStore,
+    submit,
+    validateOnly,
+  });
 </script>
 
 <template>

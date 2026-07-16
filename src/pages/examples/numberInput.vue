@@ -1,5 +1,7 @@
 <template>
-  <h1 class="mb-3">Number Input</h1>
+  <h1 class="mb-3">
+    Number Input
+  </h1>
   <iframe
     class="w-100 rounded-lg"
     style="height: 70vh"

@@ -1,62 +1,65 @@
 <script setup>
-import { useFieldType } from "@/composables/useFieldType";
-import { useField } from "vee-validate";
+  import { useFieldType } from "@/composables/useFieldType";
+  import { useField } from "vee-validate";
+  import { deepEqual } from "@/utils/deepEqual";
 
-const dataformsPluginOptions = inject("dataformsPluginOptions");
+  const dataformsPluginOptions = inject("dataformsPluginOptions");
 
-const props = defineProps({
-  input: {
-    type: Object,
-    default: () => {
-      return {};
+  const props = defineProps({
+    input: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
-  },
-  inputKey: {
-    type: String,
-    default: "",
-  },
-  options: {
-    type: Object,
-    default: () => {
-      return {};
+    inputKey: {
+      type: String,
+      default: "",
     },
-  },
-  formId: {
-    required: true,
-    type: String,
-  },
-  events: {
-    type: Object,
-    default: () => {
-      return {};
+    options: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
-  },
-});
+    formId: {
+      required: true,
+      type: String,
+    },
+    events: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  });
 
-const { field: fieldValue } = useFieldType(props);
-const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
-const showPassword = ref(false);
+  const { field: fieldValue } = useFieldType(props);
+  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+    initialValue: props.options.default,
+  });
+  const showPassword = ref(false);
 
-const fieldType = computed(() => {
-  return showPassword.value ? "text" : "password";
-});
+  const fieldType = computed(() => {
+    return showPassword.value ? "text" : "password";
+  });
 
-const fieldIcon = computed(() => {
-  return showPassword.value ? dataformsPluginOptions?.icons.eye : dataformsPluginOptions?.icons.eyeOff;
-});
+  const fieldIcon = computed(() => {
+    return showPassword.value ? dataformsPluginOptions?.icons.eye : dataformsPluginOptions?.icons.eyeOff;
+  });
 
-const fieldReturn = defineModel("return");
+  const fieldReturn = defineModel("return");
 
-watch(
-  fieldValue,
-  (v) => {
-    if (v === null && !fieldReturn.value) return;
+  watch(
+    fieldValue,
+    (v) => {
+      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
 
-    field.value.value = v;
-    fieldReturn.value = [...v].map(() => "*").join("");
-  },
-  { immediate: true }
-);
+      field.value.value = v;
+      fieldReturn.value = [...v].map(() => "*").join("");
+    },
+    { immediate: true }
+  );
 </script>
 
 <template>

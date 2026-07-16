@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import type { AliasLanguages } from "@/types/Alias";
-import deepClone from "@/utils/deepClone";
+  import type { AliasLanguages } from "@/types/Alias";
+  import deepClone from "@/utils/deepClone";
 
-const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
+  const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
 
-const emit = defineEmits(["submit"]);
-const dialog = defineModel<boolean>({ default: false });
-const alias = defineModel<Record<AliasLanguages, string>>("alias", {
-  default: () => {
-    return {};
-  },
-});
+  const emit = defineEmits(["submit"]);
+  const dialog = defineModel<boolean>({ default: false });
+  const alias = defineModel<Record<AliasLanguages, string>>("alias", {
+    default: () => {
+      return {};
+    },
+  });
 
-const translations = ref<Record<AliasLanguages, string>>({
-  en: "",
-  el: "",
-  de: "",
-  ro: "",
-});
+  const translations = ref<Record<AliasLanguages, string>>({
+    en: "",
+    el: "",
+    de: "",
+    ro: "",
+  });
 
-const submit = () => {
-  alias.value = deepClone(translations.value);
-  dialog.value = false;
-  emit("submit", translations.value);
-};
+  const submit = () => {
+    alias.value = deepClone(translations.value);
+    dialog.value = false;
+    emit("submit", translations.value);
+  };
 
-watch(alias, (v: any) => (translations.value = deepClone(v)), {
-  immediate: true,
-  deep: true,
-});
+  watch(alias, (v: any) => (translations.value = deepClone(v)), {
+    immediate: true,
+    deep: true,
+  });
 </script>
 
 <template>
@@ -36,7 +36,9 @@ watch(alias, (v: any) => (translations.value = deepClone(v)), {
     <template #default="{ isActive }">
       <v-card rounded="lg">
         <v-card-title class="d-flex justify-space-between align-center">
-          <div class="text-h5 text-medium-emphasis ps-2">Translations</div>
+          <div class="text-h5 text-medium-emphasis ps-2">
+            Translations
+          </div>
 
           <v-btn :icon="dataformsPluginOptions?.icons.close" variant="text" @click="isActive.value = false" />
         </v-card-title>

@@ -1,55 +1,58 @@
 <script setup>
-import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
-import { useField } from "vee-validate";
-import { VDateInput } from "vuetify/labs/VDateInput";
-import moment from "moment";
+  import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
+  import { useField } from "vee-validate";
+  import { VDateInput } from "vuetify/labs/VDateInput";
+  import moment from "moment";
+  import { deepEqual } from "@/utils/deepEqual";
 
-const props = defineProps({
-  input: {
-    type: Object,
-    default: () => ({}),
-  },
-  inputKey: {
-    type: String,
-    default: "",
-  },
-  options: {
-    type: Object,
-    default: () => ({}),
-  },
-  formId: {
-    required: true,
-    type: String,
-  },
-  events: {
-    type: Object,
-    default: () => ({}),
-  },
-});
+  const props = defineProps({
+    input: {
+      type: Object,
+      default: () => ({}),
+    },
+    inputKey: {
+      type: String,
+      default: "",
+    },
+    options: {
+      type: Object,
+      default: () => ({}),
+    },
+    formId: {
+      required: true,
+      type: String,
+    },
+    events: {
+      type: Object,
+      default: () => ({}),
+    },
+  });
 
-const inputField = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
-const { field, date, formattedDate } = useDateTimeFieldType(props);
+  const inputField = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+    initialValue: props.options.default,
+  });
+  const { field, date, formattedDate } = useDateTimeFieldType(props);
 
-const fieldReturn = defineModel("return");
+  const fieldReturn = defineModel("return");
 
-watch(
-  field,
-  (v) => {
-    if (v === null && !fieldReturn.value) return;
+  watch(
+    field,
+    (v) => {
+      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
 
-    const formatted = formattedDate.value;
+      const formatted = formattedDate.value;
 
-    if (formatted === fieldReturn.value) return;
+      if (formatted === fieldReturn.value) return;
 
-    inputField.value.value = formatted;
-    fieldReturn.value = formatted;
-  },
-  { immediate: true },
-);
+      inputField.value.value = formatted;
+      fieldReturn.value = formatted;
+    },
+    { immediate: true }
+  );
 
-function format(date) {
-  return moment(date, props.options.returnFormat).format(props.options.format);
-}
+  function format(date) {
+    return moment(date, props.options.returnFormat).format(props.options.format);
+  }
 </script>
 
 <template>

@@ -59,7 +59,7 @@ onUnmounted(() => {
           <v-card-text>
             <div class="d-flex align-center justify-center flex-column w-100 h-100" style="aspect-ratio: 1">
               <v-icon size="50" :icon="dataformsPluginOptions?.icons.fileUpload.file" />
-              <br />
+              <br>
               <div class="text-truncate w-100">
                 {{ img }}
               </div>
@@ -96,7 +96,7 @@ onUnmounted(() => {
           <div class="d-flex align-center text-center justify-center flex-column w-100 h-100" style="aspect-ratio: 1">
             <v-icon v-if="fileError" size="50" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
             <v-icon v-else size="50" :icon="dataformsPluginOptions?.icons.fileUpload.file" />
-            <br />
+            <br>
             <div class="text-truncate w-100">
               {{ imageUrl || img.name }}
             </div>

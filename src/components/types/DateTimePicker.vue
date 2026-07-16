@@ -1,66 +1,69 @@
 <script setup>
-import moment from "moment";
-import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
-import { useField } from "vee-validate";
+  import moment from "moment";
+  import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
+  import { useField } from "vee-validate";
+  import { deepEqual } from "@/utils/deepEqual";
 
-const props = defineProps({
-  input: {
-    type: Object,
-    default: () => ({}),
-  },
-  inputKey: {
-    type: String,
-    default: "",
-  },
-  options: {
-    type: Object,
-    default: () => ({}),
-  },
-  formId: {
-    required: true,
-    type: String,
-  },
-  events: {
-    type: Object,
-    default: () => ({}),
-  },
-});
+  const props = defineProps({
+    input: {
+      type: Object,
+      default: () => ({}),
+    },
+    inputKey: {
+      type: String,
+      default: "",
+    },
+    options: {
+      type: Object,
+      default: () => ({}),
+    },
+    formId: {
+      required: true,
+      type: String,
+    },
+    events: {
+      type: Object,
+      default: () => ({}),
+    },
+  });
 
-const inputField = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
-const { field, currentFormData, date, time, formattedDateTime, defaultDateFormat, defaultTimeFormat } =
-  useDateTimeFieldType(props);
+  const inputField = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+    initialValue: props.options.default,
+  });
+  const { field, currentFormData, date, time, formattedDateTime, defaultDateFormat, defaultTimeFormat } =
+    useDateTimeFieldType(props);
 
-const dialog = ref(false);
-const pickerTab = ref("date");
+  const dialog = ref(false);
+  const pickerTab = ref("date");
 
-const saveDate = () => {
-  const format = props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
-  const extractedDate = moment(date.value).format(defaultDateFormat);
+  const saveDate = () => {
+    const format = props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
+    const extractedDate = moment(date.value).format(defaultDateFormat);
 
-  field.value = moment(`${extractedDate} ${time.value}`).format(format);
-  dialog.value = false;
-};
+    field.value = moment(`${extractedDate} ${time.value}`).format(format);
+    dialog.value = false;
+  };
 
-watch(formattedDateTime, (v) => {
-  inputField.value.value = v;
-});
+  watch(formattedDateTime, (v) => {
+    inputField.value.value = v;
+  });
 
-const fieldReturn = defineModel("return");
+  const fieldReturn = defineModel("return");
 
-watch(
-  field,
-  (v) => {
-    if (v === null && !fieldReturn.value) return;
+  watch(
+    field,
+    (v) => {
+      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
 
-    const formatted = formattedDateTime.value;
+      const formatted = formattedDateTime.value;
 
-    if (formatted === fieldReturn.value) return;
+      if (formatted === fieldReturn.value) return;
 
-    inputField.value.value = formatted;
-    fieldReturn.value = formatted;
-  },
-  { immediate: true },
-);
+      inputField.value.value = formatted;
+      fieldReturn.value = formatted;
+    },
+    { immediate: true }
+  );
 </script>
 
 <template>

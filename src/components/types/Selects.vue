@@ -1,75 +1,78 @@
 <script setup>
-import { useInputEvents } from "@/composables/useInputEvents";
-import { useFieldType } from "@/composables/useFieldType";
-import { useField } from "vee-validate";
+  import { useInputEvents } from "@/composables/useInputEvents";
+  import { useFieldType } from "@/composables/useFieldType";
+  import { useField } from "vee-validate";
+  import { deepEqual } from "@/utils/deepEqual";
 
-const props = defineProps({
-  input: {
-    type: Object,
-    default: () => {
-      return {};
+  const props = defineProps({
+    input: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
-  },
-  inputKey: {
-    type: String,
-    default: "",
-  },
-  options: {
-    type: Object,
-    default: () => {
-      return {};
+    inputKey: {
+      type: String,
+      default: "",
     },
-  },
-  formId: {
-    required: true,
-    type: String,
-  },
-  events: {
-    type: Object,
-    default: () => {
-      return {};
+    options: {
+      type: Object,
+      default: () => {
+        return {};
+      },
     },
-  },
-});
+    formId: {
+      required: true,
+      type: String,
+    },
+    events: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  });
 
-const { field: fieldValue, fieldProps } = useFieldType(props);
-const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "");
-const { onSelect } = useInputEvents(fieldProps);
+  const { field: fieldValue, fieldProps } = useFieldType(props);
+  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+    initialValue: props.options.default,
+  });
+  const { onSelect } = useInputEvents(fieldProps);
 
-const fieldReturn = defineModel("return");
+  const fieldReturn = defineModel("return");
 
-const selectedAllItems = computed(() => fieldValue.value?.length === props.options.items?.length);
-const selectedSomeItems = computed(() => fieldValue.value?.length > 0);
+  const selectedAllItems = computed(() => fieldValue.value?.length === props.options.items?.length);
+  const selectedSomeItems = computed(() => fieldValue.value?.length > 0);
 
-const toggle = () => {
-  if (selectedAllItems.value) {
-    fieldValue.value = [];
-    return;
-  }
-
-  fieldValue.value = props.options.items.slice();
-};
-
-watch(
-  fieldValue,
-  (v) => {
-    if (v === null && !fieldReturn.value) return;
-
-    // Process the initial value so it matches what select expects to return.
-    let processedValue = v;
-    if (Array.isArray(v) && v.length > 0 && typeof v[0] === "object" && !props.options.returnObject) {
-      const itemValue = props.options.itemValue || props.options["item-value"] || "value";
-      processedValue = v.map((item) => item[itemValue]);
-      nextTick(() => {
-        fieldValue.value = processedValue;
-      });
+  const toggle = () => {
+    if (selectedAllItems.value) {
+      fieldValue.value = [];
+      return;
     }
 
-    field.value.value = v;
-    fieldReturn.value = v;
-  },
-  { immediate: true },
-);
+    fieldValue.value = props.options.items.slice();
+  };
+
+  watch(
+    fieldValue,
+    (v) => {
+      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+
+      // Process the initial value so it matches what select expects to return.
+      let processedValue = v;
+      if (Array.isArray(v) && v.length > 0 && typeof v[0] === "object" && !props.options.returnObject) {
+        const itemValue = props.options.itemValue || props.options["item-value"] || "value";
+        processedValue = v.map((item) => item[itemValue]);
+        nextTick(() => {
+          fieldValue.value = processedValue;
+        });
+      }
+
+      field.value.value = v;
+      fieldReturn.value = v;
+    },
+    { immediate: true }
+  );
 </script>
 
 <template>

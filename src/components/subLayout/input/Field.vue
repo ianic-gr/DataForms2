@@ -1,120 +1,120 @@
 <script setup>
-import { useConditionals } from "@/composables/useConditionals.js";
-import { useInputFieldComponents } from "@/composables/useInputFieldComponents";
-import { normalizeString } from "@/utils/normalizeString";
+  import { useConditionals } from "@/composables/useConditionals.js";
+  import { useInputFieldComponents } from "@/composables/useInputFieldComponents";
+  import { normalizeString } from "@/utils/normalizeString";
 
-const dataformsPluginOptions = inject("dataformsPluginOptions");
+  const dataformsPluginOptions = inject("dataformsPluginOptions");
 
-const types = useInputFieldComponents();
+  const types = useInputFieldComponents();
 
-const props = defineProps({
-  input: {
-    type: Object,
-    required: true,
-  },
-  inputKey: {
-    type: String,
-    required: true,
-  },
-  items: {
-    type: Array,
-    default: () => [],
-  },
-  formId: {
-    type: String,
-    required: true,
-  },
-  theme: {
-    type: String,
-    required: true,
-  },
-  loading: {
-    type: Boolean,
-    default: false,
-  },
-});
-
-const { showOnConditions } = useConditionals(props.formId);
-
-const fieldReturn = ref();
-
-const hasLabelTitle = computed(() => {
-  return props.theme === "Fluid" && label.value;
-});
-
-const isRequired = computed(() => {
-  const validation = props.input?.validation;
-
-  return typeof validation === "string" && validation?.includes("required") && !props.input?.readOnly;
-});
-
-const label = computed(() => {
-  const decorator = !["Breeze", "Fluid"].includes(props.theme) && isRequired.value ? " *" : "";
-
-  return props.input?.options?.label !== false ? `${props.input?.options?.label || props.inputKey}${decorator}` : false;
-});
-
-const inputLabel = computed(() => {
-  let _label = label.value;
-
-  if (props.theme === "Fluid") {
-    const checkType =
-      typeof props.input.type === "undefined" ||
-      props.input.type === "textField" ||
-      props.input.type === "textArea" ||
-      props.input.type === "checkBoxes" ||
-      props.input.type === "selects" ||
-      props.input.type === "selectsAutocomplete";
-
-    if (checkType) {
-      _label = "---";
-    }
-  }
-
-  if (props.theme === "Breeze") {
-    _label = "";
-  }
-
-  return _label;
-});
-
-const themeOptions = computed(() => {
-  let variant = "filled";
-  let density = "default";
-  let singleLine = false;
-
-  const color = props.input.type && props.input.type.toLowerCase() === "fileupload" ? "" : "primary";
-
-  if (props.theme === "Fluid" || props.theme === "Breeze") {
-    variant = "outlined";
-  }
-
-  if (props.theme === "Fluid") {
-    density = "compact";
-    singleLine = true;
-  }
-
-  return {
-    variant,
-    density,
-    singleLine,
-    color,
-    theme: props.theme,
-  };
-});
-
-const inputTypeComponent = computed(() => {
-  const selectedInputType = Object.entries(types).find(([key]) => {
-    return normalizeString(key) === normalizeString(props.input?.type ?? "textField");
+  const props = defineProps({
+    input: {
+      type: Object,
+      required: true,
+    },
+    inputKey: {
+      type: String,
+      required: true,
+    },
+    items: {
+      type: Array,
+      default: () => [],
+    },
+    formId: {
+      type: String,
+      required: true,
+    },
+    theme: {
+      type: String,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   });
 
-  if (!selectedInputType) return null;
+  const { showOnConditions } = useConditionals(props.formId);
 
-  return {
-    key: selectedInputType?.[0],
-    component: selectedInputType?.[1],
-  };
-});
+  const fieldReturn = ref();
+
+  const hasLabelTitle = computed(() => {
+    return props.theme === "Fluid" && label.value;
+  });
+
+  const isRequired = computed(() => {
+    const validation = props.input?.validation;
+
+    return typeof validation === "string" && validation?.includes("required") && !props.input?.readOnly;
+  });
+
+  const label = computed(() => {
+    const decorator = !["Breeze", "Fluid"].includes(props.theme) && isRequired.value ? " *" : "";
+
+    return props.input?.options?.label !== false ? `${props.input?.options?.label || props.inputKey}${decorator}` : false;
+  });
+
+  const inputLabel = computed(() => {
+    let _label = label.value;
+
+    if (props.theme === "Fluid") {
+      const checkType =
+        typeof props.input.type === "undefined" ||
+        props.input.type === "textField" ||
+        props.input.type === "textArea" ||
+        props.input.type === "checkBoxes" ||
+        props.input.type === "selects" ||
+        props.input.type === "selectsAutocomplete";
+
+      if (checkType) {
+        _label = "---";
+      }
+    }
+
+    if (props.theme === "Breeze") {
+      _label = "";
+    }
+
+    return _label;
+  });
+
+  const themeOptions = computed(() => {
+    let variant = "filled";
+    let density = "default";
+    let singleLine = false;
+
+    const color = props.input.type && props.input.type.toLowerCase() === "fileupload" ? "" : "primary";
+
+    if (props.theme === "Fluid" || props.theme === "Breeze") {
+      variant = "outlined";
+    }
+
+    if (props.theme === "Fluid") {
+      density = "compact";
+      singleLine = true;
+    }
+
+    return {
+      variant,
+      density,
+      singleLine,
+      color,
+      theme: props.theme,
+    };
+  });
+
+  const inputTypeComponent = computed(() => {
+    const selectedInputType = Object.entries(types).find(([key]) => {
+      return normalizeString(key) === normalizeString(props.input?.type ?? "textField");
+    });
+
+    if (!selectedInputType) return null;
+
+    return {
+      key: selectedInputType?.[0],
+      component: selectedInputType?.[1],
+    };
+  });
 </script>
 
 <template>
@@ -154,7 +154,6 @@ const inputTypeComponent = computed(() => {
             </v-card-text>
           </v-card>
         </div>
-
         <component
           :is="inputTypeComponent.component"
           v-if="inputTypeComponent"
