@@ -83,7 +83,7 @@
     <div>
       <v-card
         v-if="!previewFiles?.length && !uploadedFiles.length"
-        :color="theme.global.name.value === 'dark' ? 'grey-darken-4' : 'grey-lighten-4'"
+        :color="theme.global.name.value === 'light' ? 'grey-lighten-4' : ''"
         class="pa-6 text-center"
       >
         <v-icon size="x-large" color="grey" class="mb-4" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
