@@ -2,6 +2,7 @@
   import { useFieldType } from "@/composables/useFieldType";
   import { useField } from "vee-validate";
   import { deepEqual } from "@/utils/deepEqual";
+  import { useTheme } from "vuetify/framework";
 
   const dataformsPluginOptions = inject("dataformsPluginOptions");
 
@@ -37,6 +38,7 @@
 
   const uploadedFiles = ref([]);
   const key = ref(0);
+  const theme = useTheme()
 
   const previewFiles = computed(() => {
     if (!props.input.preview) return [];
@@ -79,7 +81,11 @@
 <template>
   <div>
     <div>
-      <v-card v-if="!previewFiles?.length && !uploadedFiles.length" color="grey-lighten-4" class="pa-6 text-center">
+      <v-card
+        v-if="!previewFiles?.length && !uploadedFiles.length"
+        :color="theme.global.name.value === 'light' ? 'grey-lighten-4' : ''"
+        class="pa-6 text-center"
+      >
         <v-icon size="x-large" color="grey" class="mb-4" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
 
         <div class="text-h6 mb-0">
