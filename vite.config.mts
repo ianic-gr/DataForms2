@@ -32,7 +32,15 @@ export default defineConfig(({ mode }) => {
       fileName: "dataforms",
     },
     rollupOptions: {
-      external: ["vue", "vuetify", "pinia", "moment", "vue-i18n", "moment", "@vueuse/core"],
+      external: (id) =>
+        id === "vue" ||
+        id === "vuetify" ||
+        id.startsWith("vuetify/") ||
+        id === "pinia" ||
+        id === "vue-i18n" ||
+        id === "moment" ||
+        id === "@vueuse/core" ||
+        id.startsWith("@vueuse/core/"),
       output: {
         globals: {
           vue: "Vue",

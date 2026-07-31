@@ -1,6 +1,6 @@
 {
   "name": "@ianicdev/dataforms2",
-  "version": "1.16.35",
+  "version": "1.17.1",
   "type": "module",
   "types": "./lib/index.d.ts",
   "homepage": "https://ianic-gr.github.io/DataForms2/",
@@ -72,9 +72,9 @@
     "roboto-fontface": "*",
     "uuid": "^14.0.1",
     "vee-validate": "^4.15.1",
-    "vue": "3.5.38",
-    "vue-i18n": "^11.4.6",
-    "vuetify": "^3.12.9"
+    "vue": "3.5.40",
+    "vue-i18n": "^11.4.7",
+    "vuetify": "^4.1.5"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -85,19 +85,19 @@
     "@vue/tsconfig": "^0.9.1",
     "defu": "^6.1.7",
     "eslint": "^10.7.0",
-    "eslint-plugin-vue": "^10.9.2",
+    "eslint-plugin-vue": "^10.10.0",
     "gh-pages": "^6.3.0",
     "pinia": "^4.0.2",
-    "sass": "^1.101.0",
+    "sass": "^1.101.6",
     "typescript": "^6.0.3",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-fonts": "^2.0.0",
     "unplugin-vue-components": "^32.1.0",
     "unplugin-vue-router": "^0.19.2",
-    "vite": "^7.3.3",
+    "vite": "^8.1.5",
     "vite-plugin-vue-layouts-next": "^2.1.0",
     "vite-plugin-vuetify": "^2.1.3",
     "vue-router": "^4.6.4",
-    "vue-tsc": "^3.3.5"
+    "vue-tsc": "^3.3.8"
   }
 }

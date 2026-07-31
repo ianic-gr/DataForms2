@@ -1,36 +1,35 @@
 <script setup>
-import { v4 as uuidv4 } from "uuid";
-import { VFileUpload } from "vuetify/labs/VFileUpload";
+  import { v4 as uuidv4 } from "uuid";
 
-const dataformsPluginOptions = inject("dataformsPluginOptions");
+  const dataformsPluginOptions = inject("dataformsPluginOptions");
 
-defineProps({
-  options: {
-    type: Object,
-    default: () => {},
-  },
-});
+  defineProps({
+    options: {
+      type: Object,
+      default: () => {},
+    },
+  });
 
-const emit = defineEmits(["submitFiles"]);
+  const emit = defineEmits(["submitFiles"]);
 
-const dialog = ref(false);
-const uploadFiles = ref();
+  const dialog = ref(false);
+  const uploadFiles = ref();
 
-const submit = () => {
-  const files = Array.isArray(uploadFiles.value) ? uploadFiles.value : [uploadFiles.value];
+  const submit = () => {
+    const files = Array.isArray(uploadFiles.value) ? uploadFiles.value : [uploadFiles.value];
 
-  emit(
-    "submitFiles",
-    files.map((file) => {
-      return {
-        id: uuidv4(),
-        file,
-      };
-    })
-  );
-  uploadFiles.value = undefined;
-  dialog.value = false;
-};
+    emit(
+      "submitFiles",
+      files.map((file) => {
+        return {
+          id: uuidv4(),
+          file,
+        };
+      })
+    );
+    uploadFiles.value = undefined;
+    dialog.value = false;
+  };
 </script>
 
 <template>

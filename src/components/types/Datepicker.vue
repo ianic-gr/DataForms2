@@ -1,7 +1,6 @@
 <script setup>
   import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
   import { useField } from "vee-validate";
-  import { VDateInput } from "vuetify/labs/VDateInput";
   import moment from "moment";
   import { deepEqual } from "@/utils/deepEqual";
 
