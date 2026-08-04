@@ -225,7 +225,7 @@
         en: () => import("@vee-validate/i18n/dist/locale/en.json"),
         el: () => import("@vee-validate/i18n/dist/locale/el.json"),
         de: () => import("@vee-validate/i18n/dist/locale/de.json"),
-        ro: () => import("@vee-validate/i18n/dist/locale/ro.json"),
+        pt: () => import("@vee-validate/i18n/dist/locale/pt_BR.json"),
       };
 
       if (!localeMap[locale]) {

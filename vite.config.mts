@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
   let buildOptions: BuildEnvironmentOptions = {
     cssCodeSplit: false,
     lib: {
-      entry: path.resolve(__dirname, "src/plugins/dataforms.js"),
+      entry: path.resolve(import.meta.dirname, "src/plugins/dataforms.js"),
       formats: ["es", "cjs"],
       name: "Dataforms 2",
       fileName: "dataforms",
@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
     buildOptions = {
       cssCodeSplit: false,
       rollupOptions: {
-        input: path.resolve(__dirname, "index.html"), // Application entry point
+        input: path.resolve(import.meta.dirname, "index.html"), // Application entry point
         output: {
           globals: {
             vue: "Vue",
