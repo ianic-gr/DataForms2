@@ -54,7 +54,7 @@
 </script>
 
 <template>
-  <v-card color="grey-lighten-4" class="mb-4" rounded="0" flat>
+  <v-card class="mb-4">
     <v-toolbar :color="errors ? 'error' : ''" rounded density="compact">
       <v-checkbox v-model="selectAll" class="ms-1" hide-details :indeterminate="Boolean(!selectAll && selected.length)" />
 
@@ -67,6 +67,10 @@
 
       <v-toolbar-title v-else-if="errors">
         {{ errors }}
+      </v-toolbar-title>
+
+      <v-toolbar-title v-else-if="uploadedFiles.length">
+        {{ $t("$dataforms.fileUpload.readyToUpload") }} {{ uploadedFiles.length }}
       </v-toolbar-title>
 
       <v-spacer />

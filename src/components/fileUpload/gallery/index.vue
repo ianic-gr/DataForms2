@@ -16,12 +16,12 @@
 </script>
 
 <template>
-  <v-card>
+  <v-card rounded="0">
     <v-card-text>
       <v-row>
         <v-col v-for="(img, i) in images" :key="i" class="position-relative" cols="12" sm="4" md="3" lg="2">
           <div class="position-relative ma-1">
-            <v-avatar color="white" class="position-absolute" style="z-index: 9; top: 4px">
+            <v-avatar class="position-absolute" style="z-index: 9; top: 4px">
               <v-checkbox v-model="selected" hide-details color="primary" :value="img" />
             </v-avatar>
           </div>
@@ -30,7 +30,7 @@
         </v-col>
         <v-col v-for="img in uploadedFiles" :key="img.id" class="position-relative" cols="12" sm="4" md="3" lg="2">
           <div class="position-relative ma-1">
-            <v-avatar color="white" class="position-absolute" style="z-index: 9; top: 4px" loading>
+            <v-avatar class="position-absolute" style="z-index: 9; top: 4px" loading>
               <v-checkbox v-model="selected" hide-details color="primary" :value="img" />
             </v-avatar>
 
