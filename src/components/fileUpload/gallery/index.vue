@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
+  import { useI18n } from "vue-i18n";
 
-const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
-interface Props {
-  images: Record<string, any>[];
-  uploadedFiles: Record<string, any>[];
-}
-defineProps<Props>();
+  const dataformsPluginOptions = inject<Record<string, any>>("dataformsPluginOptions");
+  interface Props {
+    images: Record<string, any>[];
+    uploadedFiles: Record<string, any>[];
+  }
+  defineProps<Props>();
 
-const selected = defineModel<(Record<string, any> | Blob)[]>("selected", {
-  required: true,
-});
+  const selected = defineModel<(Record<string, any> | Blob)[]>("selected", {
+    required: true,
+  });
 
-const { t } = useI18n();
+  const { t } = useI18n();
 </script>
 
 <template>

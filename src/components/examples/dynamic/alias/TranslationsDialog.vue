@@ -36,9 +36,7 @@
     <template #default="{ isActive }">
       <v-card rounded="lg">
         <v-card-title class="d-flex justify-space-between align-center">
-          <div class="text-h5 text-medium-emphasis ps-2">
-            Translations
-          </div>
+          <div class="text-h5 text-medium-emphasis ps-2">Translations</div>
 
           <v-btn :icon="dataformsPluginOptions?.icons.close" variant="text" @click="isActive.value = false" />
         </v-card-title>

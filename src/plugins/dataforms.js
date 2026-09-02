@@ -18,6 +18,12 @@ export default {
             documentRemove: "mdi-file-document-remove",
             delete: "mdi-delete",
             cloudUpload: "mdi-cloud-upload",
+            gallery: {
+              plus: "mdi-plus",
+              minus: "mdi-minus",
+              rotateCCW: "mdi-rotate-left",
+              rotateCW: "mdi-rotate-right",
+            },
           },
           alias: {
             translate: "mdi-translate-variant",

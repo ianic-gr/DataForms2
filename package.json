@@ -1,6 +1,6 @@
 {
   "name": "@ianicdev/dataforms2",
-  "version": "1.17.3",
+  "version": "1.17.6",
   "type": "module",
   "types": "./lib/index.d.ts",
   "homepage": "https://ianic-gr.github.io/DataForms2/",
@@ -72,20 +72,20 @@
     "roboto-fontface": "*",
     "uuid": "^14.0.2",
     "vee-validate": "^4.15.1",
-    "vue": "3.5.41",
-    "vue-i18n": "^11.4.9",
+    "vue": "3.5.42",
+    "vue-i18n": "^11.4.10",
     "vue-router": "^4.6.4",
-    "vuetify": "^4.1.11"
+    "vuetify": "4.1.11"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@tsconfig/node22": "^22.0.6",
-    "@types/node": "^26.2.0",
+    "@types/node": "^26.4.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vue/eslint-config-typescript": "^14.9.0",
     "@vue/tsconfig": "^0.9.1",
     "cross-env": "^10.1.0",
-    "eslint": "^10.9.0",
+    "eslint": "^10.9.1",
     "eslint-plugin-vue": "^10.10.0",
     "gh-pages": "^6.3.0",
     "sass": "^1.103.1",

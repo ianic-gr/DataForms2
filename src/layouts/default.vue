@@ -1,129 +1,123 @@
 <script setup>
-import { storeToRefs } from "pinia";
-import { useSideMenuStore } from "@/stores/sideMenuStore";
+  import { storeToRefs } from "pinia";
+  import { useSideMenuStore } from "@/stores/sideMenuStore";
+  import { useTheme } from "vuetify";
 
-const sideMenuStore = useSideMenuStore();
-const { menu } = storeToRefs(sideMenuStore);
-const inProduction = ref(false);
+  const sideMenuStore = useSideMenuStore();
+  const theme = useTheme();
 
-const links = [
-  { title: "Docs", to: "/" },
-  { title: "Examples", to: "/examples" },
-  { title: "Diagrams", to: "/diagrams" },
-];
+  const { menu } = storeToRefs(sideMenuStore);
 
-onMounted(() => {
-  inProduction.value = import.meta.env.PROD;
-  const exampleFolder = inProduction.value ? "examples" : "devExamples";
+  const inProduction = ref(false);
 
-  menu.value = [
-    {
-      title: "Types",
-    },
-    {
-      title: "Checks & radios",
-      to: `/${exampleFolder}/checks-radios`,
-    },
-    {
-      title: "Datepickers",
-      to: `/${exampleFolder}/datepickers`,
-    },
-    {
-      title: "Password",
-      to: `/${exampleFolder}/password`,
-    },
-    {
-      title: "FileInput",
-      to: `/${exampleFolder}/fileInput`,
-    },
-    {
-      title: "FileUpload",
-      to: `/${exampleFolder}/fileUpload`,
-    },
-    {
-      title: "Number Input",
-      to: `/${exampleFolder}/numberinput`,
-    },
-    {
-      title: "Conditionals",
-      to: `/${exampleFolder}/conditionals`,
-    },
-    {
-      title: "Epic",
-      to: `/${exampleFolder}/epic`,
-    },
-    {
-      title: "Layout",
-    },
-    {
-      title: "Accordion",
-      to: `/${exampleFolder}/accordion`,
-    },
-    {
-      title: "Tabs ",
-      to: `/${exampleFolder}/tabs`,
-    },
-    {
-      title: "Theme",
-    },
-    {
-      title: "Fluid",
-      to: `/${exampleFolder}/themes/fluid`,
-    },
-    {
-      title: "Breeze",
-      to: `/${exampleFolder}/themes/breeze`,
-    },
-    {
-      title: "Use Cases",
-    },
-    {
-      title: "Readonly Fields",
-      to: `/${exampleFolder}/readonly`,
-    },
-    {
-      title: "Contact Form",
-      to: `/${exampleFolder}/contactForm`,
-    },
-    {
-      title: "Slots",
-      to: `/${exampleFolder}/slots`,
-    },
-    {
-      title: "Dynamic Components",
-      to: `/${exampleFolder}/dynamicComponents`,
-    },
+  const links = [
+    { title: "Docs", to: "/" },
+    { title: "Examples", to: "/examples" },
+    { title: "Diagrams", to: "/diagrams" },
   ];
-});
+
+  function toggleTheme(e) {
+    // passing target element will make it work for both clicks and keyboard interactions
+    theme.setTransitionOrigin(e.target);
+    theme.toggle();
+  }
+
+  onMounted(() => {
+    inProduction.value = import.meta.env.PROD;
+    const exampleFolder = inProduction.value ? "examples" : "devExamples";
+
+    menu.value = [
+      {
+        title: "Types",
+      },
+      {
+        title: "Checks & radios",
+        to: `/${exampleFolder}/checks-radios`,
+      },
+      {
+        title: "Datepickers",
+        to: `/${exampleFolder}/datepickers`,
+      },
+      {
+        title: "Password",
+        to: `/${exampleFolder}/password`,
+      },
+      {
+        title: "FileInput",
+        to: `/${exampleFolder}/fileInput`,
+      },
+      {
+        title: "FileUpload",
+        to: `/${exampleFolder}/fileUpload`,
+      },
+      {
+        title: "Number Input",
+        to: `/${exampleFolder}/numberinput`,
+      },
+      {
+        title: "Conditionals",
+        to: `/${exampleFolder}/conditionals`,
+      },
+      {
+        title: "Epic",
+        to: `/${exampleFolder}/epic`,
+      },
+      {
+        title: "Layout",
+      },
+      {
+        title: "Accordion",
+        to: `/${exampleFolder}/accordion`,
+      },
+      {
+        title: "Tabs ",
+        to: `/${exampleFolder}/tabs`,
+      },
+      {
+        title: "Theme",
+      },
+      {
+        title: "Fluid",
+        to: `/${exampleFolder}/themes/fluid`,
+      },
+      {
+        title: "Breeze",
+        to: `/${exampleFolder}/themes/breeze`,
+      },
+      {
+        title: "Use Cases",
+      },
+      {
+        title: "Readonly Fields",
+        to: `/${exampleFolder}/readonly`,
+      },
+      {
+        title: "Contact Form",
+        to: `/${exampleFolder}/contactForm`,
+      },
+      {
+        title: "Slots",
+        to: `/${exampleFolder}/slots`,
+      },
+      {
+        title: "Dynamic Components",
+        to: `/${exampleFolder}/dynamicComponents`,
+      },
+    ];
+  });
 </script>
 
 <template>
   <v-app-bar flat>
     <v-container class="mx-auto d-flex align-center justify-center">
-      <h2 class="me-5">
-        📃 Dataforms 2
-      </h2>
+      <h2 class="me-5">📃 Dataforms 2</h2>
 
-      <v-btn
-        v-for="link in links"
-        :key="link.title"
-        :to="link.to"
-        :text="link.title"
-        variant="text"
-      />
+      <v-btn v-for="link in links" :key="link.title" :to="link.to" :text="link.title" variant="text" />
 
       <v-spacer />
 
       <v-responsive max-width="160">
-        <v-text-field
-          density="compact"
-          label="Search"
-          rounded="lg"
-          variant="solo-filled"
-          flat
-          hide-details
-          single-line
-        />
+        <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
       </v-responsive>
     </v-container>
   </v-app-bar>
@@ -144,13 +138,7 @@ onMounted(() => {
 
               <v-divider v-if="$route.path !== '/'" class="my-2" />
 
-              <v-list-item
-                v-if="$route.path !== '/'"
-                to="/"
-                color="grey-lighten-4"
-                title="← Back"
-                link
-              />
+              <v-list-item v-if="$route.path !== '/'" to="/" color="grey-lighten-4" title="← Back" link />
             </v-list>
           </v-sheet>
         </v-col>
