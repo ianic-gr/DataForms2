@@ -25,8 +25,8 @@
               options: {
                 label: "Files",
                 multiple: true,
-                // filterByType: "image/*",
-                // maxFileSize: 200 * 1024,
+                filterByType: "image/*",
+                maxFileSize: 200 * 1024,
               },
               preview: multiplePreview.value,
 

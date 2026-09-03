@@ -109,20 +109,18 @@
 
 <template>
   <v-app-bar flat>
-    <v-container class="mx-auto d-flex align-center justify-center">
+    <v-container class="mx-auto d-flex align-center justify-space-between">
       <h2 class="me-5">📃 Dataforms 2</h2>
 
       <v-btn v-for="link in links" :key="link.title" :to="link.to" :text="link.title" variant="text" />
 
       <v-spacer />
 
-      <v-responsive max-width="160">
-        <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
-      </v-responsive>
+      <v-btn icon="mdi-theme-light-dark" @click="toggleTheme" />
     </v-container>
   </v-app-bar>
 
-  <v-main class="bg-grey-lighten-3">
+  <v-main class="bg-surface-light">
     <v-container>
       <v-row>
         <v-col cols="2">

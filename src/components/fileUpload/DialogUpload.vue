@@ -84,7 +84,7 @@
             color="primary"
             :text="$t('$dataforms.global.submit')"
             variant="flat"
-            :disabled="!fileUpload?.isValid || !uploadFiles?.length"
+            :disabled="!fileUpload?.isValid || !uploadFiles"
             @click="submit"
           />
         </v-card-actions>
