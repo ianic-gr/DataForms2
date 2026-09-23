@@ -163,6 +163,8 @@
           :input="input"
           :form-id="formId"
           :input-key="inputKey"
+          :name="`${formId}_${inputKey}`"
+          autocomplete="off"
           :options="{
             ...themeOptions,
             ...input.options,
