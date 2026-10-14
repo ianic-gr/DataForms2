@@ -12,7 +12,7 @@ import App from "./App.vue";
 
 // Composables
 import { createApp } from "vue";
-import i18n from "./i18n.js";
+import i18n from "./i18n.ts";
 
 const app = createApp(App);
 

@@ -1,33 +1,31 @@
 <script setup>
-defineProps({
-  input: {
-    type: Object,
-    default: () => {
-      return {};
+  import DOMPurify from "dompurify";
+
+  const props = defineProps({
+    input: {
+      type: Object,
+      default: () => ({}),
     },
-  },
-  inputKey: {
-    type: String,
-    default: "",
-  },
-  options: {
-    type: Object,
-    default: () => {
-      return {};
+    inputKey: {
+      type: String,
+      default: "",
     },
-  },
-  events: {
-    type: Object,
-    default: () => {
-      return {};
+    options: {
+      type: Object,
+      default: () => ({}),
     },
-  },
-});
+    events: {
+      type: Object,
+      default: () => ({}),
+    },
+  });
+
+  const safeHtml = computed(() => (props.options.html ? DOMPurify.sanitize(props.options.html) : ""));
 </script>
 
 <template>
   <div>
-    <div v-if="options.html" v-html="options.html" />
+    <div v-if="safeHtml" v-html="safeHtml" />
     <p v-else>
       {{ options.text }}
     </p>

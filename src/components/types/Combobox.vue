@@ -4,12 +4,12 @@
   import { useField } from "vee-validate";
   import { deepEqual } from "@/utils/deepEqual";
 
+  defineOptions({ inheritAttrs: false });
+
   const props = defineProps({
     input: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     inputKey: {
       type: String,
@@ -17,9 +17,7 @@
     },
     options: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     formId: {
       required: true,
@@ -27,34 +25,43 @@
     },
     events: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
   });
 
-  const { field: fieldValue, fieldProps } = useFieldType(props);
-  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+  const { field: fieldValue } = useFieldType(props);
+
+  const { value: fieldModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
-  const { onSelect } = useInputEvents(fieldProps);
+
+  const { onSelect } = useInputEvents(props);
 
   const fieldReturn = defineModel("return");
 
   watch(
     fieldValue,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      if (v === null) return;
+      if (deepEqual(v, fieldModel.value) && deepEqual(v, fieldReturn.value)) return;
 
-      field.value.value = v;
+      fieldModel.value = v;
       fieldReturn.value = v;
     },
     { immediate: true }
   );
 
+  // Assign a new value instead of mutating in place. The watchers are not
+  // deep, so `splice` would update the chips but not vee-validate or the store.
   const removeSelection = (index) => {
-    fieldValue.value.splice(index, 1);
+    if (Array.isArray(fieldValue.value)) {
+      fieldValue.value = fieldValue.value.filter((_, i) => i !== index);
+    } else {
+      fieldValue.value = null;
+    }
   };
+
+  const isKnownItem = (item) => !!props.options.items?.some((o) => JSON.stringify(o) === JSON.stringify(item.raw));
 </script>
 
 <template>
@@ -62,7 +69,7 @@
     <v-combobox
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
-      :error-messages="field.errorMessage.value"
+      :error-messages="errorMessage"
       v-on="events"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
       @change="onSelect"
@@ -74,7 +81,7 @@
       <template #selection="{ item, index }">
         <v-chip
           v-if="item === Object(item)"
-          :color="options.items.some((o) => JSON.stringify(o) === JSON.stringify(item.raw)) ? 'primary' : 'dark'"
+          :color="isKnownItem(item) ? 'primary' : 'dark'"
           :text="item.title"
           size="small"
           closable

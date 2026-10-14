@@ -19,7 +19,7 @@ export function useDateTimeFieldType(props) {
   const displayFormat = computed(() => props.options?.format ?? defaultDateFormat);
 
   const isMultiple = computed(
-    () => props.input.type === "datepicker" && props.options?.datepicker && "multiple" in props.options.datepicker,
+    () => props.input.type === "datepicker" && props.options?.datepicker && "multiple" in props.options.datepicker
   );
 
   const parseDateTime = (value, format) => {
@@ -27,9 +27,9 @@ export function useDateTimeFieldType(props) {
     return parsed.isValid() ? parsed : null;
   };
 
-  const formatDateTime = (value, format) => {
+  const formatDateTime = (value, outputFormat) => {
     const parsed = parseDateTime(value, format.value);
-    return parsed ? parsed.format(format) : "";
+    return parsed ? parsed.format(outputFormat) : "";
   };
 
   const handleMultipleDefaultValue = (defaultVal) => {
@@ -210,6 +210,8 @@ export function useDateTimeFieldType(props) {
     time,
     formattedDate,
     formattedDateTime,
+    dateFormat,
+    displayFormat,
     defaultDateFormat,
     defaultTimeFormat,
     handleMultipleDefaultValue,

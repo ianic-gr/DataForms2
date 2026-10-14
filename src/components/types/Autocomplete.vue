@@ -4,12 +4,12 @@
   import { useField } from "vee-validate";
   import { deepEqual } from "@/utils/deepEqual";
 
+  defineOptions({ inheritAttrs: false });
+
   const props = defineProps({
     input: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     inputKey: {
       type: String,
@@ -17,9 +17,7 @@
     },
     options: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     formId: {
       required: true,
@@ -27,21 +25,22 @@
     },
     events: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
   });
 
-  const { field: fieldValue, fieldProps } = useFieldType(props);
-  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+  const { field: fieldValue } = useFieldType(props);
+
+  const { value: fieldModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
-  const { onSelect } = useInputEvents(fieldProps);
+
+  const { onSelect } = useInputEvents(props);
 
   const fieldReturn = defineModel("return");
 
-  const selectedAllItems = computed(() => fieldValue.value?.length === props.options.items?.length);
+  const itemsCount = computed(() => props.options.items?.length ?? 0);
+  const selectedAllItems = computed(() => itemsCount.value > 0 && fieldValue.value?.length === itemsCount.value);
   const selectedSomeItems = computed(() => fieldValue.value?.length > 0);
 
   const toggle = () => {
@@ -56,20 +55,22 @@
   watch(
     fieldValue,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      let value = v;
 
-      // Process the initial value so it matches what select expects to return.
-      let processedValue = v;
       if (Array.isArray(v) && v.length > 0 && typeof v[0] === "object" && !props.options.returnObject) {
         const itemValue = props.options.itemValue || props.options["item-value"] || "value";
-        processedValue = v.map((item) => item[itemValue]);
+        value = v.map((item) => item[itemValue]);
+
         nextTick(() => {
-          fieldValue.value = processedValue;
+          fieldValue.value = value;
         });
       }
 
-      field.value.value = processedValue;
-      fieldReturn.value = processedValue;
+      if (v === null) return;
+      if (deepEqual(value, fieldModel.value) && deepEqual(value, fieldReturn.value)) return;
+
+      fieldModel.value = value;
+      fieldReturn.value = value;
     },
     { immediate: true }
   );
@@ -80,7 +81,7 @@
     <v-autocomplete
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
-      :error-messages="field.errorMessage.value"
+      :error-messages="errorMessage"
       v-on="events"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
       @change="onSelect"

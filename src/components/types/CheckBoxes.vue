@@ -4,12 +4,12 @@
   import { useField } from "vee-validate";
   import { deepEqual } from "@/utils/deepEqual";
 
+  defineOptions({ inheritAttrs: false });
+
   const props = defineProps({
     input: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     inputKey: {
       type: String,
@@ -17,9 +17,7 @@
     },
     options: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     formId: {
       required: true,
@@ -27,9 +25,7 @@
     },
     events: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     theme: {
       type: String,
@@ -38,28 +34,36 @@
   });
 
   const { field: fieldValue } = useFieldType(props);
-  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+
+  const { value: fieldModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
+
   const { optionLabel, optionValue } = useOptionFieldType();
 
-  watch(fieldValue, (v) => {
-    field.value.value = v;
-  });
-
   const fieldReturn = defineModel("return");
+
+  const currentTheme = computed(() => props.options.theme ?? props.theme);
+  const checkboxItems = computed(() => props.options.items || []);
+
+  const labelFor = (value) => {
+    const selected = checkboxItems.value.find((item) => deepEqual(optionValue(item), value));
+    return selected ? optionLabel(selected) : value;
+  };
+
+  const toReturnValue = (v) => (Array.isArray(v) ? v.map(labelFor) : labelFor(v));
 
   watch(
     fieldValue,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
-      field.value.value = v;
+      if (v === null) return;
 
-      const selected = props.options?.items.find((item) => {
-        return item.value === v;
-      });
+      const returnValue = toReturnValue(v);
 
-      fieldReturn.value = selected?.label ?? v;
+      if (deepEqual(v, fieldModel.value) && deepEqual(returnValue, fieldReturn.value)) return;
+
+      fieldModel.value = v;
+      fieldReturn.value = returnValue;
     },
     { immediate: true }
   );
@@ -67,21 +71,18 @@
 
 <template>
   <div>
-    <p v-if="theme !== 'Fluid'">
+    <p v-if="currentTheme !== 'Fluid'">
       {{ options.label || "" }}
       <slot name="append" />
     </p>
     <v-checkbox
-      v-for="(checkb, i) in options.items"
-      v-bind="{
-        ...$attrs,
-        ...options,
-      }"
+      v-for="(checkb, i) in checkboxItems"
       :key="i"
       v-model="fieldValue"
+      v-bind="{ ...$attrs, ...options }"
       :label="optionLabel(checkb)"
       :value="optionValue(checkb)"
-      :error-messages="field.errorMessage.value"
+      :error-messages="errorMessage"
       v-on="events"
     >
       <template v-for="(inputSlot, inputSlotKey) in input.itemSlots" :key="inputSlotKey" #[inputSlot.slot]="slotProps">

@@ -3,12 +3,12 @@
   import { useField } from "vee-validate";
   import { deepEqual } from "@/utils/deepEqual";
 
+  defineOptions({ inheritAttrs: false });
+
   const props = defineProps({
     input: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     inputKey: {
       type: String,
@@ -16,9 +16,7 @@
     },
     options: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     formId: {
       required: true,
@@ -26,14 +24,13 @@
     },
     events: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
   });
 
   const { field: fieldValue } = useFieldType(props);
-  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+
+  const { value: fieldModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
 
@@ -42,9 +39,10 @@
   watch(
     fieldValue,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      if (v === null) return;
+      if (deepEqual(v, fieldModel.value) && deepEqual(v, fieldReturn.value)) return;
 
-      field.value.value = v;
+      fieldModel.value = v;
       fieldReturn.value = v;
     },
     { immediate: true }
@@ -56,7 +54,7 @@
     <v-textarea
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
-      :error-messages="field.errorMessage.value"
+      :error-messages="errorMessage"
       v-on="events"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >

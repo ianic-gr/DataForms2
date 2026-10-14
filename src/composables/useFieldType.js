@@ -1,4 +1,3 @@
-import { ref, computed, onMounted, nextTick, watch } from "vue";
 import { useDataformsStore } from "@/stores/dataFormsStore";
 import { useInputEvents } from "@/composables/useInputEvents";
 
@@ -10,19 +9,21 @@ export function useFieldType(props) {
 
   const currentFormData = computed(() => getCurrentForm(props.formId));
 
+  const stops = [];
+  let isUnmounted = false;
+
   const initializeField = () => {
-    const formFields = currentFormData.value.fields;
+    const formFields = currentFormData.value?.fields;
 
     addField({
       formId: props.formId,
       fieldName: props.inputKey,
-      fieldValue: formFields?.[props?.inputKey] ?? field.value,
+      fieldValue: formFields?.[props.inputKey] ?? field.value,
     });
     addInput(props.formId, props.inputKey, props.input);
   };
 
-  // Syncs field value with form data when form data changes
-  const syncFieldWithFormData = () => {
+  const syncFieldWithFormData = () =>
     watch(
       currentFormData,
       (data) => {
@@ -32,31 +33,34 @@ export function useFieldType(props) {
       },
       { deep: true }
     );
-  };
 
-  // Watches field value changes and updates the store and triggers onChange event
-  const handleFieldChange = () => {
+  const handleFieldChange = () =>
     watch(field, (newValue) => {
-      if (newValue !== undefined) {
-        updateField({
-          formId: props.formId,
-          fieldName: props.inputKey,
-          fieldValue: newValue,
-        });
-        onChange(newValue);
-      }
+      if (newValue === undefined) return;
+
+      updateField({
+        formId: props.formId,
+        fieldName: props.inputKey,
+        fieldValue: newValue,
+      });
+      onChange(newValue);
     });
-  };
 
   onMounted(async () => {
     await nextTick();
+    if (isUnmounted) return;
 
-    syncFieldWithFormData();
+    stops.push(syncFieldWithFormData());
     initializeField();
 
     if (props.input?.readOnly) return;
 
-    handleFieldChange();
+    stops.push(handleFieldChange());
+  });
+
+  onBeforeUnmount(() => {
+    isUnmounted = true;
+    stops.forEach((stop) => stop());
   });
 
   return {

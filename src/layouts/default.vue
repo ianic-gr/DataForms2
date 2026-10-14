@@ -110,7 +110,9 @@
 <template>
   <v-app-bar flat>
     <v-container class="mx-auto d-flex align-center justify-space-between">
-      <h2 class="me-5">📃 Dataforms 2</h2>
+      <h2 class="me-5">
+        📃 Dataforms 2
+      </h2>
 
       <v-btn v-for="link in links" :key="link.title" :to="link.to" :text="link.title" variant="text" />
 

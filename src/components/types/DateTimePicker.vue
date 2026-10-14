@@ -2,7 +2,8 @@
   import moment from "moment";
   import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
   import { useField } from "vee-validate";
-  import { deepEqual } from "@/utils/deepEqual";
+
+  defineOptions({ inheritAttrs: false });
 
   const props = defineProps({
     input: {
@@ -27,39 +28,57 @@
     },
   });
 
-  const inputField = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+  const { value: inputModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
+
   const { field, currentFormData, date, time, formattedDateTime, defaultDateFormat, defaultTimeFormat } =
     useDateTimeFieldType(props);
+
+  const fieldReturn = defineModel("return");
 
   const dialog = ref(false);
   const pickerTab = ref("date");
 
-  const saveDate = () => {
-    const format = props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`;
-    const extractedDate = moment(date.value).format(defaultDateFormat);
+  const returnFormat = computed(() => props.options?.returnFormat ?? `${defaultDateFormat} ${defaultTimeFormat}`);
 
-    field.value = moment(`${extractedDate} ${time.value}`).format(format);
+  let snapshot = "";
+  watch(dialog, (open) => {
+    if (open) snapshot = field.value ?? "";
+  });
+
+  const cancel = () => {
+    field.value = snapshot;
     dialog.value = false;
   };
 
-  watch(formattedDateTime, (v) => {
-    inputField.value.value = v;
-  });
+  const saveDate = () => {
+    if (date.value) {
+      const datePart = moment(date.value).format(defaultDateFormat);
+      const timePart = time.value ?? "00:00";
 
-  const fieldReturn = defineModel("return");
+      field.value = moment(`${datePart} ${timePart}`, `${defaultDateFormat} ${defaultTimeFormat}`).format(
+        returnFormat.value
+      );
+    }
+    dialog.value = false;
+  };
+
+  const clear = () => {
+    date.value = null;
+    time.value = null;
+  };
 
   watch(
     field,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      if (v === null) return;
 
-      const formatted = formattedDateTime.value;
+      const formatted = formattedDateTime.value ?? "";
 
-      if (formatted === fieldReturn.value) return;
+      if (formatted === fieldReturn.value && formatted === inputModel.value) return;
 
-      inputField.value.value = formatted;
+      inputModel.value = formatted;
       fieldReturn.value = formatted;
     },
     { immediate: true }
@@ -69,14 +88,14 @@
 <template>
   <div>
     <v-text-field
-      v-model="formattedDateTime"
+      :model-value="formattedDateTime"
       v-bind="{ ...$attrs, ...options }"
       readonly
-      :error-messages="inputField.errorMessage.value"
-      @click:clear="date = null"
+      :error-messages="errorMessage"
+      @click:clear="clear"
       @click="events?.onClick && events.onClick()"
     />
-    <v-dialog v-model="dialog" max-width="360" persistent activator="parent">
+    <v-dialog v-model="dialog" max-width="360" persistent activator="parent" :disabled="!!$attrs.disabled">
       <template #default>
         <v-card>
           <v-card-text class="pa-0">
@@ -101,7 +120,7 @@
           </v-card-text>
           <v-spacer />
           <v-card-actions>
-            <v-btn :text="$t('$dataforms.global.cancel')" color="primary" @click="dialog = false" />
+            <v-btn :text="$t('$dataforms.global.cancel')" color="primary" @click="cancel" />
             <v-btn :text="$t('$dataforms.global.submit')" color="primary" @click="saveDate" />
           </v-card-actions>
         </v-card>

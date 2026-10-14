@@ -1,12 +1,13 @@
 <script setup>
   import { useFieldType } from "@/composables/useFieldType";
   import { useField } from "vee-validate";
-  import { deepEqual } from "@/utils/deepEqual";
+
+  defineOptions({ inheritAttrs: false });
 
   const props = defineProps({
     input: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     inputKey: {
       type: String,
@@ -14,7 +15,7 @@
     },
     options: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     formId: {
       required: true,
@@ -22,24 +23,38 @@
     },
     events: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   });
 
   const { field: fieldValue } = useFieldType(props);
-  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+
+  const { value: fieldModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
 
   const fieldReturn = defineModel("return");
 
+  // `return` holds a comma-separated list of file names
+  const fileNames = (v) => {
+    if (isEmpty(v)) return "";
+    return (Array.isArray(v) ? v : [v])
+      .map((item) => item?.name ?? "")
+      .filter(Boolean)
+      .join(", ");
+  };
+
   watch(
     fieldValue,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      if (v === null) return;
 
-      field.value.value = v;
-      fieldReturn.value = (Array.isArray(v) ? v : [v]).map((item) => item.name).join(", ");
+      const names = fileNames(v);
+
+      if (v === fieldModel.value && names === fieldReturn.value) return;
+
+      fieldModel.value = v;
+      fieldReturn.value = names;
     },
     { immediate: true }
   );
@@ -50,8 +65,8 @@
     <v-file-input
       v-model="fieldValue"
       v-bind="{ ...$attrs, ...options }"
-      :error-messages="field.errorMessage.value"
-      v-on="props.events"
+      :error-messages="errorMessage"
+      v-on="events"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >
       <template v-for="(inputSlot, inputSlotKey) in input.itemSlots" :key="inputSlotKey" #[inputSlot.slot]="slotProps">

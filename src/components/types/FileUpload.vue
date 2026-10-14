@@ -1,14 +1,13 @@
 <script setup>
   import { useFieldType } from "@/composables/useFieldType";
   import { useField } from "vee-validate";
-  import { deepEqual } from "@/utils/deepEqual";
 
   const dataformsPluginOptions = inject("dataformsPluginOptions");
 
   const props = defineProps({
     input: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     inputKey: {
       type: String,
@@ -16,7 +15,7 @@
     },
     options: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     formId: {
       required: true,
@@ -24,12 +23,13 @@
     },
     events: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   });
 
   const { field: fieldValue } = useFieldType(props);
-  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+
+  const { value: fieldModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
 
@@ -38,6 +38,8 @@
   const uploadedFiles = ref([]);
   const key = ref(0);
 
+  const isMultiple = computed(() => !!props.input.options?.multiple);
+
   const previewFiles = computed(() => {
     if (!props.input.preview) return [];
     return Array.isArray(props.input.preview) ? props.input.preview : [props.input.preview];
@@ -45,9 +47,9 @@
 
   const submitFiles = (files) => {
     uploadedFiles.value = files;
-    const submittedFiles = uploadedFiles.value.map((v) => v.file);
+    const submittedFiles = files.map((v) => v.file);
 
-    if (props.input.options.multiple) {
+    if (isMultiple.value) {
       fieldValue.value = submittedFiles;
     } else {
       fieldValue.value = submittedFiles.length ? submittedFiles[0] : null;
@@ -56,17 +58,29 @@
 
   const deleteFiles = async (files) => {
     for (const file of files) {
-      await props.input.onDelete(file);
+      await props.input.onDelete?.(file);
     }
+  };
+
+  const fileNames = (v) => {
+    if (isEmpty(v)) return "";
+    return (Array.isArray(v) ? v : [v])
+      .map((item) => item?.name ?? "")
+      .filter(Boolean)
+      .join(", ");
   };
 
   watch(
     fieldValue,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      if (v === null) return;
 
-      field.value.value = v;
-      fieldReturn.value = (Array.isArray(v) ? v : [v]).map((item) => item.name).join(", ");
+      const names = fileNames(v);
+
+      if (v === fieldModel.value && names === fieldReturn.value) return;
+
+      fieldModel.value = v;
+      fieldReturn.value = names;
     },
     { immediate: true }
   );
@@ -79,7 +93,7 @@
 <template>
   <div>
     <div>
-      <v-card v-if="!previewFiles?.length && !uploadedFiles.length" color="surface-light" class="pa-6 text-center">
+      <v-card v-if="!previewFiles.length && !uploadedFiles.length" color="surface-light" class="pa-6 text-center">
         <v-icon size="x-large" color="grey" class="mb-4" :icon="dataformsPluginOptions?.icons.fileUpload.documentRemove" />
 
         <div class="text-h6 mb-0">
@@ -88,7 +102,7 @@
 
         <div class="text-subtitle-1 text-medium-emphasis">
           {{ $t("$dataforms.fileUpload.noFilesUploadedYet") }}
-          <span v-if="input.options.multiple">, {{ $t("$dataforms.fileUpload.canUploadMultiple") }}</span>
+          <span v-if="isMultiple">, {{ $t("$dataforms.fileUpload.canUploadMultiple") }}</span>
         </div>
 
         <v-btn
@@ -103,12 +117,14 @@
         </v-btn>
       </v-card>
       <div v-else>
-        <div class="text-h6 mb-0">{{ options.label }}:</div>
+        <div class="text-h6 mb-0">
+          {{ options.label }}:
+        </div>
         <FileUploadToolbar
           :key="key"
           v-model:uploaded-files="uploadedFiles"
           :preview-files="previewFiles"
-          :errors="field.errorMessage.value"
+          :errors="errorMessage"
           :label="options.label"
           @delete-files="deleteFiles"
         >

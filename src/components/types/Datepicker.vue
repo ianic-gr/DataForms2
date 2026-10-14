@@ -1,8 +1,7 @@
 <script setup>
-  import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
-  import { useField } from "vee-validate";
   import moment from "moment";
-  import { deepEqual } from "@/utils/deepEqual";
+  import { useField } from "vee-validate";
+  import { useDateTimeFieldType } from "@/composables/useDateTimeFieldType";
 
   const props = defineProps({
     input: {
@@ -27,41 +26,45 @@
     },
   });
 
-  const inputField = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+  const { value: inputModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
-  const { field, date, formattedDate } = useDateTimeFieldType(props);
+
+  const { field, date, formattedDate, dateFormat, displayFormat } = useDateTimeFieldType(props);
 
   const fieldReturn = defineModel("return");
+
+  const inputFormat = computed(() => dateFormat.value.toLowerCase());
+
+  const formatDisplay = (value) => {
+    const parsed = moment(value, dateFormat.value);
+    return parsed.isValid() ? parsed.format(displayFormat.value) : "";
+  };
 
   watch(
     field,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      if (v === null) return;
 
-      const formatted = formattedDate.value;
+      const formatted = formattedDate.value ?? "";
 
-      if (formatted === fieldReturn.value) return;
+      if (formatted === fieldReturn.value && formatted === inputModel.value) return;
 
-      inputField.value.value = formatted;
+      inputModel.value = formatted;
       fieldReturn.value = formatted;
     },
     { immediate: true }
   );
-
-  function format(date) {
-    return moment(date, props.options.returnFormat).format(props.options.format);
-  }
 </script>
 
 <template>
   <div>
     <v-date-input
       v-model="date"
-      v-bind="{ ...options?.datepicker, ...options }"
-      :display-format="format"
-      :input-format="options.returnFormat.toLowerCase()"
-      :error-messages="inputField.errorMessage.value"
+      v-bind="options"
+      :display-format="formatDisplay"
+      :input-format="inputFormat"
+      :error-messages="errorMessage"
       v-on="events"
     >
       <template v-for="(inputSlot, inputSlotKey) in input.itemSlots" :key="inputSlotKey" #[inputSlot.slot]="slotProps">

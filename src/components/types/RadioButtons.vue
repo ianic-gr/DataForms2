@@ -4,12 +4,12 @@
   import { useField } from "vee-validate";
   import { deepEqual } from "@/utils/deepEqual";
 
+  defineOptions({ inheritAttrs: false });
+
   const props = defineProps({
     input: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     inputKey: {
       type: String,
@@ -17,9 +17,7 @@
     },
     options: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     formId: {
       required: true,
@@ -27,31 +25,34 @@
     },
     events: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
   });
 
   const { field: fieldValue } = useFieldType(props);
-  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+
+  const { value: fieldModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
+
   const { optionLabel, optionValue } = useOptionFieldType();
 
   const fieldReturn = defineModel("return");
 
+  const radioItems = computed(() => props.options.list || props.options.items || []);
+
   watch(
     fieldValue,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
-      field.value.value = v;
+      if (v === null) return;
 
-      const selected = props.options?.list.find((item) => {
-        return item.value === v;
-      });
+      const selected = radioItems.value.find((item) => deepEqual(optionValue(item), v));
+      const returnValue = selected ? optionLabel(selected) : v;
 
-      fieldReturn.value = selected?.label ?? v;
+      if (deepEqual(v, fieldModel.value) && deepEqual(returnValue, fieldReturn.value)) return;
+
+      fieldModel.value = v;
+      fieldReturn.value = returnValue;
     },
     { immediate: true }
   );
@@ -59,13 +60,8 @@
 
 <template>
   <div>
-    <v-radio-group v-model="fieldValue" v-bind="{ ...$attrs, ...options }" :error-messages="field.errorMessage.value">
-      <v-radio
-        v-for="(radio, i) in options.list || options.items"
-        :key="i"
-        :label="optionLabel(radio)"
-        :value="optionValue(radio)"
-      />
+    <v-radio-group v-model="fieldValue" v-bind="{ ...$attrs, ...options }" :error-messages="errorMessage">
+      <v-radio v-for="(radio, i) in radioItems" :key="i" :label="optionLabel(radio)" :value="optionValue(radio)" />
     </v-radio-group>
   </div>
 </template>

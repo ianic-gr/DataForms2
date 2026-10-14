@@ -3,14 +3,14 @@
   import { useField } from "vee-validate";
   import { deepEqual } from "@/utils/deepEqual";
 
+  defineOptions({ inheritAttrs: false });
+
   const dataformsPluginOptions = inject("dataformsPluginOptions");
 
   const props = defineProps({
     input: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     inputKey: {
       type: String,
@@ -18,9 +18,7 @@
     },
     options: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
     formId: {
       required: true,
@@ -28,35 +26,39 @@
     },
     events: {
       type: Object,
-      default: () => {
-        return {};
-      },
+      default: () => ({}),
     },
   });
 
   const { field: fieldValue } = useFieldType(props);
-  const field = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
+
+  const { value: fieldModel, errorMessage } = useField(props.inputKey, !props.input.readOnly ? props.input.validation : "", {
     initialValue: props.options.default,
   });
+
   const showPassword = ref(false);
 
-  const fieldType = computed(() => {
-    return showPassword.value ? "text" : "password";
-  });
+  const fieldType = computed(() => (showPassword.value ? "text" : "password"));
 
-  const fieldIcon = computed(() => {
-    return showPassword.value ? dataformsPluginOptions?.icons.eye : dataformsPluginOptions?.icons.eyeOff;
-  });
+  const fieldIcon = computed(() =>
+    showPassword.value ? dataformsPluginOptions?.icons.eye : dataformsPluginOptions?.icons.eyeOff
+  );
 
   const fieldReturn = defineModel("return");
+
+  const mask = (v) => "*".repeat(String(v ?? "").length);
 
   watch(
     fieldValue,
     (v) => {
-      if ((v === null && !fieldReturn.value) || deepEqual(v, props.options.default)) return;
+      if (v === null) return;
 
-      field.value.value = v;
-      fieldReturn.value = [...v].map(() => "*").join("");
+      const masked = mask(v);
+
+      if (deepEqual(v, fieldModel.value) && masked === fieldReturn.value) return;
+
+      fieldModel.value = v;
+      fieldReturn.value = masked;
     },
     { immediate: true }
   );
@@ -66,10 +68,10 @@
   <div>
     <v-text-field
       v-model="fieldValue"
+      v-bind="{ ...$attrs, ...options }"
       :append-inner-icon="fieldIcon"
       :type="fieldType"
-      v-bind="{ ...$attrs, ...options }"
-      :error-messages="field.errorMessage.value"
+      :error-messages="errorMessage"
       @click:append-inner="showPassword = !showPassword"
       @click="() => events && events.hasOwnProperty('onClick') && events.onClick()"
     >

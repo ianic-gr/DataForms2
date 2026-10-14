@@ -147,7 +147,9 @@ const deleteForm = () => {
       <v-list-item v-bind="props" :subtitle="item.raw.value" :title="item.raw.title" />
     </template>
     <template #buttons="{ submitProps }">
-      <v-btn variant="text" color="error" @click="deleteForm"> Delete </v-btn>
+      <v-btn variant="text" color="error" @click="deleteForm">
+        Delete
+      </v-btn>
 
       <v-btn-group color="primary" density="comfortable" rounded="pill" divided>
         <v-btn v-bind="submitProps" />
@@ -168,7 +170,9 @@ const deleteForm = () => {
 
               <v-list-item min-height="24">
                 <template #subtitle>
-                  <div class="text-caption">Shared with John + 1 more</div>
+                  <div class="text-caption">
+                    Shared with John + 1 more
+                  </div>
                 </template>
               </v-list-item>
             </v-list>
