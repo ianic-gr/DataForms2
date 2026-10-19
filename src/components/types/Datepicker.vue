@@ -61,7 +61,7 @@
   <div>
     <v-date-input
       v-model="date"
-      v-bind="options"
+      v-bind="{ ...options?.datepicker, ...options }"
       :display-format="formatDisplay"
       :input-format="inputFormat"
       :error-messages="errorMessage"
