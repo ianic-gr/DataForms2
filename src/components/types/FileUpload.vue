@@ -56,14 +56,11 @@
     }
   };
 
-  const deleteFiles = async (files) => {
-    for (const file of files) {
-      await props.input.onDelete?.(file);
-    }
-  };
+  const deleteFiles = (files) =>
+    files.reduce((promise, file) => promise.then(() => props.input.onDelete?.(file)), Promise.resolve());
 
   const fileNames = (v) => {
-    if (isEmpty(v)) return "";
+    if (v === null || v === undefined) return "";
     return (Array.isArray(v) ? v : [v])
       .map((item) => item?.name ?? "")
       .filter(Boolean)
@@ -117,9 +114,7 @@
         </v-btn>
       </v-card>
       <div v-else>
-        <div class="text-h6 mb-0">
-          {{ options.label }}:
-        </div>
+        <div class="text-h6 mb-0">{{ options.label }}:</div>
         <FileUploadToolbar
           :key="key"
           v-model:uploaded-files="uploadedFiles"

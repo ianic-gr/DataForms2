@@ -37,7 +37,7 @@
 
   // `return` holds a comma-separated list of file names
   const fileNames = (v) => {
-    if (isEmpty(v)) return "";
+    if (v === null || v === undefined) return "";
     return (Array.isArray(v) ? v : [v])
       .map((item) => item?.name ?? "")
       .filter(Boolean)
