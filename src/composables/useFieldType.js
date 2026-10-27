@@ -25,13 +25,10 @@ export function useFieldType(props) {
 
   const syncFieldWithFormData = () =>
     watch(
-      currentFormData,
-      (data) => {
-        if (data?.fields) {
-          field.value = data.fields[props.inputKey];
-        }
-      },
-      { deep: true }
+      () => currentFormData.value?.fields?.[props.inputKey],
+      (value) => {
+        field.value = value;
+      }
     );
 
   const handleFieldChange = () =>

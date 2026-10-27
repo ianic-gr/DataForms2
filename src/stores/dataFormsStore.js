@@ -24,7 +24,7 @@ export const useDataformsStore = defineStore("dataforms", () => {
   };
 
   const addForm = ({ form_id, locale, locale_strings }) => {
-    const formExists = forms.value.find((form) => form.id === form_id);
+    const formExists = forms.value.some((form) => form.id === form_id);
 
     if (formExists) return;
 
@@ -66,16 +66,8 @@ export const useDataformsStore = defineStore("dataforms", () => {
   };
 
   const addInput = (formID, key, input) => {
-    // Keep reactivity
-    const computedForm = forms.value.map((form) => {
-      if (form.id === formID) {
-        form.inputs[key] = input;
-      }
-
-      return form;
-    });
-
-    forms.value = computedForm;
+    const form = getCurrentForm(formID);
+    if (form) form.inputs[key] = input;
   };
 
   const addField = (appendFieldData) => {
@@ -87,20 +79,14 @@ export const useDataformsStore = defineStore("dataforms", () => {
   };
 
   const updateData = (appendFieldData, unsaved = false) => {
-    // Keep reactivity
-    const computedForm = forms.value.map((form) => {
-      if (form.id === appendFieldData.formId) {
-        form.fields[appendFieldData.fieldName] = appendFieldData.fieldValue;
+    const form = getCurrentForm(appendFieldData.formId);
+    if (!form) return;
 
-        if (unsaved) {
-          form.unsaved = true;
-        }
-      }
+    form.fields[appendFieldData.fieldName] = appendFieldData.fieldValue;
 
-      return form;
-    });
-
-    forms.value = computedForm;
+    if (unsaved) {
+      form.unsaved = true;
+    }
   };
 
   return {
