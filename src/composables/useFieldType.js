@@ -23,17 +23,20 @@ export function useFieldType(props) {
     addInput(props.formId, props.inputKey, props.input);
   };
 
-  const syncFieldWithFormData = () =>
-    watch(
+  const syncFieldWithFormData = () => {
+    return watch(
       () => currentFormData.value?.fields?.[props.inputKey],
       (value) => {
         field.value = value;
-      }
+      },
+      { deep: true, immediate: true }
     );
+  };
 
-  const handleFieldChange = () =>
-    watch(field, (newValue) => {
+  const handleFieldChange = () => {
+    return watch(field, (newValue, oldValue) => {
       if (newValue === undefined) return;
+      if (newValue === oldValue) return;
 
       updateField({
         formId: props.formId,
@@ -42,17 +45,17 @@ export function useFieldType(props) {
       });
       onChange(newValue);
     });
+  };
 
   onMounted(async () => {
-    await nextTick();
     if (isUnmounted) return;
+    await nextTick();
 
-    stops.push(syncFieldWithFormData());
     initializeField();
+    stops.push(syncFieldWithFormData());
 
     if (props.input?.readOnly) return;
-
-    stops.push(handleFieldChange());
+    setTimeout(() => stops.push(handleFieldChange()), 250);
   });
 
   onBeforeUnmount(() => {
